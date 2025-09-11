@@ -710,7 +710,7 @@
             if (data.profile_photo_url) {
               const url = 'https://hiinterview-backend-1.onrender.com'
               
-            avatarPreviewWrap.innerHTML = `<img src=${data.profile_photo_url}' class="img-circle" alt="avatar preview">`;
+            avatarPreviewWrap.innerHTML = `<img src='${url}${data.profile_photo_url}' class="img-circle" alt="avatar preview">`;
             displayAvatar.src = `${url}${data.profile_photo_url}`;
             displayAvatar.style.display = "block";
             displayInitial.style.display = "none";
@@ -735,7 +735,7 @@
                 const fileName = data.cv.split("/").pop();
                 userCvLink.textContent = fileName; 
                   let url ="https://hiinterview-backend-1.onrender.com"   
-                userCvLink.href = `${data.cv_url}`;        
+                userCvLink.href = `${url}${data.cv_url}`;        
                 userCvLink.target = "_blank";   
                                  
             } else {
