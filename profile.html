@@ -472,7 +472,7 @@
             const data = await res.json();
 
             if (data.profile_photo_url) {
-              const url = 'https://hiinterview-backend-1.onrender.com/'
+              const url = 'https://hiinterview-backend-1.onrender.com'
             displayAvatar.src = `${url}${data.profile_photo_url}`;
               qs("#profileAvatar").src = `${url}${data.profile_photo_url}`;
               displayAvatar.style.display = "block";
