@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Secure Checkout — Hi Interviews</title>
+  <meta name="description" content="Choose your mentorship package and complete your payment to get started with Hi Interviews." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: { 50: '#f8fafc', 100: '#eef2f7', 200: '#e5eaf1', 300: '#cfd8e3', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a', 950: '#0c1324' },
+            brand: { 50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81' },
+            'accent-iris': '#8B5CF6', 'accent-mint': '#10B981', 'accent-rose': '#F43F5E', 'accent-amber': '#FBBF24',
+          },
+          fontFamily: { sans: ["Inter", "system-ui", "sans-serif"], heading: ["Poppins", "sans-serif"], mono: ["ui-monospace", "monospace"] },
+          animation: {
+            'fade-in': 'fadeIn 0.5s ease-out forwards',
+            'scale-in': 'scaleIn 0.3s cubic-bezier(0.25,1,0.5,1) forwards',
+            'glow-pulse': 'glowPulse 2.5s ease-in-out infinite',
+            'progress-fill': 'progressFill 1s ease-in-out forwards',
+            'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
+            'pop-in': 'popIn .28s cubic-bezier(.2,.9,.3,1) forwards',
+            'red-pulse': 'redPulse 1.2s ease-in-out'
+          },
+          keyframes: {
+            fadeIn: { '0%': { opacity: 0 }, '100%': { opacity: 1 } },
+            scaleIn: { '0%': { transform: 'scale(0.95)', opacity: '0' }, '100%': { transform: 'scale(1)', opacity: '1' } },
+            glowPulse: {
+              '0%,100%': { boxShadow: '0 0 12px 0px rgba(99,102,241,0.2)' },
+              '50%': { boxShadow: '0 0 24px 3px rgba(139,92,246,0.3)' }
+            },
+            progressFill: { '0%': { width: '0%' }, '100%': { width: '100%' } },
+            shake: {
+              '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' },
+              '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
+              '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
+              '40%, 60%': { transform: 'translate3d(4px, 0, 0)' }
+            },
+            popIn: {
+              '0%': { transform: 'scale(.6)', opacity: 0 },
+              '60%': { transform: 'scale(1.05)', opacity: 1 },
+              '100%': { transform: 'scale(1)', opacity: 1 }
+            },
+            redPulse: {
+              '0%': { boxShadow: '0 0 0 0 rgba(244,63,94,0.0)' },
+              '50%': { boxShadow: '0 0 18px 6px rgba(244,63,94,0.14)' },
+              '100%': { boxShadow: '0 0 0 0 rgba(244,63,94,0.0)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .focus-ring:focus-visible { outline: 2px solid rgba(79, 70, 229, .35); outline-offset: 3px }
+    .bg-glass { background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    .bg-pattern { background-image: radial-gradient(circle at top, rgba(79,70,229,0.08) 0%, transparent 30%), radial-gradient(circle at bottom, rgba(139,92,246,0.08) 0%, transparent 40%); }
+
+    .package-radio:checked + .package-label { border-color: #4f46e5; background-color: #eef2ff; }
+    .package-radio:checked + .package-label .radio-dot { border-color: #4f46e5; }
+    .radio-dot { box-shadow: 0 0 0 1px #cfd8e3; }
+    .package-radio:checked + .package-label .radio-dot { box-shadow: 0 0 0 1px #4f46e5, inset 0 0 0 4px #4f46e5; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    #card-loading-overlay, #otp-modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none;
+      z-index: 60; align-items: center; justify-content: center;
+    }
+    #card-loading-overlay .loader-box, #otp-modal .modal-box {
+      background: white; padding: 24px; border-radius: 12px;
+      width: 360px; text-align: center;
+    }
+    .spinner {
+      border: 4px solid rgba(0,0,0,0.08); border-top: 4px solid rgba(0,0,0,0.5); border-radius: 50%;
+      width: 40px; height: 40px; margin: 0 auto 12px; animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .input-error { border-color: #F43F5E !important; box-shadow: 0 0 0 3px rgba(244,63,94,0.07); }
+
+    .card-flipper { transition: transform 0.6s; transform-style: preserve-d; }
+    .card-flipper.is-flipped { transform: rotateY(180deg); }
+    .card-front, .card-back { backface-visibility: hidden; -webkit-backface-visibility: hidden; transition: background 0.4s ease-in-out; }
+    .card-back { transform: rotateY(180deg); }
+    #bank-logo { transition: opacity 0.4s ease-in-out; }
+
+    #otp-inputs input {
+      width: 44px; height: 56px; text-align: center; font-size: 1.25rem;
+      border: 1px solid #cfd8e3; border-radius: 8px; margin: 0 6px;
+    }
+    #otp-inputs input:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.1); outline: none; }
+
+    .unsupported-badge {
+      position: absolute; top: 12px; right: 12px;
+      background: linear-gradient(90deg,#F43F5E,#FF7A7A); color: #fff; padding: 6px 10px; border-radius: 999px;
+      font-size: 12px; font-weight: 700; letter-spacing: .3px; transform-origin: center;
+      box-shadow: 0 6px 18px rgba(244,63,94,0.18); z-index: 12; display:flex; gap:8px; align-items:center;
+      animation: popIn .28s cubic-bezier(.2,.9,.3,1) forwards;
+    }
+    .unsupported-badge .dot { width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.95);display:inline-block;box-shadow:0 0 6px rgba(255,255,255,.2) }
+    .unsupported-glow { animation: redPulse 1.2s ease-in-out; border: 1px solid rgba(244,63,94,0.14); }
+
+    .unsupported-hint { margin-top: 10px; font-size: 12px; color: #6b7280; display:flex; gap:8px; align-items:center; justify-content:center; }
+    .unsupported-hint button { font-weight:600; color:#4f46e5; text-decoration:underline; }
+
+    .razor-header { display:flex; align-items:center; gap:10px; justify-content:center; }
+    .razor-circle { width:36px; height:36px; border-radius:999px; background:linear-gradient(90deg,#4f46e5,#6366f1); display:inline-flex; align-items:center; justify-content:center; color:white; font-weight:700; box-shadow: 0 8px 24px rgba(79,70,229,0.12); }
+    .otp-success { width:56px;height:56px;border-radius:999px;background:linear-gradient(90deg,#10B981,#34D399);display:inline-flex;align-items:center;justify-content:center;color:white;font-weight:700;box-shadow:0 8px 24px rgba(16,185,129,0.18); }
+  </style>
+</head>
+<body class="bg-ink-50 text-ink-950 antialiased font-sans min-h-screen flex flex-col">
+  <header class="bg-white/80 backdrop-blur-sm border-b border-ink-100 sticky top-0 z-40">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <a href="index.html" class="font-semibold tracking-tight text-xl font-heading text-ink-900">Hi Interviews</a>
+        <div class="flex items-center gap-4">
+          <span class="text-sm font-medium hidden sm:block">Monica Geller</span>
+          <a href="profile.html" class="h-10 w-10 rounded-full bg-brand-600 text-white focus-ring flex items-center justify-center ring-4 ring-brand-200 relative animate-glow-pulse">
+            <span class="font-bold">M</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow bg-pattern flex items-center justify-center p-4">
+    <div id="checkout-card" class="bg-glass rounded-2xl shadow-lift ring-1 ring-black/5 w-full max-w-lg transition-all duration-500">
+      <div class="p-6">
+        <h1 class="text-2xl font-bold text-ink-800 text-center">Secure Checkout</h1>
+        <p class="text-center text-sm text-ink-600 mt-2">Select your desired service to proceed.</p>
+
+        <div class="mt-6">
+          <div class="flex border-b border-ink-200">
+            <button data-tab="core" class="tab-btn flex-1 py-3 text-sm font-semibold border-b-2 border-brand-600 text-brand-600">Core Packages</button>
+            <button data-tab="buddy" class="tab-btn flex-1 py-3 text-sm font-semibold border-b-2 border-transparent text-ink-500">Buddy Day Add-on</button>
+          </div>
+          <div id="package-options" class="mt-6">
+            <div data-tab-content="core" class="tab-content active animate-fade-in space-y-3"></div>
+            <div data-tab-content="buddy" class="tab-content animate-fade-in space-y-3"></div>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-ink-200">
+          <h2 class="font-semibold text-ink-800">Order Summary</h2>
+          <div id="order-summary" class="mt-2 space-y-1 text-sm text-ink-700"></div>
+          <div id="coupon-section" class="mt-4">
+            <label for="coupon-code" class="flex items-center gap-2 text-sm font-semibold text-ink-800 mb-2">
+              <span>🎁</span>
+              <span>Have a Coupon Code?</span>
+            </label>
+            <div class="flex gap-2">
+              <input type="text" id="coupon-code" placeholder="Enter Code" class="flex-grow h-10 px-3 text-sm rounded-lg border border-ink-200 bg-white focus-ring">
+              <button id="apply-coupon-btn" class="px-4 h-10 text-sm font-semibold bg-ink-800 text-white rounded-lg hover:bg-ink-900 focus-ring">Apply</button>
+            </div>
+            <p id="coupon-feedback" class="text-xs mt-1 h-4"></p>
+          </div>
+
+          <div class="mt-4 flex justify-between items-center font-bold text-lg">
+            <span>Total Amount</span>
+            <span id="total-amount">₹0</span>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <h2 class="font-semibold text-ink-800">Payment Method</h2>
+          <div class="mt-2 grid grid-cols-2 gap-3">
+            <button id="pay-upi" class="w-full py-2.5 text-sm font-medium rounded-lg ring-2 ring-brand-500 bg-brand-50 text-brand-700">UPI (Scan & Pay)</button>
+            <button id="pay-card" class="w-full py-2.5 text-sm font-medium rounded-lg ring-1 ring-ink-200 bg-white text-ink-600 hover:bg-ink-50">Credit Card</button>
+          </div>
+        </div>
+
+        <div id="payment-details-container" class="mt-4"></div>
+      </div>
+    </div>
+  </main>
+
+  <div id="success-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 animate-fade-in">
+    <div class="bg-white rounded-2xl p-8 shadow-lift max-w-sm w-full text-center animate-scale-in">
+      <h2 id="success-heading" class="text-2xl font-bold text-ink-800">Payment Confirmed!</h2>
+      <div id="animation-container" class="mt-4 h-24 flex flex-col items-center justify-center">
+        <div class="w-full">
+          <div id="status-text" class="text-sm text-ink-600 mb-2 transition-opacity duration-300">Initializing...</div>
+          <div class="w-full bg-ink-200 rounded-full h-2.5">
+            <div id="progress-bar" class="bg-brand-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+      <p id="final-message" class="text-sm text-ink-600 mt-4 opacity-0 transition-opacity duration-500"></p>
+      <a href="index.html" id="back-home-btn" class="mt-6 inline-block w-full bg-brand-600 text-white font-medium py-3 px-5 rounded-lg hover:bg-brand-700 transition opacity-0 -translate-y-2">Back to Homepage</a>
+    </div>
+  </div>
+
+  <div id="card-loading-overlay" aria-hidden="true">
+    <div class="loader-box">
+      <div class="spinner" role="status" aria-hidden="true"></div>
+      <div id="loading-message" class="font-medium text-sm text-ink-800">Processing... Please wait.</div>
+      <div class="text-xs text-ink-600 mt-2">Do not refresh or close this window.</div>
+    </div>
+  </div>
+
+  <div id="otp-modal" aria-hidden="true">
+    <div class="modal-box animate-scale-in">
+      <div class="razor-header">
+        <div class="razor-circle">RA</div>
+        <div class="text-left">
+          <div class="text-sm font-semibold">Razorpay Alpha</div>
+          <div class="text-xs text-ink-500">Secure payment authorization</div>
+        </div>
+      </div>
+      <p id="otp-subtext" class="text-sm text-ink-600 mt-3">A 6-digit OTP has been sent to your registered contact for the transaction.</p>
+      <div id="otp-caption" class="text-xs text-ink-500 mt-1 text-center"></div>
+      <div id="otp-inputs" class="flex justify-center my-4">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="\d*">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="\d*">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="\d*">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="\d*">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="\d*">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="\d*">
+      </div>
+      <p id="otp-error" class="text-xs text-accent-rose h-4 mb-2"></p>
+      <div id="otp-actions" class="space-y-2">
+        <button id="submit-otp-btn" class="w-full bg-brand-600 text-white font-medium py-2.5 px-5 rounded-lg hover:bg-brand-700">Verify & Pay</button>
+        <button id="resend-otp-btn" class="w-full bg-ink-100 text-ink-700 font-medium py-2.5 px-5 rounded-lg hover:bg-ink-200">Resend OTP</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="aria-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // DATA
+    const packages = {
+      core: [{ id: 'foundation', name: 'Silver', subtitle: 'One-to-One Training', price: 49999 }, { id: 'advantage', name: 'Gold', subtitle: 'Customizable Combo', price: 129999 }],
+      buddy: [{ days: 5, price: 32500, perDay: 6500, save: '19%', badge: 'Best Value' }, { days: 4, price: 28000, perDay: 7000, save: '12%' }, { days: 3, price: 22500, perDay: 7500, save: '6%' }, { days: 2, price: 15600, perDay: 7800, save: null }, { days: 1, price: 8000, perDay: 8000, save: null }]
+    };
+    // ADDED: SHREE10 gives ₹3000 off
+    const coupons = { FIRST100: 100, HI250: 250, SHREE10: 3000 };
+
+    // Bank info
+    const bankInfo = {
+      '4400060117603896': { name: 'AXIS BANK', theme: 'linear-gradient(to bottom right, #5f2c82, #49a09d)', requiresOtp: false },
+      '4315815170957008': { name: 'ICICI BANK', theme: 'linear-gradient(to bottom right, #f12711, #f5af19)', requiresOtp: false },
+      '4712270046643235': { name: 'BANK OF BARODA', theme: 'linear-gradient(to bottom right, #f09819, #ff512f)', requiresOtp: true } // Bank of Baroda requires OTP
+    };
+    let allowedCardNumbers = Object.keys(bankInfo);
+
+    // STATE
+    let selectedPackageType = 'core', selectedCorePackageId = 'foundation', selectedBuddyTierDays = 1, isExistingCustomer = false, appliedCoupon = null;
+    let currentOtp = null; // generated when OTP modal is shown
+    let currentCardLast4 = null;
+    let currentAmount = 0;
+
+    // DOM
+    const packageOptionsContainer = document.getElementById('package-options');
+    const orderSummaryEl = document.getElementById('order-summary');
+    const totalAmountEl = document.getElementById('total-amount');
+    const paymentDetailsContainer = document.getElementById('payment-details-container');
+    const payUpiBtn = document.getElementById('pay-upi');
+    const payCardBtn = document.getElementById('pay-card');
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const couponCodeEl = document.getElementById('coupon-code');
+    const applyCouponBtn = document.getElementById('apply-coupon-btn');
+    const cardLoadingOverlay = document.getElementById('card-loading-overlay');
+    const loadingMessageEl = document.getElementById('loading-message');
+    const otpModal = document.getElementById('otp-modal');
+    const ariaLive = document.getElementById('aria-live');
+
+    // RENDER
+    function renderCorePackages() {
+      const container = document.querySelector('[data-tab-content="core"]');
+      container.innerHTML = packages.core.map(pkg => `<input type="radio" name="package" id="${pkg.id}" value="${pkg.id}" class="sr-only package-radio" ${pkg.id === selectedCorePackageId ? 'checked' : ''}><label for="${pkg.id}" class="package-label flex items-center p-4 bg-white rounded-xl border border-ink-200 cursor-pointer"><span class="radio-dot h-5 w-5 rounded-full border border-ink-300 transition"></span><span class="ml-4 flex-grow"><span class="font-bold text-ink-800 block">${pkg.name}</span><span class="text-sm text-ink-600">${pkg.subtitle}</span></span><span class="font-bold font-heading text-brand-700">₹${pkg.price.toLocaleString('en-IN')}</span></label>`).join('');
+    }
+    function renderBuddyPackages() {
+      const container = document.querySelector('[data-tab-content="buddy"]');
+      const tierOptionsHTML = packages.buddy.map(tier => `<div class="relative"><input type="radio" name="package" id="buddy-${tier.days}" value="${tier.days}" class="sr-only package-radio" ${!isExistingCustomer ? 'disabled' : ''}><label for="buddy-${tier.days}" class="package-label flex items-center p-4 bg-white rounded-xl border border-ink-200 ${!isExistingCustomer ? 'cursor-not-allowed' : 'cursor-pointer'}">${tier.badge ? `<span class="absolute -top-3 right-4 rounded-full bg-accent-amber px-3 py-1 text-xs font-bold text-ink-900 shadow-sm">${tier.badge}</span>` : ''}<span class="radio-dot h-5 w-5 rounded-full border border-ink-300 transition"></span><span class="ml-4 flex-grow"><span class="font-bold text-ink-800 block">${tier.days} Day${tier.days > 1 ? 's' : ''}</span><span class="text-sm text-ink-600">${tier.save ? `<span class="font-semibold text-accent-mint">Save ${tier.save}</span> · ` : ''}Just ₹${tier.perDay.toLocaleString('en-IN')} per day</span></span><span class="font-bold font-heading text-brand-700">₹${tier.price.toLocaleString('en-IN')}</span></label></div>`).join('');
+      container.innerHTML = `<div class="space-y-3 ${!isExistingCustomer ? 'opacity-50' : ''}">${tierOptionsHTML}</div><div id="unlock-buddy-section" class="mt-4 text-center ${isExistingCustomer ? 'hidden' : ''}"><p class="text-xs text-rose-600 mt-3 text-center">This standalone service is an exclusive add-on.</p><button id="unlock-buddy-btn" class="text-sm font-semibold text-brand-600 hover:underline">Existing customer? Unlock here.</button></div>`;
+      if (!isExistingCustomer) document.getElementById('unlock-buddy-btn').addEventListener('click', () => { isExistingCustomer = true; renderBuddyPackages(); });
+    }
+
+    // ORDER SUMMARY
+    function updateOrderSummary() {
+      let price, name;
+      if (selectedPackageType === 'core') {
+        const pkg = packages.core.find(p => p.id === selectedCorePackageId); price = pkg.price; name = pkg.name;
+      } else {
+        const tier = packages.buddy.find(t => t.days === selectedBuddyTierDays); price = tier.price; name = `Interview Buddy (${tier.days} Day${tier.days > 1 ? 's' : ''})`;
+      }
+      currentAmount = price;
+      let summaryHTML = `<div class="flex justify-between"><span>${name}</span><span>₹${price.toLocaleString('en-IN')}</span></div>`;
+      let finalPrice = price;
+      if (appliedCoupon) {
+        const discount = coupons[appliedCoupon]; finalPrice -= discount;
+        summaryHTML += `<div class="flex justify-between text-accent-mint"><span>Discount (${appliedCoupon})</span><span>- ₹${discount.toLocaleString('en-IN')}</span></div>`;
+      }
+      orderSummaryEl.innerHTML = summaryHTML;
+      const currentTotal = parseFloat(totalAmountEl.textContent.replace(/[^0-9.]/g, '')) || 0;
+      animateValue(totalAmountEl, currentTotal, finalPrice, 300);
+    }
+
+    function animateValue(el, start, end, duration) {
+      let startTimestamp = null;
+      const step = timestamp => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        el.textContent = `₹${Math.floor(progress * (end - start) + start).toLocaleString('en-IN')}`;
+        if (progress < 1) window.requestAnimationFrame(step);
+      };
+      window.requestAnimationFrame(step);
+    }
+
+    // TABS & EVENTS
+    function handleTabSwitch(tabName) {
+      tabButtons.forEach(btn => {
+        if (btn.dataset.tab === tabName) { btn.classList.add('border-brand-600','text-brand-600'); btn.classList.remove('border-transparent','text-ink-500'); }
+        else { btn.classList.remove('border-brand-600','text-brand-600'); btn.classList.add('border-transparent','text-ink-500'); }
+      });
+      tabContents.forEach(content => content.classList.toggle('active', content.dataset.tabContent === tabName));
+      selectedPackageType = tabName; updateOrderSummary();
+    }
+
+    function handleApplyCoupon() {
+      const code = couponCodeEl.value.trim().toUpperCase();
+      if (!code) { document.getElementById('coupon-feedback').textContent = 'Enter a coupon code.'; return; }
+      if (coupons[code]) { appliedCoupon = code; document.getElementById('coupon-feedback').textContent = `Applied ${code} — ₹${coupons[code].toLocaleString('en-IN')} off.`; }
+      else { document.getElementById('coupon-feedback').textContent = 'Invalid code.'; }
+      updateOrderSummary();
+    }
+
+    function addEventListeners() {
+      packageOptionsContainer.addEventListener('change', e => {
+        if (e.target.name === 'package') {
+          const parentTab = e.target.closest('.tab-content').dataset.tabContent; selectedPackageType = parentTab;
+          if (parentTab === 'core') selectedCorePackageId = e.target.value; else selectedBuddyTierDays = parseInt(e.target.value);
+          updateOrderSummary();
+        }
+      });
+      tabButtons.forEach(btn => btn.addEventListener('click', () => handleTabSwitch(btn.dataset.tab)));
+      applyCouponBtn.addEventListener('click', handleApplyCoupon);
+      payUpiBtn.addEventListener('click', () => renderPaymentDetails('upi'));
+      payCardBtn.addEventListener('click', () => renderPaymentDetails('card'));
+    }
+
+    // PAYMENT DETAILS
+    function renderPaymentDetails(method) {
+      payUpiBtn.classList.toggle('ring-2', method === 'upi'); payUpiBtn.classList.toggle('bg-brand-50', method === 'upi');
+      payCardBtn.classList.toggle('ring-2', method === 'card'); payCardBtn.classList.toggle('bg-brand-50', method === 'card');
+
+      if (method === 'upi') {
+    paymentDetailsContainer.innerHTML = `
+      <div class="text-center p-4 bg-white rounded-lg border border-ink-200 animate-fade-in">
+        <p class="text-sm font-medium">Scan the QR code to pay</p>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=HiInterviewsPayment" alt="UPI QR Code" class="mx-auto my-3 rounded-lg">
+        <label class="block text-sm font-medium text-ink-700 mt-2">Transaction ID</label>
+        <input id="upi-txn" type="text" placeholder="Enter UPI Transaction ID" class="w-full max-w-xs mx-auto h-10 px-3 mt-1 text-sm rounded-lg border border-ink-200 bg-ink-50 focus-ring">
+        <div class="mt-4">
+          <!-- Disabled confirm button -->
+          <button id="confirm-payment-btn" class="mt-2 w-full bg-brand-600 text-white font-medium py-2.5 px-5 rounded-lg transition opacity-60 cursor-not-allowed" disabled aria-disabled="true">Confirm Payment</button>
+          <!-- Small server-busy message -->
+          <p id="upi-busy-message" class="text-xs text-rose-600 mt-2">UPI routing is currently busy due to heavy failures. Please use Credit Card for a reliable checkout.</p>
+        </div>
+      </div>
+    `;
+    // intentionally not attaching any click handler so UPI cannot be used during demo
+}
+else {
+        paymentDetailsContainer.innerHTML = `
+          <div class="animate-fade-in">
+            <div class="w-full max-w-xs mx-auto perspective" style="perspective: 1000px; position:relative;">
+              <div class="relative w-full aspect-[1.586] card-flipper">
+                <div id="card-front" class="card-front absolute top-0 left-0 w-full h-full p-4 md:p-5 rounded-xl bg-gradient-to-br from-ink-700 to-ink-900 text-white shadow-lg flex flex-col justify-between">
+                  <div class="flex justify-between items-start">
+                    <div id="bank-logo" class="font-bold font-heading text-lg opacity-0"></div>
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDQiIGhlaWdodD0iMzAiIHZpZXdCb3g9IjAgMCA0NCAzMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQwLjUgMEgzLjVDMS41NjY5OCAwIDAgMS41MjIzMyAwIDMuNDAwMDVWOS4xMjA4M0g0NFYzLjQwMDA1QzQ0IDEuNTIyMzMgNDIuNDMzMSAwIDQwLjUgMFoiIGZpbGw9IiNGRkE4MDAiLz4KPHBhdGggZD0iTTQ0IDIwLjg3OTJWNS4zNjAzNUgwVjIwLjg3OTJDMCBGMjQuNDI5NyAyLjI4NzM3IDI2Ljk5OTkgNS4wODk3NyAyNy42MzYyTDYuNDE1NjQgMjcuODgyN0M3LjI1MzYgMjguMDMzNSA4LjExNDU3IDI4LjU1NSA4LjE3NjAzIDI5LjM5NzhMOS4wMjcxIDI5Ljk5NDdIMzQuOTcyOUwzNS44MjQgMjkuMzk3OEMzNS44ODU0IDI4LjU1NSAzNi43NDY0IDI4LjAzMzUgMzcuNTg0NCAyNy44ODI3TDM4LjkxMDIgMjcuNjM2M0M0MS43MTI2IDI2Ljk5OTkgNDQgMjQuNDI5NyA0NCAyMC44NzkyWiIgZmlsbD0iI0ZGQTgwMCIvPgo8cGF0aCBkPSJNMCAyNi41OTk5VjguOTk5OTZINDRWMTUuODc5M1YyNi41OTk5QzQ0IDI4LjQ3NzYgNDIuNDMzMSAzMCA0MC41IDMwSDMuNUMxLjU2Njk4IDMwIDAgMjguNDc3NiAwIDI2LjU5OTlaIiBmaWxsPSIjRkZBNzAwIi8+Cjwvc3ZnPg==" alt="Card Chip" class="w-12 opacity-80" />
+                  </div>
+                  <div class="font-mono text-xl md:text-2xl tracking-wider" id="card-number-display">XXXX XXXX XXXX XXXX</div>
+                  <div class="flex justify-between text-xs uppercase font-medium"><div class=""><div class="opacity-70">Card Holder</div><div id="card-name-display" class="truncate">Full Name</div></div><div class="text-right"><div class="opacity-70">Expires</div><div id="card-expiry-display">MM/YY</div></div></div>
+                </div>
+                <div class="card-back absolute top-0 left-0 w-full h-full p-4 rounded-xl bg-gradient-to-br from-ink-700 to-ink-900 text-white shadow-lg"><div class="w-full h-10 bg-black mt-4"></div><div class="text-right text-sm mt-4 pr-4"><div class="text-white/70 text-xs uppercase mb-1">CVV</div><div class="h-8 w-full bg-white rounded flex items-center justify-end px-2"><span id="card-cvv-display" class="text-black font-mono tracking-widest"></span></div></div></div>
+              </div>
+            </div>
+            <div class="mt-6 space-y-3">
+              <div id="card-error" class="text-xs text-center text-accent-rose h-4"></div>
+              <div><label for="cardNumber" class="text-sm font-medium text-ink-700">Card Number</label><input id="cardNumber" type="text" inputmode="numeric" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" class="w-full h-10 px-3 mt-1 text-sm rounded-lg border border-ink-200 bg-white focus-ring"></div>
+              <div><label for="cardName" class="text-sm font-medium text-ink-700">Name on Card</label><input id="cardName" type="text" placeholder="Full name as it appears on card" class="w-full h-10 px-3 mt-1 text-sm rounded-lg border border-ink-200 bg-white focus-ring"></div>
+              <div class="grid grid-cols-2 gap-3"><div><label for="cardExpiry" class="text-sm font-medium text-ink-700">Expiry (MM/YY)</label><input id="cardExpiry" type="text" placeholder="MM/YY" maxlength="5" class="w-full h-10 px-3 mt-1 text-sm rounded-lg border border-ink-200 bg-white focus-ring"></div><div><label for="cardCvv" class="text-sm font-medium text-ink-700">CVV</label><input id="cardCvv" type="password" inputmode="numeric" maxlength="3" placeholder="CVV" class="w-full h-10 px-3 mt-1 text-sm rounded-lg border border-ink-200 bg-white focus-ring"></div></div>
+              <div id="unsupported-hint-holder" class="pt-2 text-center"></div>
+              <div class="pt-2"><button id="pay-card-confirm" class="w-full bg-brand-600 text-white font-medium py-2.5 px-5 rounded-lg hover:bg-brand-700 transition">Pay Now</button></div>
+            </div>
+          </div>`;
+        setupCardEventListeners();
+      }
+    }
+
+    // Unsupported animation + hint
+    let unsupportedTimeoutHandle = null;
+    function showUnsupportedCardAnimation(cardFrontEl, message = 'Sorry, this card is not eligible') {
+      if (!cardFrontEl) return;
+      ariaLive.textContent = message;
+      const existingBadge = cardFrontEl.querySelector('.unsupported-badge');
+      if (!existingBadge) {
+        const badge = document.createElement('div');
+        badge.className = 'unsupported-badge';
+        badge.innerHTML = `<span class="dot"></span><span>${message}</span>`;
+        cardFrontEl.appendChild(badge);
+      } else {
+        existingBadge.textContent = message;
+      }
+      cardFrontEl.classList.add('unsupported-glow');
+      try { const negativeSynth = new Tone.Synth({ oscillator: { type: "sawtooth" }, envelope: { attack: 0.01, decay: 0.12, sustain: 0.1, release: 0.12 } }).toDestination(); negativeSynth.triggerAttackRelease("C3","64n",Tone.now()); } catch(e){}
+      const hintHolder = document.getElementById('unsupported-hint-holder');
+      if (hintHolder) {
+        hintHolder.innerHTML = `<div class="unsupported-hint"><span>Try another card or</span> <button id="switch-to-upi" class="focus-ring">Use UPI instead</button></div>`;
+        const switchBtn = document.getElementById('switch-to-upi');
+        switchBtn.addEventListener('click', () => { renderPaymentDetails('upi'); ariaLive.textContent = 'Switched to UPI payment'; });
+      }
+      clearTimeout(unsupportedTimeoutHandle);
+      unsupportedTimeoutHandle = setTimeout(() => {
+        const b = cardFrontEl.querySelector('.unsupported-badge'); if (b) b.remove();
+        cardFrontEl.classList.remove('unsupported-glow');
+        if (hintHolder) hintHolder.innerHTML = '';
+      }, 5000);
+    }
+
+    // Card input wiring & validation
+    function setupCardEventListeners() {
+      const cardFlipper = document.querySelector('.card-flipper');
+      const cardFront = document.getElementById('card-front');
+      const bankLogo = document.getElementById('bank-logo');
+      const cardNumberEl = document.getElementById('cardNumber'), cardNameEl = document.getElementById('cardName'), cardExpiryEl = document.getElementById('cardExpiry'), cardCvvEl = document.getElementById('cardCvv'), cardErrorEl = document.getElementById('card-error');
+      const cardNumberDisplay = document.getElementById('card-number-display'), cardNameDisplay = document.getElementById('card-name-display'), cardExpiryDisplay = document.getElementById('card-expiry-display'), cardCvvDisplay = document.getElementById('card-cvv-display');
+
+      function formatCardNumberRaw(input) { return input.replace(/\D/g, '').slice(0,16); }
+
+      cardNumberEl.addEventListener('input', e => {
+        let rawDigits = formatCardNumberRaw(e.target.value);
+        e.target.value = rawDigits.replace(/(.{4})/g, '$1 ').trim();
+        cardNumberDisplay.textContent = e.target.value || 'XXXX XXXX XXXX XXXX';
+        const plainDigits = rawDigits;
+        const currentBank = bankInfo[plainDigits];
+        if (currentBank) {
+          cardFront.style.background = currentBank.theme;
+          bankLogo.textContent = currentBank.name;
+          bankLogo.style.opacity = 1;
+          const badge = cardFront.querySelector('.unsupported-badge'); if (badge) badge.remove();
+          cardFront.classList.remove('unsupported-glow');
+          const hintHolder = document.getElementById('unsupported-hint-holder'); if (hintHolder) hintHolder.innerHTML = '';
+          cardErrorEl.textContent = '';
+        } else {
+          bankLogo.style.opacity = 0;
+          if (plainDigits.length < 16) {
+            cardErrorEl.textContent = '';
+          } else if (plainDigits.length === 16 && !allowedCardNumbers.includes(plainDigits)) {
+            cardErrorEl.textContent = 'Sorry, this card is not eligible.';
+            showUnsupportedCardAnimation(cardFront, 'Sorry, this card is not eligible');
+          }
+        }
+      });
+
+      cardNameEl.addEventListener('input', e => cardNameDisplay.textContent = e.target.value || 'Full Name');
+      cardExpiryEl.addEventListener('input', e => { let v = e.target.value.replace(/\D/g,''); e.target.value = v.length>2? v.substring(0,2)+'/'+v.substring(2,4) : v; cardExpiryDisplay.textContent = e.target.value || 'MM/YY'; });
+      cardCvvEl.addEventListener('focus', () => cardFlipper.classList.add('is-flipped'));
+      cardCvvEl.addEventListener('blur', () => cardFlipper.classList.remove('is-flipped'));
+      cardCvvEl.addEventListener('input', e => cardCvvDisplay.textContent = e.target.value.replace(/\D/g, ''));
+
+      function markError(el, err) {
+        el.classList.add('input-error'); cardErrorEl.textContent = err; cardFlipper.classList.add('animate-shake'); setTimeout(() => cardFlipper.classList.remove('animate-shake'), 500);
+      }
+
+      function isValidExpiry(v) {
+        if (!/^\d{2}\/\d{2}$/.test(v)) return false;
+        const [m, y] = v.split('/').map(Number);
+        if (m < 1 || m > 12) return false;
+        const now = new Date();
+        const currentYear = now.getFullYear() % 100;
+        if (y < currentYear) return false;
+        if (y === currentYear) {
+          const currentMonth = now.getMonth() + 1;
+          if (m < currentMonth) return false;
+        }
+        return true;
+      }
+
+      document.getElementById('pay-card-confirm').addEventListener('click', e => {
+        e.preventDefault();
+        cardErrorEl.textContent = '';
+        [cardNameEl, cardNumberEl, cardExpiryEl, cardCvvEl].forEach(el => el.classList.remove('input-error', 'animate-shake'));
+        const cardName = cardNameEl.value.trim();
+        const cardNumberRaw = cardNumberEl.value.replace(/\s/g, '');
+        const cardExpiry = cardExpiryEl.value.trim();
+        const cardCvv = cardCvvEl.value.trim();
+
+        if (!cardName) return markError(cardNameEl, 'Please enter the name on card.');
+        if (!/^\d{16}$/.test(cardNumberRaw)) return markError(cardNumberEl, 'Invalid card number.');
+        if (!isValidExpiry(cardExpiry)) return markError(cardExpiryEl, 'Invalid or expired expiry date.');
+        if (!/^\d{3}$/.test(cardCvv)) return markError(cardCvvEl, 'Invalid CVV.');
+        // card not allowed
+        if (!allowedCardNumbers.includes(cardNumberRaw)) {
+          showUnsupportedCardAnimation(document.getElementById('card-front'), 'Sorry, this card is not eligible');
+          return markError(cardNumberEl, 'Sorry, this card is not eligible.');
+        }
+
+        const bank = bankInfo[cardNumberRaw];
+        currentCardLast4 = cardNumberRaw.slice(-4);
+        currentAmount = parseInt(totalAmountEl.textContent.replace(/[^0-9]/g,''), 10) || 0;
+
+        if (bank && bank.requiresOtp) {
+          // 10s processing -> show OTP modal
+          loadingMessageEl.textContent = 'Processing payment with issuer — please wait.';
+          cardLoadingOverlay.style.display = 'flex';
+          cardLoadingOverlay.setAttribute('aria-hidden','false');
+          try { const p = new Tone.Synth().toDestination(); p.triggerAttackRelease('C4','16n',Tone.now()); } catch(e){}
+          setTimeout(() => {
+            cardLoadingOverlay.style.display = 'none';
+            cardLoadingOverlay.setAttribute('aria-hidden','true');
+            showOtpModalForCard(currentCardLast4, currentAmount);
+          }, 10000);
+        } else {
+          loadingMessageEl.textContent = 'Redirecting to payment gateway...';
+          cardLoadingOverlay.style.display = 'flex';
+          setTimeout(() => window.location.href = 'https://payment-gateway.example/charge', 1200);
+        }
+      });
+    }
+
+    // OTP generation — based on current local time in 12-hour format HHMM79 (HH two-digit 01-12)
+    function generateOtpFromNow() {
+      const now = new Date();
+      let hh = now.getHours(); // 0-23
+      // convert to 12-hour with 12 instead of 0
+      let hh12 = hh % 12;
+      if (hh12 === 0) hh12 = 12;
+      const hhStr = String(hh12).padStart(2, '0');
+      const mmStr = String(now.getMinutes()).padStart(2, '0');
+      return `${hhStr}${mmStr}79`;
+    }
+
+    // Show OTP modal with contextual info (card last4 and amount)
+    function showOtpModalForCard(last4, amount) {
+      // generate OTP now and store
+      currentOtp = generateOtpFromNow();
+      // Clear inputs and show modal
+      otpModal.style.display = 'flex';
+      otpModal.setAttribute('aria-hidden','false');
+      const inputs = otpModal.querySelectorAll('#otp-inputs input');
+      const submitBtn = document.getElementById('submit-otp-btn');
+      const resendBtn = document.getElementById('resend-otp-btn');
+      const errorEl = document.getElementById('otp-error');
+      const otpSubtext = document.getElementById('otp-subtext');
+      const otpCaption = document.getElementById('otp-caption');
+
+      inputs.forEach(i => i.value = '');
+      inputs[0].focus();
+      errorEl.textContent = '';
+      otpSubtext.textContent = 'A 6-digit OTP has been sent to your registered contact for this transaction.';
+      otpCaption.textContent = `Card ending •••• ${last4} · Amount ₹${amount.toLocaleString('en-IN')}`;
+
+      inputs.forEach((input, index) => {
+        input.addEventListener('input', () => {
+          input.value = input.value.replace(/\D/g,'').slice(0,1);
+          if (input.value && index < inputs.length - 1) inputs[index + 1].focus();
+        });
+        input.addEventListener('keydown', e => {
+          if (e.key === "Backspace" && !input.value && index > 0) inputs[index - 1].focus();
+        });
+      });
+
+      submitBtn.onclick = async () => {
+        errorEl.textContent = '';
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Verifying...';
+        const otpEntered = Array.from(inputs).map(i => i.value).join('');
+        await new Promise(r => setTimeout(r, 600));
+
+        if (otpEntered === currentOtp) {
+          // close modal and show finalizing processing for 5s
+          otpModal.style.display = 'none';
+          otpModal.setAttribute('aria-hidden','true');
+          loadingMessageEl.textContent = 'Finalizing payment...';
+          cardLoadingOverlay.style.display = 'flex';
+          cardLoadingOverlay.setAttribute('aria-hidden','false');
+          try { const s = new Tone.Synth().toDestination(); s.triggerAttackRelease('E4','8n',Tone.now()); } catch(e){}
+          setTimeout(() => {
+            cardLoadingOverlay.style.display = 'none';
+            cardLoadingOverlay.setAttribute('aria-hidden','true');
+            runSuccessAnimation();
+          }, 5000);
+        } else {
+          errorEl.textContent = 'Invalid OTP. Please try again.';
+          inputs.forEach(i => i.value = '');
+          inputs[0].focus();
+          try { const neg = new Tone.Synth({oscillator:{type:'triangle'}}).toDestination(); neg.triggerAttackRelease('A2','64n',Tone.now()); } catch(e){}
+        }
+
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Verify & Pay';
+      };
+
+      resendBtn.onclick = () => {
+        // regenerates OTP on resend to keep it dynamic
+        currentOtp = generateOtpFromNow();
+        const now = new Date();
+        const hh = String(now.getHours() % 12 === 0 ? 12 : now.getHours() % 12).padStart(2,'0');
+        const mm = String(now.getMinutes()).padStart(2,'0');
+        // feedback, without revealing OTP
+        document.getElementById('otp-error').textContent = '';
+        document.getElementById('otp-subtext').textContent = 'A fresh OTP has been sent to your registered contact.';
+      };
+    }
+
+    // Success animation
+    async function runSuccessAnimation() {
+      const successModal = document.getElementById('success-modal');
+      const statusText = document.getElementById('status-text');
+      const progressBar = document.getElementById('progress-bar');
+      const finalMessage = document.getElementById('final-message');
+      const backHomeBtn = document.getElementById('back-home-btn');
+      successModal.style.display = 'flex';
+      try {
+        const synth = new Tone.Synth({ oscillator: { type: "sine" }, envelope: { attack: 0.01, decay: 0.1, sustain: 0.2, release: 0.2 } }).toDestination();
+        statusText.textContent = 'Initializing Mentorship...'; progressBar.style.width = '33%'; synth.triggerAttackRelease("C4", "8n", Tone.now()); await new Promise(r=>setTimeout(r,600));
+        statusText.textContent = 'Unlocking Potential...'; progressBar.style.width = '66%'; synth.triggerAttackRelease("E4", "8n", Tone.now()+.1); await new Promise(r=>setTimeout(r,600));
+        statusText.textContent = 'Profile Powered Up!'; progressBar.style.width = '100%'; synth.triggerAttackRelease("G4", "4n", Tone.now()+.1);
+      } catch (e) {
+        statusText.textContent = 'Processing...'; progressBar.style.width = '100%';
+        await new Promise(r=>setTimeout(r,1200));
+      }
+
+      confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } }); await new Promise(r=>setTimeout(r,500));
+      statusText.style.opacity='0'; finalMessage.innerHTML="It may take 30-60 minutes to add your service to your wallet. For support, please use chat."; finalMessage.style.opacity='1';
+      backHomeBtn.style.opacity = '1'; backHomeBtn.style.transform = 'translateY(0)'; backHomeBtn.textContent = 'Go to My Profile'; backHomeBtn.href = 'profile.html';
+      setTimeout(() => window.location.href = 'profile.html', 2400);
+    }
+
+    // INIT
+    renderCorePackages(); renderBuddyPackages(); addEventListeners(); updateOrderSummary(); renderPaymentDetails('upi');
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+User Management Design -
+
+    Define clear roles:
+
+    Admin
+
+    Mentor
+
+    Buddy
+
+    Candidate
+
+    Hybrid roles (e.g., Buddy + Mentor).
+
+Sign-Up & Data Collection-
+
+Design sign-up forms tailored to role type (Candidate, Mentor, etc.).
+
+Collect essential information (e.g., name, email, phone, skills, experience, preferences, etc.).
+
+Authentication & Login
+
+Implement secure authentication (email/password, OAuth, etc.).
+
+Once logged in, fetch user details from the database.
+
+
+Dashboard / Profile Page :
+
+Show role-specific details on Dashboard or My Profile page.
+
+Example: Candidate sees their skills & assigned mentor; Mentor sees assigned candidates.
+
+Admin Role
+
+Admin creates connections:
+
+Candidate ↔ Buddy
+
+Candidate ↔ Mentor
+
+Manage assignments and relationships.
+
+Chat Feature
+
+Enable communication between connected users (Candidate–Buddy, Candidate–Mentor).
+
+Ensure role-based permissions for chat.
+
+Payment (Future Scope)
+
+Payment system will be handled later (not part of current phase).

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privacy Policy — Hi Interviews</title>
+    <meta name="robots" content="noindex, nofollow">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ink: { 50: '#f8fafc', 100: '#eef2f7', 200: '#e5eaf1', 300: '#cfd8e3', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a', 950: '#0c1324' },
+                        brand: { 50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81' },
+                    },
+                    fontFamily: { sans: ["Inter", "system-ui", "sans-serif"], heading: ["Poppins", "sans-serif"] },
+                }
+            }
+        }
+    </script>
+    <style>
+        .prose { max-width: 80ch; }
+        .prose h2 { margin-top: 1.5em; margin-bottom: 1em; padding-bottom: 0.5em; border-bottom: 1px solid #e5eaf1; }
+        .prose h3 { margin-top: 1.25em; margin-bottom: 0.5em; }
+        .bg-pattern { background-image: radial-gradient(circle at top, rgba(79,70,229,0.08) 0%, transparent 30%), radial-gradient(circle at bottom, rgba(139,92,246,0.08) 0%, transparent 40%); }
+        .bg-glass { background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    </style>
+</head>
+<body class="bg-ink-50 text-ink-950 antialiased font-sans flex flex-col min-h-screen">
+    <header class="bg-white/80 backdrop-blur-sm border-b border-ink-100 sticky top-0 z-40">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="font-semibold tracking-tight text-xl font-heading text-ink-900">Hi Interviews</a>
+                <a href="index.html" class="text-sm font-medium text-brand-600 hover:text-brand-800">Back to Home</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow bg-pattern py-16 sm:py-24">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-glass rounded-2xl shadow-lift ring-1 ring-black/5 p-8 md:p-12">
+                <div class="prose mx-auto">
+                    <h1>Privacy Policy</h1>
+                    <p class="text-ink-500">Last updated: January 2025</p>
+                    
+                    <p>Welcome to Hi Interviews ("us", "we", or "our"). We operate the hi-interviews.com website (the "Service"). This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data.</p>
+
+                    <h2>Information Collection and Use</h2>
+                    <p>We collect several different types of information for various purposes to provide and improve our Service to you.</p>
+                    <h3>Types of Data Collected</h3>
+                    <ul>
+                        <li><strong>Personal Data:</strong> While using our Service, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you ("Personal Data"). This may include, but is not limited to: Email address, Full Name, Contact Number, and CV/Resume.</li>
+                        <li><strong>Usage Data:</strong> We may also collect information on how the Service is accessed and used.</li>
+                    </ul>
+
+                    <h2>Use of Data</h2>
+                    <p>Hi Interviews uses the collected data for various purposes:</p>
+                    <ul>
+                        <li>To provide and maintain our Service</li>
+                        <li>To notify you about changes to our Service</li>
+                        <li>To provide customer support</li>
+                        <li>To gather analysis or valuable information so that we can improve our Service</li>
+                        <li>To monitor the usage of our Service</li>
+                    </ul>
+
+                    <h2>Data Security</h2>
+                    <p>The security of your data is important to us, but remember that no method of transmission over the Internet or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your Personal Data, we cannot guarantee its absolute security.</p>
+
+                    <h2>Changes to This Privacy Policy</h2>
+                    <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. You are advised to review this Privacy Policy periodically for any changes.</p>
+
+                    <h2>Contact Us</h2>
+                    <p>If you have any questions about this Privacy Policy, please contact us:</p>
+                    <ul>
+                        <li>By email: support@hiinterviews.com</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+     <footer class="bg-ink-900 text-ink-300">
+        <div class="mx-auto container max-w-7xl px-5 py-12">
+             <div class="flex flex-col sm:flex-row justify-between items-center text-sm text-center sm:text-left">
+                <p class="text-ink-400">© <span id="year"></span> Hi Interviews. All Rights Reserved.</p>
+                <div class="mt-4 sm:mt-0 space-x-4">
+                     <a href="t&c.html" class="hover:text-white transition">Terms of Service</a>
+                     <a href="index.html" class="hover:text-white transition">Home</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

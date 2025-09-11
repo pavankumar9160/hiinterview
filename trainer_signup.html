@@ -1,0 +1,759 @@
+
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Become a Mentor — Hi Interviews</title>
+    <meta name="description" content="Join our elite team of mentors and help shape the next generation of tech leaders." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ink: { 50: '#f8fafc', 100: '#eef2f7', 200: '#e5eaf1', 300: '#cfd8e3', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a', 950: '#0c1324' },
+                        brand: { 50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81' },
+                        'accent-iris': '#8B5CF6', 'accent-mint': '#10B981', 'accent-rose': '#F43F5E', 'accent-amber': '#FBBF24',
+                    },
+                    fontFamily: { sans: ["Inter", "system-ui", "sans-serif"], heading: ["Poppins", "sans-serif"] },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .focus-ring:focus-visible { outline: 2px solid rgba(79, 70, 229,.35); outline-offset: 3px }
+        .bg-pattern { background-image: radial-gradient(circle at top right, rgba(79, 70, 229,0.05) 0%, transparent 40%), radial-gradient(circle at bottom left, rgba(79, 70, 229,0.05) 0%, transparent 50%); }
+        .bg-glass { background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+
+        /* Toggle */
+        .toggleRoot { display: inline-flex; align-items: center; gap: .5rem; cursor: pointer; user-select: none; }
+        .toggleTrack { width: 68px; height: 34px; border-radius: 9999px; position: relative; transition: background-color .2s ease, border-color .2s ease; }
+        .toggleKnob { position: absolute; top: 4px; left: 4px; width: 26px; height: 26px; border-radius: 9999px; background: white; transition: transform .22s ease; box-shadow: 0 2px 6px rgba(12,12,18,.08); }
+        .toggleRoot[data-checked="true"] .toggleTrack { background: rgba(16, 185, 129, .12); border: 1px solid rgba(16,185,129,.35); }
+        .toggleRoot[data-checked="true"] .toggleKnob { transform: translateX(34px); }
+        .toggleRoot[data-checked="false"] .toggleTrack { background: rgba(244, 63, 94, .06); border: 1px solid rgba(244,63,94,.12); }
+        .toggleLabel { min-width: 44px; font-weight: 600; font-size: .85rem; display: inline-flex; align-items: center; justify-content: center; padding: .25rem .5rem; border-radius: .5rem; }
+        .toggleRoot[data-checked="true"] .toggleLabel { background: rgba(16,185,129,.12); color: #059669; }
+        .toggleRoot[data-checked="false"] .toggleLabel { background: rgba(244,63,94,.06); color: #e11d48; }
+
+        /* Overlay */
+        .overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: linear-gradient(180deg, rgba(2,6,23,.55), rgba(2,6,23,.75)); z-index: 80; }
+        .overlay.show { display: flex; }
+        .avatar-circle { width: 160px; height: 160px; display: grid; place-items: center; border-radius: 9999px; background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02)); box-shadow: 0 10px 30px rgba(2,6,23,.45); position: relative; overflow: visible; }
+
+        /* SVG progress with gradient */
+        .progressCircle circle { transform: rotate(-90deg); transform-origin: 50% 50%; stroke-dasharray: 414; stroke-dashoffset: 414; transition: stroke-dashoffset 1400ms cubic-bezier(.2,.9,.3,1); }
+        .progressCircle.filled circle { stroke-dashoffset: 0; }
+
+        /* Checkmark box */
+        .checkBoxWrap { position: absolute; right: -12px; top: -12px; width: 64px; height: 64px; display: grid; place-items: center; }
+        .checkBox { width: 56px; height: 56px; border-radius: 12px; background: rgba(16,185,129,.1); border: 2px solid rgba(16,185,129,.15); transform: scale(.7); opacity: 0; transition: transform 420ms cubic-bezier(.2,.9,.3,1), opacity 300ms ease; display: grid; place-items: center; }
+        .checkBox.show { transform: scale(1); opacity: 1; background: linear-gradient(180deg,#10B981,#06b6a4); border-color: rgba(16,185,129,1); box-shadow: 0 8px 30px rgba(16,185,129,.16); }
+        .tick { stroke: white; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 80; stroke-dashoffset: 80; transition: stroke-dashoffset 450ms cubic-bezier(.2,.95,.3,1) 120ms; }
+        .tick.show { stroke-dashoffset: 0; }
+
+        /* Success text */
+        .overlayText { opacity: 0; transition: opacity 350ms ease; transform-origin: center; }
+        .overlayText.show { opacity: 1; }
+
+        /* Avatar greeting text: two lines */
+        .avatarGreeting { text-align: center; color: white; font-weight: 700; line-height: 1; }
+        .avatarGreetingSmall { font-size: 12px; opacity: .9; }
+        .avatarGreetingLarge { font-size: 18px; margin-top: 4px; }
+
+        .form-step { transition: opacity .28s ease, transform .32s cubic-bezier(.2,.9,.3,1); }
+        .form-step.hidden { opacity: 0; transform: translateY(6px) scale(.998); pointer-events: none; height: 0; overflow: hidden; }
+
+        .errorText { color: #e11d48; font-size: .85rem; margin-top: .25rem; display: none; }
+        .inputError { border-color: #e11d48 !important; box-shadow: 0 0 0 4px rgba(225,29,72,.06); }
+
+        .btn-float { transform: translateY(0); transition: transform .22s ease; }
+        .btn-float:hover { transform: translateY(-4px); }
+
+        @media (max-width: 640px) {
+            .overlay { padding: 1rem; }
+            .checkBoxWrap { right: -8px; top: -8px; width: 52px; height: 52px; }
+            .checkBox { width: 48px; height: 48px; }
+        }
+    </style>
+</head>
+<body class="h-full bg-ink-50 text-ink-950 antialiased font-sans">
+
+    <div id="spinner" class="flex items-center justify-center h-screen" style="display:flex">
+  <div class="w-12 h-12 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin"></div>
+</div>
+    <div class="flex min-h-full items-center justify-center p-6 bg-pattern content" style="display:none">
+        <div class="w-full max-w-5xl overflow-hidden rounded-2xl bg-white shadow-lift ring-1 ring-black/5">
+            <div class="grid lg:grid-cols-2">
+                <!-- Left Panel -->
+                <div class="relative hidden lg:flex flex-col justify-center p-12 bg-gradient-to-br from-ink-800 to-ink-950 text-white">
+                    <div class="text-center">
+                        <a href="index.html" class="font-semibold tracking-tight text-3xl font-heading">Hi Interviews</a>
+                        <div class="mt-8 space-y-4 text-xl font-medium text-ink-200">
+                            <i class="fa-solid fa-quote-left text-4xl text-brand-400"></i>
+                            <p class="text-2xl font-bold text-white">Share Your Wisdom. Change a Life.</p>
+                            <p class="text-ink-300">Your years of experience didn't just build a career—they built a roadmap. At Hi Interviews, you have the power to guide the next generation of tech leaders, helping them navigate the hurdles you've already conquered. Join us, and turn your expertise into impact.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel: Multi-Step Form -->
+                <div class="p-6 sm:p-10">
+                    <div class="max-w-xl mx-auto">
+                        <h2 class="text-2xl font-bold tracking-tight text-ink-900 font-heading">Become a Mentor</h2>
+                        <p class="mt-1 text-sm text-ink-600">Join our elite team of industry experts. Let's get started with your profile.</p>
+
+                        <!-- Progress Bar -->
+                        <div class="mt-6">
+                            <div class="flex justify-between text-xs font-semibold text-ink-500">
+                                <p id="progressText">Step 1 of 4: Personal Details</p>
+                                <p id="progressPercent">0%</p>
+                            </div>
+                            <div class="mt-2 w-full bg-ink-200 rounded-full h-2">
+                                <div id="progressBar" class="bg-gradient-to-r from-brand-600 to-accent-iris h-2 rounded-full transition-all duration-300" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <form id="trainerSignupForm" class="mt-6 space-y-6" novalidate>
+                            <!-- Step 1 -->
+                            <div id="step1" class="form-step space-y-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="firstName" class="block text-sm font-medium text-ink-700">First Name</label>
+                                        <input id="firstName" name="firstName" type="text" required class="mt-1 block w-full rounded-lg border border-ink-200 bg-ink-50 py-2.5 px-3 focus-ring" autocomplete="given-name" />
+                                        <div class="errorText" id="errFirstName">Please enter your first name.</div>
+                                    </div>
+                                    <div>
+                                        <label for="lastName" class="block text-sm font-medium text-ink-700">Last Name</label>
+                                        <input id="lastName" name="lastName" type="text" required class="mt-1 block w-full rounded-lg border border-ink-200 bg-ink-50 py-2.5 px-3 focus-ring" autocomplete="family-name" />
+                                        <div class="errorText" id="errLastName">Please enter your last name.</div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="dob" class="block text-sm font-medium text-ink-700">Date of Birth</label>
+                                    <input id="dob" name="dob" type="date" required class="mt-1 block w-full rounded-lg border border-ink-200 bg-ink-50 py-2.5 px-3 focus-ring" />
+                                    <div class="text-xs text-ink-500 mt-1">You must be between <strong>18</strong> and <strong>70</strong> years old.</div>
+                                    <div class="errorText" id="errDob">Please select a valid DOB (18 - 70 years).</div>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="gender" class="block text-sm font-medium text-ink-700">Gender</label>
+                                        <select id="gender" name="gender" class="mt-1 block w-full rounded-lg border border-ink-200 bg-ink-50 py-2.5 px-3 focus-ring" aria-label="Gender">
+                                            <option value="">Select</option>
+                                            <option>Female</option>
+                                            <option>Male</option>
+                                            <option>Prefer not to say</option>
+                                        </select>
+                                        <div class="errorText" id="errGender">Please choose a gender option or "Prefer not to say".</div>
+                                    </div>
+                                    <div>
+                                        <label for="maritalStatus" class="block text-sm font-medium text-ink-700">Marital Status</label>
+                                        <select id="maritalStatus" name="maritalStatus" class="mt-1 block w-full rounded-lg border border-ink-200 bg-ink-50 py-2.5 px-3 focus-ring">
+                                            <option value="">Select</option>
+                                            <option>Single / Unmarried</option>
+                                            <option>Married</option>
+                                        </select>
+                                        <div class="errorText" id="errMarital">Please choose marital status.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 2 -->
+                            <div id="step2" class="form-step hidden space-y-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="domain" class="block text-sm font-medium text-ink-700">Primary Domain</label>
+                                        <input id="domain" name="domain" type="text" required placeholder="e.g., SAP ABAP, Python Dev" class="mt-1 block w-full rounded-lg border border-ink-200 bg-ink-50 py-2.5 px-3 focus-ring" />
+                                        <div class="errorText" id="errDomain">Please enter your primary domain.</div>
+                                    </div>
+                                    <div>
+                                        <label for="experience" class="block text-sm font-medium text-ink-700">Years of Experience</label>
+                                        <input id="experience" name="experience" type="number" required min="1" placeholder="e.g., 8" class="mt-1 block w-full rounded-lg border border-ink-200 bg-ink-50 py-2.5 px-3 focus-ring" />
+                                        <div class="errorText" id="errExperience">Enter valid years of experience (1+).</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="profileDesc" class="block text-sm font-medium text-ink-700">Profile Description</label>
+                                    <textarea id="profileDesc" name="profileDesc" rows="5" required maxlength="250" class="mt-1 block w-full rounded-lg border border-ink-200 bg-ink-50 p-3 focus-ring" placeholder="e.g., I am a full-stack developer with 8 years of experience..."></textarea>
+                                    <p id="charCount" class="text-xs text-right text-ink-500 mt-1">0 / 250</p>
+                                    <div class="errorText" id="errProfileDesc">Please write a short profile (10-250 chars).</div>
+                                </div>
+                                <div>
+                                    <label for="cvUpload" class="block text-sm font-medium text-ink-700">Your Latest CV (Optional)</label>
+                                    <input id="cvUpload" name="cvUpload" type="file" class="mt-1 block w-full text-sm text-ink-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100 transition focus-ring">
+                                    <p class="mt-1 text-xs text-ink-500">Optional, but a strong CV can attract more candidates.</p>
+                                </div>
+                            </div>
+
+                            <!-- Step 3 -->
+                            <div id="step3" class="form-step hidden space-y-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-ink-700">1-to-1 Training Availability</label>
+                                    <p class="text-xs text-ink-500 mt-1">Choose your preferred 1-hour slot for 5 days a week.</p>
+                                    <select id="trainingTime" name="trainingTime" class="mt-2 block w-full rounded-lg border border-ink-200 bg-ink-50 py-2.5 px-3 focus-ring"></select>
+                                    <div class="errorText" id="errTrainingTime">Please choose a training slot.</div>
+                                </div>
+                                <div class="border-t border-ink-200 pt-6">
+                                    <label class="block text-sm font-medium text-ink-700">Interview Buddy Availability</label>
+                                    <p class="text-xs text-ink-500 mt-1">Choose at least 2 days and a 1-hour time frame (9am-4pm).</p>
+                                    <div id="buddyDays" class="mt-3 flex flex-wrap gap-2">
+                                        <button type="button" data-day="Mon" class="day-toggle text-xs font-semibold px-3 py-1.5 rounded-full border border-ink-200 bg-white">Mon</button>
+                                        <button type="button" data-day="Tue" class="day-toggle text-xs font-semibold px-3 py-1.5 rounded-full border border-ink-200 bg-white">Tue</button>
+                                        <button type="button" data-day="Wed" class="day-toggle text-xs font-semibold px-3 py-1.5 rounded-full border border-ink-200 bg-white">Wed</button>
+                                        <button type="button" data-day="Thu" class="day-toggle text-xs font-semibold px-3 py-1.5 rounded-full border border-ink-200 bg-white">Thu</button>
+                                        <button type="button" data-day="Fri" class="day-toggle text-xs font-semibold px-3 py-1.5 rounded-full border border-ink-200 bg-white">Fri</button>
+                                        <button type="button" data-day="Sat" class="day-toggle text-xs font-semibold px-3 py-1.5 rounded-full border border-ink-200 bg-white">Sat</button>
+                                    </div>
+                                    <select id="buddyTime" name="buddyTime" class="mt-3 block w-full rounded-lg border border-ink-200 bg-ink-50 py-2.5 px-3 focus-ring"></select>
+                                    <div class="errorText" id="errBuddy">Select at least 2 days and a buddy time slot.</div>
+                                </div>
+
+                                <div class="border-t border-ink-200 pt-6 space-y-3">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm font-medium text-ink-700">Can candidates visit your place?</span>
+                                        <div class="toggleRoot" id="visitToggle" data-checked="false" role="switch" aria-checked="false" tabindex="0">
+                                            <div class="toggleLabel">No</div>
+                                            <div class="toggleTrack"><div class="toggleKnob"></div></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm font-medium text-ink-700">Are you willing to visit a candidate?</span>
+                                        <div class="toggleRoot" id="willingToggle" data-checked="false" role="switch" aria-checked="false" tabindex="0">
+                                            <div class="toggleLabel">No</div>
+                                            <div class="toggleTrack"><div class="toggleKnob"></div></div>
+                                        </div>
+                                    </div>
+
+                                    <p class="text-xs text-ink-500">Note: You will be compensated for any travel expenses incurred.</p>
+                                </div>
+                            </div>
+
+                            <!-- Step 4 -->
+                            <div id="step4" class="form-step hidden space-y-4">
+                                <div>
+                                    <label for="email" class="block text-sm font-medium text-ink-700">Email Address</label>
+                                    <input id="email" name="email" type="email" required class="mt-1 block w-full rounded-lg border border-ink-200 bg-ink-50 py-2.5 px-3 focus-ring" autocomplete="email" />
+                                    <div class="errorText" id="errEmail">Please provide a valid email address.</div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="mobile" class="block text-sm font-medium text-ink-700">Mobile Number</label>
+                                        <input id="mobile" name="mobile" type="tel" inputmode="numeric" pattern="[0-9]*" required class="mt-1 block w-full rounded-lg border border-ink-200 bg-ink-50 py-2.5 px-3 focus-ring" placeholder="10-digit mobile" />
+                                        <div class="errorText" id="errMobile">Mobile must be exactly 10 digits.</div>
+                                    </div>
+                                    <div>
+                                        <label for="altMobile" class="block text-sm font-medium text-ink-700">Alternate (Optional)</label>
+                                        <input id="altMobile" name="altMobile" type="tel" class="mt-1 block w-full rounded-lg border border-ink-200 bg-ink-50 py-2.5 px-3 focus-ring" placeholder="Optional 10-digit" />
+                                        <div class="errorText" id="errAltMobile">Alternate must be 10 digits if provided.</div>
+                                    </div>
+                                </div>
+                                <div class="pt-2">
+                                    <label class="flex items-center gap-3"><input type="checkbox" id="whatsappCheck" class="h-4 w-4 rounded border-ink-300 text-brand-600 focus:ring-brand-500"><span class="text-sm font-medium text-ink-700">WhatsApp is available on my primary mobile number</span></label>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="password" class="block text-sm font-medium text-ink-700">Create Password</label>
+                                        <input id="password" name="password" type="password" required class="mt-1 block w-full rounded-lg border border-ink-200 bg-ink-50 py-2.5 px-3 focus-ring" placeholder="At least 5 characters" />
+                                        <div class="text-xs text-ink-500 mt-1">Use 5+ characters — mix letters and numbers for stronger security.</div>
+                                        <div class="errorText" id="errPassword">Password must be at least 5 characters.</div>
+                                    </div>
+                                    <div>
+                                        <label for="confirmPassword" class="block text-sm font-medium text-ink-700">Confirm Password</label>
+                                        <input id="confirmPassword" name="confirmPassword" type="password" required class="mt-1 block w-full rounded-lg border border-ink-200 bg-ink-50 py-2.5 px-3 focus-ring" />
+                                        <div class="errorText" id="errConfirmPassword">Passwords do not match.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Navigation Buttons -->
+                            <div class="pt-6 border-t border-ink-200 flex items-center gap-3">
+                                <button type="button" id="prevBtn" class="bg-ink-100 text-ink-700 font-medium py-2 px-4 rounded-lg hover:bg-ink-200 transition hidden">Back</button>
+                                <div class="ml-auto flex items-center gap-3">
+                                    <button type="button" id="nextBtn" class="bg-brand-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-brand-700 transition btn-float">Next Step</button>
+                                    <button type="submit" id="submitBtn" class="bg-gradient-to-r from-brand-600 to-accent-iris text-white font-medium py-2.5 px-6 rounded-full hover:-translate-y-0.5 transition-transform shadow-lg hidden btn-float">Submit Application</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay animation shown on submit -->
+    <div id="overlay" class="overlay" aria-hidden="true" role="status" aria-live="polite">
+        <div class="flex flex-col items-center gap-6 text-center text-white">
+            <div class="avatar-circle relative" aria-hidden="true">
+                <svg class="progressCircle" width="160" height="160" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+                            <stop offset="0%" stop-color="#7c3aed"/>
+                            <stop offset="50%" stop-color="#6366f1"/>
+                            <stop offset="100%" stop-color="#06b6d4"/>
+                        </linearGradient>
+                    </defs>
+                    <circle cx="70" cy="70" r="66" stroke="rgba(255,255,255,.08)" stroke-width="8" />
+                    <circle id="progressStroke" cx="70" cy="70" r="66" stroke="url(#g1)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+
+                <div id="avatarLetter" class="absolute inset-0 grid place-items-center px-2">
+                    <!-- Greeting inserted here ("Hey John") -->
+                    <div class="avatarGreeting">
+                        <div class="avatarGreetingSmall">Hey</div>
+                        <div class="avatarGreetingLarge" id="avatarName">Mentor</div>
+                    </div>
+                </div>
+
+                <div class="checkBoxWrap" aria-hidden="true">
+                    <div id="checkBox" class="checkBox" role="img" aria-label="Success">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path id="tickPath" class="tick" d="M4.5 12.5 L9.5 16.5 L19.5 6.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div id="overlayText" class="overlayText">
+                <p id="overlayPrimary" class="text-lg font-semibold">Creating account...</p>
+                <p id="overlaySecondary" class="text-sm text-ink-200 mt-1 opacity-80">Please wait while we set up your mentor profile.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Use WebAudio for small tones so no external audio is required.
+        function playTone(freq, duration = 140, type = 'sine', vol = 0.12) {
+            try {
+                const ctx = (window._audioCtx ||= new (window.AudioContext || window.webkitAudioContext)());
+                const o = ctx.createOscillator();
+                const g = ctx.createGain();
+                o.type = type;
+                o.frequency.value = freq;
+                g.gain.value = vol;
+                o.connect(g);
+                g.connect(ctx.destination);
+                o.start();
+                g.gain.setValueAtTime(vol, ctx.currentTime);
+                g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration / 1000);
+                setTimeout(() => { try { o.stop(); o.disconnect(); g.disconnect(); } catch (e) {} }, duration + 50);
+            } catch (e) {
+                // ignore if audio blocked
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+
+      const accessToken = localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken");
+      const user = localStorage.getItem("user") || sessionStorage.getItem("user");
+      const spinner = document.getElementById("spinner");
+      const content = document.querySelector('.content');
+
+            if (accessToken && user === "Mentor") {   
+                 spinner.style.display = "none"; 
+                 window.location.href = "trainer_profile.html"
+            }
+            else{
+              content.style.display = "flex"; 
+             spinner.style.display = "none"; 
+
+
+            }
+            let currentStep = 1;
+            const totalSteps = 4;
+
+            const steps = document.querySelectorAll('.form-step');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const progressPercent = document.getElementById('progressPercent');
+
+            const stepTitles = ["Personal Details", "Professional Profile", "Availability", "Account & Finalize"];
+
+            // Form fields
+            const form = document.getElementById('trainerSignupForm');
+            const firstName = document.getElementById('firstName');
+            const lastName = document.getElementById('lastName');
+            const dob = document.getElementById('dob');
+            const gender = document.getElementById('gender');
+            const maritalStatus = document.getElementById('maritalStatus');
+
+            const domain = document.getElementById('domain');
+            const experience = document.getElementById('experience');
+            const profileDesc = document.getElementById('profileDesc');
+            const charCount = document.getElementById('charCount');
+
+            const trainingTimeSelect = document.getElementById('trainingTime');
+            const buddyTimeSelect = document.getElementById('buddyTime');
+
+            const dayToggles = document.querySelectorAll('.day-toggle');
+            let selectedDays = new Set();
+
+            const visitToggle = document.getElementById('visitToggle');
+            const willingToggle = document.getElementById('willingToggle');
+
+            const email = document.getElementById('email');
+            const mobile = document.getElementById('mobile');
+            const altMobile = document.getElementById('altMobile');
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirmPassword');
+
+            const overlay = document.getElementById('overlay');
+            const progressCircle = document.querySelector('.progressCircle');
+            const progressStroke = document.getElementById('progressStroke');
+            const avatarNameEl = document.getElementById('avatarName');
+            const overlayText = document.getElementById('overlayText');
+            const overlayPrimary = document.getElementById('overlayPrimary');
+            const overlaySecondary = document.getElementById('overlaySecondary');
+
+            const checkBox = document.getElementById('checkBox');
+            const tickPath = document.getElementById('tickPath');
+
+            // Set DOB min/max for age 18-70
+            (function setDobRange() {
+                const today = new Date();
+                const yyyy = today.getFullYear();
+                const maxDate = new Date(yyyy - 18, today.getMonth(), today.getDate());
+                const minDate = new Date(yyyy - 70, today.getMonth(), today.getDate());
+                function toIso(d) {
+                    const mm = String(d.getMonth() + 1).padStart(2, '0');
+                    const dd = String(d.getDate()).padStart(2, '0');
+                    return `${d.getFullYear()}-${mm}-${dd}`;
+                }
+                dob.setAttribute('max', toIso(maxDate));
+                dob.setAttribute('min', toIso(minDate));
+            })();
+
+            // Populate time slots (improved text)
+            for (let i=8; i<=21; i++) {
+                const option = document.createElement('option');
+                const start12 = (i % 12) || 12;
+                const endHour = i + 1;
+                const end12 = (endHour % 12) || 12;
+                const startSuffix = i < 12 ? 'AM' : 'PM';
+                const endSuffix = (endHour) < 12 ? 'AM' : 'PM';
+                option.value = `${i}:00-${endHour}:00`;
+                option.textContent = `${start12}:00 ${startSuffix} — ${end12}:00 ${endSuffix}`;
+                trainingTimeSelect.appendChild(option);
+            }
+            for (let i=9; i<=15; i++) {
+                const option = document.createElement('option');
+                const start12 = (i % 12) || 12;
+                const end12 = ((i + 1) % 12) || 12;
+                const suffix = i < 12 ? 'AM' : 'PM';
+                option.value = `${i}:00-${i+1}:00`;
+                option.textContent = `${start12}:00 ${suffix} — ${end12}:00 ${suffix === 'PM' && (i+1)<12 ? 'AM' : (i+1)<12 ? 'AM' : 'PM'}`;
+                buddyTimeSelect.appendChild(option);
+            }
+
+            // Character counter + simple length hint
+            profileDesc.addEventListener('input', () => {
+                charCount.textContent = `${profileDesc.value.length} / 250`;
+            });
+
+            // Buddy day selection
+            dayToggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const day = toggle.dataset.day;
+                    if (selectedDays.has(day)) {
+                        selectedDays.delete(day);
+                        toggle.classList.remove('bg-brand-50', 'border-brand-600');
+                        toggle.classList.add('bg-white');
+                    } else {
+                        selectedDays.add(day);
+                        toggle.classList.add('bg-brand-50', 'border-brand-600');
+                    }
+                });
+                toggle.setAttribute('tabindex', '0');
+                toggle.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle.click(); } });
+            });
+
+            // Custom toggle wiring
+            function wireToggle(root) {
+                root.addEventListener('click', () => {
+                    const isChecked = root.getAttribute('data-checked') === 'true';
+                    root.setAttribute('data-checked', String(!isChecked));
+                    root.setAttribute('aria-checked', String(!isChecked));
+                    const label = root.querySelector('.toggleLabel');
+                    label.textContent = !isChecked ? 'Yes' : 'No';
+                });
+                root.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); root.click(); } });
+            }
+            wireToggle(visitToggle);
+            wireToggle(willingToggle);
+
+            // UI update
+            function updateUI() {
+                steps.forEach((step, index) => {
+                    const isVisible = index + 1 === currentStep;
+                    step.classList.toggle('hidden', !isVisible);
+                });
+
+                prevBtn.classList.toggle('hidden', currentStep === 1);
+                nextBtn.classList.toggle('hidden', currentStep === totalSteps);
+                submitBtn.classList.toggle('hidden', currentStep !== totalSteps);
+
+                const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `Step ${currentStep} of ${totalSteps}: ${stepTitles[currentStep - 1]}`;
+                progressPercent.textContent = `${Math.round(progress)}%`;
+            }
+
+            // Validation helpers
+            function showError(el, msgId) {
+                const err = document.getElementById(msgId);
+                if (err) { err.style.display = 'block'; }
+                if (el) { el.classList.add('inputError'); }
+            }
+            function hideError(el, msgId) {
+                const err = document.getElementById(msgId);
+                if (err) { err.style.display = 'none'; }
+                if (el) { el.classList.remove('inputError'); }
+            }
+
+            function validateStep(step) {
+                let valid = true;
+                if (step === 1) {
+                    if (!firstName.value.trim()) { showError(firstName, 'errFirstName'); valid = false; } else hideError(firstName, 'errFirstName');
+                    if (!lastName.value.trim()) { showError(lastName, 'errLastName'); valid = false; } else hideError(lastName, 'errLastName');
+
+                    if (!dob.value) { showError(dob, 'errDob'); valid = false; } else {
+                        const d = new Date(dob.value);
+                        const today = new Date();
+                        const age = (today - d) / (365.25 * 24 * 3600 * 1000);
+                        if (age < 18 || age > 70) { showError(dob, 'errDob'); valid = false; } else hideError(dob, 'errDob');
+                    }
+
+                    if (!gender.value) { showError(gender, 'errGender'); valid = false; } else hideError(gender, 'errGender');
+                    if (!maritalStatus.value) { showError(maritalStatus, 'errMarital'); valid = false; } else hideError(maritalStatus, 'errMarital');
+                }
+
+                if (step === 2) {
+                    if (!domain.value.trim()) { showError(domain, 'errDomain'); valid = false; } else hideError(domain, 'errDomain');
+                    const xp = Number(experience.value);
+                    if (!xp || xp < 1) { showError(experience, 'errExperience'); valid = false; } else hideError(experience, 'errExperience');
+
+                    const descLen = profileDesc.value.trim().length;
+                    if (descLen < 10 || descLen > 250) { showError(profileDesc, 'errProfileDesc'); valid = false; } else hideError(profileDesc, 'errProfileDesc');
+                }
+
+                if (step === 3) {
+                    if (!trainingTimeSelect.value) { showError(trainingTimeSelect, 'errTrainingTime'); valid = false; } else hideError(trainingTimeSelect, 'errTrainingTime');
+                    if (!buddyTimeSelect.value || selectedDays.size < 2) { showError(buddyTimeSelect, 'errBuddy'); valid = false; } else hideError(buddyTimeSelect, 'errBuddy');
+                }
+
+                if (step === 4) {
+                    const emailVal = email.value.trim();
+                    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailVal || !emailRe.test(emailVal)) { showError(email, 'errEmail'); valid = false; } else hideError(email, 'errEmail');
+
+                    const mobileRe = /^\d{10}$/;
+                    if (!mobile.value.trim() || !mobileRe.test(mobile.value.trim())) { showError(mobile, 'errMobile'); valid = false; } else hideError(mobile, 'errMobile');
+
+                    if (altMobile.value.trim() && !mobileRe.test(altMobile.value.trim())) { showError(altMobile, 'errAltMobile'); valid = false; } else hideError(altMobile, 'errAltMobile');
+
+                    if (!password.value || password.value.length < 5) { showError(password, 'errPassword'); valid = false; } else hideError(password, 'errPassword');
+
+                    if (password.value !== confirmPassword.value) { showError(confirmPassword, 'errConfirmPassword'); valid = false; } else hideError(confirmPassword, 'errConfirmPassword');
+                }
+
+                return valid;
+            }
+
+            // Next button behavior with validation
+            nextBtn.addEventListener('click', () => {
+                if (validateStep(currentStep)) {
+                    if (currentStep < totalSteps) {
+                        currentStep++;
+                        updateUI();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                } else {
+                    // focus first visible error element in this step
+                    const err = document.querySelector(`#step${currentStep} .inputError, #step${currentStep} .errorText[style*="block"]`);
+                    if (err) {
+                        const target = err.closest('input, textarea, select') || err.previousElementSibling;
+                        if (target && typeof target.focus === 'function') target.focus();
+                    }
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentStep > 1) {
+                    currentStep--;
+                    updateUI();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+
+                document.querySelectorAll("#buddyDays .day-toggle").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    btn.classList.toggle("active"); 
+                });
+            });
+
+
+            nextBtn.addEventListener('keyup', (e) => { if (e.key === 'Enter') e.target.click(); });
+
+            // Animation sequence: show overlay, fill circle, show success box & tick, play tones, redirect
+            function showOverlayAndFinish(firstNameDisplay) {
+                // put the name
+                avatarNameEl.textContent = firstNameDisplay || 'Mentor';
+                overlay.classList.add('show');
+                overlay.setAttribute('aria-hidden', 'false');
+
+                // reset visuals
+                progressCircle.classList.remove('filled');
+                checkBox.classList.remove('show');
+                tickPath.classList.remove('show');
+                overlayText.classList.remove('show');
+                void progressCircle.offsetWidth;
+
+                // light submit tone
+                playTone(620, 80, 'sine', 0.08);
+
+                // animate fill
+                setTimeout(() => {
+                    progressCircle.classList.add('filled');
+                    overlayText.classList.add('show');
+                }, 80);
+
+                // after fill finishes, reveal check and tick
+                const afterFillMs = 1400; // matches stroke animation
+                setTimeout(() => {
+                    // small success chime sequence
+                    playTone(880, 120, 'sine', 0.09);
+                    setTimeout(() => playTone(1320, 160, 'sine', 0.06), 120);
+
+                    // show green box and animate tick
+                    checkBox.classList.add('show');
+                    // trigger tick draw slightly after
+                    setTimeout(() => { tickPath.classList.add('show'); }, 160);
+
+                    // change text to success
+                    overlayPrimary.textContent = 'Account created successfully';
+                    overlaySecondary.textContent = 'Welcome aboard — redirecting you now...';
+
+                    // redirect after brief moment (1.2s)
+                    setTimeout(() => {
+                        try { window.location.href = 'trainer_login.html'; } catch (e) { /* fallback */ }
+                    }, 1200);
+                }, afterFillMs + 120);
+            }
+
+            // Submit handler
+            form.addEventListener('submit',async function(e) {
+                e.preventDefault();
+
+                if (!validateStep(currentStep)) {
+                    const err = document.querySelector(`#step${currentStep} .inputError, #step${currentStep} .errorText[style*="block"]`);
+                    if (err) {
+                        const target = err.closest('input, textarea, select') || err.previousElementSibling;
+                        if (target && typeof target.focus === 'function') target.focus();
+                    }
+                    return;
+                }
+
+                // For display show first name (capitalized)
+                const fn = (firstName.value || '').trim();
+                const displayName = fn ? String(fn[0].toUpperCase() + fn.slice(1)) : (email.value.split('@')[0] || 'Mentor');
+
+              
+                const formData = new FormData();
+
+                formData.append("first_name", document.getElementById("firstName").value.trim());
+                formData.append("last_name", document.getElementById("lastName").value.trim());
+                formData.append("dob", document.getElementById("dob").value);
+                formData.append("gender", document.getElementById("gender").value);
+                formData.append("marital_status", document.getElementById("maritalStatus").value);
+
+                formData.append("domain", document.getElementById("domain").value.trim());
+                formData.append("experience", document.getElementById("experience").value);
+                formData.append("profile_desc", document.getElementById("profileDesc").value.trim());
+
+                const cvFile = document.getElementById("cvUpload").files[0];
+                if (cvFile) {
+                    formData.append("cv", cvFile); 
+                }
+
+                formData.append("training_time", document.getElementById("trainingTime").value);
+
+                const selectedDays = Array.from(document.querySelectorAll("#buddyDays .day-toggle.active"))
+                                        .map(btn => btn.dataset.day);
+                formData.append("buddy_days", JSON.stringify(selectedDays)); 
+
+                formData.append("buddy_time", document.getElementById("buddyTime").value);
+
+                formData.append("can_candidates_visit", document.getElementById("visitToggle").dataset.checked === "true"? "True" : "False")
+                formData.append("willing_to_visit", document.getElementById("willingToggle").dataset.checked === "true" ? "True" : "False"); 
+
+                formData.append("email", document.getElementById("email").value.trim());
+                formData.append("mobile", document.getElementById("mobile").value.trim());
+                formData.append("alt_mobile", document.getElementById("altMobile").value.trim());
+                formData.append("is_whatsapp_available", document.getElementById("whatsappCheck").checked ? "True" : "False");
+
+                formData.append("password", document.getElementById("password").value);
+                formData.append("password2", document.getElementById("confirmPassword").value);
+
+                // Debug (see what’s inside)
+                for (let [key, val] of formData.entries()) {
+                    console.log(key, val);
+                }
+
+                try {
+                    const response = await fetch("http://127.0.0.1:8000/api/trainers/signup/", {
+                        method: "POST",
+                        body: formData 
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        console.log("Signup success:", result);
+                         localStorage.clear();
+                         sessionStorage.clear();
+                        showOverlayAndFinish(displayName);
+                        alert("Application submitted successfully!");
+                    } else {
+                        const errorData = await response.json();
+                        console.error("Error:", errorData);
+                        alert("Error submitting form.");
+                    }
+                } catch (err) {
+                    console.error("Request failed:", err);
+                }
+            });
+
+            // small accessibility: allow enter to move next on inputs
+            Array.from(document.querySelectorAll('input, select, textarea')).forEach(el => {
+                el.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        if (currentStep < totalSteps) {
+                            e.preventDefault();
+                            nextBtn.click();
+                        } else {
+                            // last step - submit
+                        }
+                    }
+                });
+            });
+
+            updateUI();
+
+
+        });
+    </script>
+</body>
+</html>

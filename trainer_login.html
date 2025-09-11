@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Buddy Log In — Hi Interviews</title>
+  <meta name="description" content="Buddy login for trainers — sign in to manage your sessions." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: { 50: '#f8fafc', 100: '#eef2f7', 200: '#e5eaf1', 300: '#cfd8e3', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a', 950: '#0c1324' },
+            brand: { 50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81' },
+            'accent-iris': '#8B5CF6', 'accent-mint': '#10B981', 'accent-rose': '#F43F5E', 'accent-amber': '#FBBF24',
+          },
+          fontFamily: { sans: ["Inter", "system-ui", "sans-serif"], heading: ["Poppins", "sans-serif"] },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .focus-ring:focus-visible { outline: 2px solid rgba(79,70,229,.35); outline-offset: 3px }
+    .bg-pattern { background-image: radial-gradient(circle at top right, rgba(79,70,229,0.05) 0%, transparent 40%), radial-gradient(circle at bottom left, rgba(79,70,229,0.05) 0%, transparent 50%); }
+
+    /* Overlay and progress identical style to signup */
+    .overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: linear-gradient(180deg, rgba(2,6,23,.55), rgba(2,6,23,.75)); z-index: 80; }
+    .overlay.show { display: flex; }
+    .avatar-circle { width: 160px; height: 160px; display: grid; place-items: center; border-radius: 9999px; background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02)); box-shadow: 0 10px 30px rgba(2,6,23,.45); position: relative; overflow: visible; }
+    .progressCircle circle { transform: rotate(-90deg); transform-origin: 50% 50%; stroke-dasharray: 414; stroke-dashoffset: 414; transition: stroke-dashoffset 1400ms cubic-bezier(.2,.9,.3,1); }
+    .progressCircle.filled circle { stroke-dashoffset: 0; }
+
+    .checkBoxWrap { position: absolute; right: -12px; top: -12px; width: 64px; height: 64px; display: grid; place-items: center; }
+    .checkBox { width: 56px; height: 56px; border-radius: 12px; background: rgba(16,185,129,.1); border: 2px solid rgba(16,185,129,.15); transform: scale(.7); opacity: 0; transition: transform 420ms cubic-bezier(.2,.9,.3,1), opacity 300ms ease; display: grid; place-items: center; }
+    .checkBox.show { transform: scale(1); opacity: 1; background: linear-gradient(180deg,#10B981,#06b6a4); border-color: rgba(16,185,129,1); box-shadow: 0 8px 30px rgba(16,185,129,.16); }
+    .tick { stroke: white; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 80; stroke-dashoffset: 80; transition: stroke-dashoffset 450ms cubic-bezier(.2,.95,.3,1) 120ms; }
+    .tick.show { stroke-dashoffset: 0; }
+
+    /* small niceties */
+    .inputError { border-color: #e11d48 !important; box-shadow: 0 0 0 4px rgba(225,29,72,.06); }
+    .errorText { color: #e11d48; font-size: .85rem; margin-top: .25rem; display: none; }
+
+    .pwToggle { cursor: pointer; opacity: .9; }
+    .btn-primary { background: linear-gradient(90deg,#6366f1,#8b5cf6); }
+    .btn-primary:hover { filter: brightness(.98); transform: translateY(-2px); transition: .18s; }
+
+    @media (max-width:640px) {
+      .checkBoxWrap { right: -8px; top: -8px; width: 52px; height: 52px; }
+      .checkBox { width: 48px; height: 48px; }
+    }
+  </style>
+</head>
+<body class="h-full bg-ink-50 text-ink-950 antialiased font-sans">
+  <div id="spinner" class="flex items-center justify-center h-screen" style="display:flex">
+  <div class="w-12 h-12 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin"></div>
+</div>
+
+  <div class="flex min-h-full items-center justify-center p-6 bg-pattern content" style="display:none">
+    <div class="w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-lift ring-1 ring-black/5">
+      <div class="grid lg:grid-cols-2">
+        <div class="relative hidden lg:flex flex-col justify-center p-10 bg-gradient-to-br from-ink-800 to-ink-950 text-white">
+          <div class="text-center">
+            <a href="index.html" class="font-semibold tracking-tight text-3xl font-heading">Hi Interviews</a>
+            <div class="mt-8 space-y-4 text-xl font-medium text-ink-200">
+              <i class="fa-solid fa-user-tie text-4xl text-brand-400"></i>
+              <p class="text-2xl font-bold text-white">Buddy Log In</p>
+              <p class="text-ink-300">Sign in to manage your sessions, track trainee progress and schedule interviews.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-6 sm:p-10">
+          <div class="max-w-md mx-auto">
+            <h2 class="text-2xl font-bold tracking-tight text-ink-900 font-heading">Buddy Log In</h2>
+            <p class="mt-1 text-sm text-ink-600">Sign in with email or mobile number to continue.</p>
+
+            <form id="loginForm" class="mt-6 space-y-6" novalidate>
+              <div>
+                <label for="identifier" class="block text-sm font-medium text-ink-700">Email or Mobile</label>
+                <input id="identifier"  name="identifier" type="text" inputmode="email" placeholder="you@company.com or 9876543210" autocomplete="username" class="mt-1 block w-full rounded-lg border border-ink-200 bg-ink-50 py-2.5 px-3 focus-ring" />
+                <div id="errIdentifier" class="errorText">Enter a valid email or 10-digit mobile number.</div>
+              </div>
+
+              <div>
+                <label for="loginPassword" class="block text-sm font-medium text-ink-700">Password</label>
+                <div class="relative">
+                  <input id="loginPassword" name="loginPassword" type="password" autocomplete="current-password" placeholder="Enter password" class="mt-1 block w-full rounded-lg border border-ink-200 bg-ink-50 py-2.5 px-3 focus-ring" />
+                  <button type="button" id="pwToggle" aria-label="Toggle password visibility" class="absolute right-2 top-1/2 -translate-y-1/2 pwToggle text-ink-500">
+                    <i id="pwIcon" class="fa-solid fa-eye"></i>
+                  </button>
+                </div>
+                <div id="errLoginPassword" class="errorText">Password is required (min 5 characters).</div>
+              </div>
+
+              <div class="flex items-center justify-between gap-3">
+                <label class="flex items-center gap-3">
+                  <input id="rememberMe" type="checkbox" class="h-4 w-4 rounded border-ink-300 text-brand-600 focus:ring-brand-500" />
+                  <span class="text-sm font-medium text-ink-700">Remember me</span>
+                </label>
+                <a href="trainer_forgot_password.html" class="text-sm text-brand-600 hover:underline">Forgot password?</a>
+              </div>
+
+              <div>
+                <button id="loginBtn" type="submit" class="w-full text-white py-3 rounded-lg btn-primary font-medium shadow-lg">Sign in</button>
+              </div>
+
+              <div class="pt-3 text-center text-sm text-ink-500">
+                <span>New here?</span>
+                <a href="trainer_signup.html" class="text-brand-600 font-semibold hover:underline">Create an account</a>
+              </div>
+            </form>
+
+            <!-- subtle social/login alternatives -->
+            <div class="mt-6 border-t border-ink-100 pt-4 text-center">
+              <p class="text-xs text-ink-400">Or sign in with</p>
+              <div class="mt-3 flex justify-center gap-3">
+                <button aria-label="Sign in with Google" class="px-3 py-2 rounded-lg border border-ink-100 bg-white hover:shadow-sm"><i class="fa-brands fa-google"></i></button>
+                <button aria-label="Sign in with LinkedIn" class="px-3 py-2 rounded-lg border border-ink-100 bg-white hover:shadow-sm"><i class="fa-brands fa-linkedin"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay / progress + success -->
+  <div id="overlay" class="overlay" aria-hidden="true" role="status" aria-live="polite">
+    <div class="flex flex-col items-center gap-6 text-center text-white">
+      <div class="avatar-circle relative" aria-hidden="true">
+        <svg class="progressCircle" width="160" height="160" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="lg1" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0%" stop-color="#7c3aed"/>
+              <stop offset="50%" stop-color="#6366f1"/>
+              <stop offset="100%" stop-color="#06b6d4"/>
+            </linearGradient>
+          </defs>
+          <circle cx="70" cy="70" r="66" stroke="rgba(255,255,255,.08)" stroke-width="8" />
+          <circle id="overlayStroke" cx="70" cy="70" r="66" stroke="url(#lg1)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+
+        <div id="avatarGreeting" class="absolute inset-0 grid place-items-center px-2">
+          <div class="text-center">
+            <div class="text-xs opacity-90">Welcome back</div>
+            <div id="avatarUser" class="text-2xl font-bold mt-1">Buddy</div>
+          </div>
+        </div>
+
+        <div class="checkBoxWrap" aria-hidden="true">
+          <div id="checkBox" class="checkBox" role="img" aria-label="Success">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path id="tickPath" class="tick" d="M4.5 12.5 L9.5 16.5 L19.5 6.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div id="overlayText" class="opacity-0 transition-opacity duration-300">
+        <p id="overlayPrimary" class="text-lg font-semibold">Signing in...</p>
+        <p id="overlaySecondary" class="text-sm text-ink-200 mt-1 opacity-80">Hang tight — we're checking your credentials.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // minimal tone helper using WebAudio; no external files
+    function playTone(freq, duration = 120, type = 'sine', vol = 0.12) {
+      try {
+        const ctx = (window._audioCtx ||= new (window.AudioContext || window.webkitAudioContext)());
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = type;
+        o.frequency.value = freq;
+        g.gain.value = vol;
+        o.connect(g);
+        g.connect(ctx.destination);
+        o.start();
+        g.gain.setValueAtTime(vol, ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration / 1000);
+        setTimeout(() => { try { o.stop(); o.disconnect(); g.disconnect(); } catch (e) {} }, duration + 50);
+      } catch (e) { /* ignore audio errors */ }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+      const accessToken = localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken");
+      const role = localStorage.getItem("role") || sessionStorage.getItem("role");
+      const spinner = document.getElementById("spinner");
+      const content = document.querySelector('.content');
+
+            if (accessToken && role === "Mentor") {   
+                 spinner.style.display = "none"; 
+                 window.location.href = "trainer_profile.html"
+            }
+            else{
+              content.style.display = "flex"; 
+             spinner.style.display = "none"; 
+
+
+            }
+      // DOM refs (camelCase)
+      const loginForm = document.getElementById('loginForm');
+      const identifier = document.getElementById('identifier');
+      const loginPassword = document.getElementById('loginPassword');
+      const pwToggle = document.getElementById('pwToggle');
+      const pwIcon = document.getElementById('pwIcon');
+      const rememberMe = document.getElementById('rememberMe');
+      const loginBtn = document.getElementById('loginBtn');
+
+      const errIdentifier = document.getElementById('errIdentifier');
+      const errLoginPassword = document.getElementById('errLoginPassword');
+
+      const overlay = document.getElementById('overlay');
+      const overlayStroke = document.getElementById('overlayStroke');
+      const avatarUser = document.getElementById('avatarUser');
+      const overlayText = document.getElementById('overlayText');
+      const overlayPrimary = document.getElementById('overlayPrimary');
+      const overlaySecondary = document.getElementById('overlaySecondary');
+      const progressCircle = document.querySelector('.progressCircle');
+      const checkBox = document.getElementById('checkBox');
+      const tickPath = document.getElementById('tickPath');
+
+      // helpers
+      function showError(el, msgEl) {
+        if (el) el.classList.add('inputError');
+        if (msgEl) msgEl.style.display = 'block';
+      }
+      function hideError(el, msgEl) {
+        if (el) el.classList.remove('inputError');
+        if (msgEl) msgEl.style.display = 'none';
+      }
+
+      // password visibility toggle
+      pwToggle.addEventListener('click', () => {
+        if (loginPassword.type === 'password') {
+          loginPassword.type = 'text';
+          pwIcon.className = 'fa-solid fa-eye-slash';
+        } else {
+          loginPassword.type = 'password';
+          pwIcon.className = 'fa-solid fa-eye';
+        }
+        loginPassword.focus();
+      });
+
+      // validation checks
+      function isValidEmail(val) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+      }
+      function isValidMobile(val) {
+        return /^\d{10}$/.test(val);
+      }
+
+      function validateFields() {
+        let ok = true;
+        const idVal = identifier.value.trim();
+        if (!idVal || (!isValidEmail(idVal) && !isValidMobile(idVal))) {
+          showError(identifier, errIdentifier);
+          ok = false;
+        } else {
+          hideError(identifier, errIdentifier);
+        }
+
+        if (!loginPassword.value || loginPassword.value.length < 5) {
+          showError(loginPassword, errLoginPassword);
+          ok = false;
+        } else {
+          hideError(loginPassword, errLoginPassword);
+        }
+
+        return ok;
+      }
+
+      // allow Enter to submit
+      [identifier, loginPassword].forEach(el => {
+        el.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            loginBtn.click();
+          }
+        });
+      });
+
+      // overlay animation + success flow
+      function showOverlayAndRedirect(nameForGreeting) {
+        avatarUser.textContent = nameForGreeting || 'Buddy';
+        overlay.classList.add('show');
+        overlay.setAttribute('aria-hidden', 'false');
+
+        // reset
+        progressCircle.classList.remove('filled');
+        checkBox.classList.remove('show');
+        tickPath.classList.remove('show');
+        overlayText.classList.remove('show');
+        void progressCircle.offsetWidth;
+
+        // subtle submit tone
+        playTone(620, 80, 'sine', 0.09);
+
+        setTimeout(() => {
+          progressCircle.classList.add('filled');
+          overlayText.classList.add('show');
+        }, 80);
+
+        // after fill
+        const afterFillMs = 1400;
+        setTimeout(() => {
+          // success chime
+          playTone(880, 110, 'sine', 0.1);
+          setTimeout(() => playTone(1320, 140, 'sine', 0.06), 120);
+
+          checkBox.classList.add('show');
+          setTimeout(() => { tickPath.classList.add('show'); }, 160);
+
+          overlayPrimary.textContent = 'Signed in';
+          overlaySecondary.textContent = 'Redirecting to your dashboard...';
+
+          // redirect after short delay
+          setTimeout(() => {
+            window.location.href = 'trainer_profile.html';
+          }, 1200);
+        }, afterFillMs + 120);
+      }
+
+      // extract friendly name from identifier (email or number)
+      function deriveNameFromIdentifier(val) {
+        if (isValidEmail(val)) {
+          const namePart = val.split('@')[0] || 'Buddy';
+          // try to prettify: split dots/dashes/underscores
+          const parts = namePart.split(/[\.\-_]+/).filter(Boolean);
+          if (parts.length) {
+            const first = parts[0];
+            return first.charAt(0).toUpperCase() + first.slice(1);
+          }
+          return (namePart.charAt(0) || 'B').toUpperCase() + (namePart.slice(1) || 'uddy');
+        }
+        if (isValidMobile(val)) {
+          return val.slice(-4).replace(/\d/g, '') ? 'Buddy' : 'Buddy';
+        }
+        return 'Buddy';
+      }
+
+      // fake auth: validate client-side, play animation, redirect.
+      // In production, replace with real fetch() to your auth endpoint and only call success UI after server verifies credentials.
+      loginForm.addEventListener('submit', async function(e)  {
+        e.preventDefault();
+        if (!validateFields()) return;
+
+        
+
+
+                const email_or_mobile = document.getElementById('identifier').value;
+                const password = document.getElementById('loginPassword').value;
+                const rememberMe = document.getElementById('rememberMe').checked
+
+               if (!email_or_mobile || !password ) {
+                    alert("please enter email and password");
+                    return;
+                }
+              
+                localStorage.clear();
+                sessionStorage.clear();
+
+
+               
+                try {
+                    const response = await fetch('http://127.0.0.1:8000/api/trainers/login/', {
+                        method: "POST",
+                         headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({email_or_mobile:email_or_mobile,password:password})
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        
+                        alert(data.message);
+
+                        if (rememberMe) {
+                            localStorage.setItem('accessToken', data.access);
+                            localStorage.setItem('refreshToken', data.refresh);
+                            localStorage.setItem('role',data.role);
+                        } else {
+                            sessionStorage.setItem('accessToken', data.access);
+                            sessionStorage.setItem('refreshToken', data.refresh);
+                             sessionStorage.setItem('role', data.role);
+                        }
+                        const nameForGreeting = deriveNameFromIdentifier(identifier.value.trim());
+                        showOverlayAndRedirect(nameForGreeting);
+                       
+                       
+                       
+                       
+                    } else if (response.status=== 401){
+                        alert(data.message || "Something went wrong");
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    alert("An error occurred while Login.");
+                }
+        
+        
+
+
+      });
+    });
+  </script>
+</body>
+</html>

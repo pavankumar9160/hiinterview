@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mentor Dashboard — Hi Interviews</title>
+    <meta name="robots" content="noindex, nofollow">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ink: { 50: '#f8fafc', 100: '#eef2f7', 200: '#e5eaf1', 300: '#cfd8e3', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a', 950: '#0c1324' },
+                        brand: { 50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81' },
+                        'accent-iris': '#8B5CF6', 'accent-mint': '#10B981', 'accent-rose': '#F43F5E', 'accent-amber': '#FBBF24',
+                    },
+                    fontFamily: { sans: ["Inter", "system-ui", "sans-serif"], heading: ["Poppins", "sans-serif"] },
+                     animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'scale-in': 'scaleIn 0.3s cubic-bezier(0.25,1,0.5,1) forwards',
+                        'glow-pulse': 'glowPulse 2.5s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: { '0%': { opacity: 0 }, '100%': { opacity: 1 } },
+                        scaleIn: { '0%': { transform: 'scale(0.95)', opacity: '0' }, '100%': { transform: 'scale(1)', opacity: '1' } },
+                        glowPulse: {
+                            '0%,100%': { boxShadow: '0 0 12px 0px rgba(99,102,241,0.2)'},
+                            '50%': { boxShadow: '0 0 24px 3px rgba(139,92,246,0.3)'}
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .focus-ring:focus-visible { outline: 2px solid rgba(79, 70, 229,.35); outline-offset: 3px }
+        .bg-pattern { background-image: radial-gradient(circle at top, rgba(79,70,229,0.08) 0%, transparent 30%), radial-gradient(circle at bottom, rgba(139,92,246,0.08) 0%, transparent 40%); }
+        .bg-glass { background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        .chat-modal-glass { background-color: rgba(248, 250, 252, 0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+
+        /* blinking indicator for unread */
+        @keyframes blinkDot { 0% { opacity: 1 } 50% { opacity: 0.15 } 100% { opacity: 1 } }
+        .blink { animation: blinkDot 1s linear infinite; }
+
+        /* compact category badge */
+        .catBadge { font-size: 11px; padding: 4px 8px; border-radius: 999px; display:inline-flex; align-items:center; gap:6px; }
+
+        /* subtle small improvements */
+        .inputError { border-color: #e11d48 !important; box-shadow: 0 0 0 4px rgba(225,29,72,.06); }
+        .errorText { color: #e11d48; font-size: .85rem; margin-top: .25rem; display: none; }
+
+        /* responsive tweaks */
+        @media (max-width: 640px) {
+            .chat-modal-glass { padding: 12px; }
+        }
+    </style>
+</head>
+
+<div id="spinner" class="flex items-center justify-center h-screen" style="display:flex;">
+  <div class="w-12 h-12 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin"></div>
+</div>
+<body class="bg-ink-50 text-ink-950 antialiased font-sans content"style="display:none;">
+    <header class="bg-white/80 backdrop-blur-sm border-b border-ink-100 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="font-semibold tracking-tight text-xl font-heading text-ink-900">Hi Interviews <span class="text-brand-600 font-normal">| Mentor Panel</span></a>
+                <div class="flex items-center gap-4">
+                    <span id="greeting" class="text-sm font-medium hidden sm:block">Welcome,</span>
+                    <button id="profile-btn" class="h-10 w-10 rounded-full bg-brand-600 text-white focus-ring flex items-center justify-center ring-4 ring-brand-200 relative animate-glow-pulse">
+                        <span class="font-bold profile-initial"></span>
+                    </button>
+                    <!-- Logout button -->
+                    <button id="logoutBtn" class="ml-2 inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-rose-500 text-white hover:bg-rose-600 focus-ring">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span class="text-sm">Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow bg-pattern">
+        <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+
+            <!-- IMPORTANT RULES NOTICE (NEW) -->
+            <div id="rulesNotice" class="mb-6 p-4 rounded-xl border-l-4 border-rose-500 bg-rose-50/80 text-rose-800 shadow-sm">
+                <div class="flex items-start gap-3">
+                    <div class="flex-shrink-0 mt-1"><i class="fa-solid fa-triangle-exclamation fa-lg"></i></div>
+                    <div>
+                        <h3 class="font-semibold">Important — Mentor Conduct Rules</h3>
+                        <p class="text-sm mt-1">Direct violating behaviour with candidates is strictly prohibited. Any of the actions listed below will lead to immediate account termination <strong>and</strong> forfeiture of pending payments (0 payout):</p>
+                        <ul class="mt-2 pl-5 text-sm list-disc space-y-1">
+                            <li>Direct dealing with candidates to take extra payment outside the platform.</li>
+                            <li>Requesting or storing a candidate's personal contact details (phone number, WhatsApp, email) for off-platform contact.</li>
+                            <li>Asking candidates for payments, gifts, or any monetary favor outside the official billing system.</li>
+                            <li>Sharing or publishing candidate data, recordings, or interview content without explicit platform authorization.</li>
+                            <li>Any other behaviour that violates platform terms of service or compromises candidate safety/privacy.</li>
+                        </ul>
+                        <p class="mt-2 text-sm font-medium">If you suspect a candidate or another mentor is trying to bypass the platform or request off-platform contact/payments, report it immediately to support.</p>
+                        <div class="mt-3 flex gap-2">
+                            <button id="ackRulesBtn" class="px-3 py-1 text-sm rounded bg-rose-500 text-white hover:bg-rose-600">Acknowledge</button>
+                            <button id="reportNowBtn" class="px-3 py-1 text-sm rounded border">Report to Support</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h1 id="welcome-header" class="text-3xl font-bold text-ink-800">Good Morning, Biswajit</h1>
+            
+            <!-- At a Glance Stats -->
+            <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-glass p-6 rounded-2xl shadow-sm border border-white/50">
+                    <p class="text-sm font-medium text-ink-600">Active 1-on-1 Students</p>
+                    <p class="text-4xl font-bold text-brand-600 mt-1">4</p>
+                </div>
+                 <div class="bg-glass p-6 rounded-2xl shadow-sm border border-white/50">
+                    <p class="text-sm font-medium text-ink-600">Total Sessions This Month</p>
+                    <p class="text-4xl font-bold text-accent-mint mt-1">18</p>
+                </div>
+                <div id="unreadCard" class="bg-glass p-6 rounded-2xl shadow-sm border border-white/50 relative">
+                    <p class="text-sm font-medium text-ink-600">Unread Messages</p>
+                    <p id="unreadCount" class="text-4xl font-bold text-ink-800 mt-1">3</p>
+                    <span id="unreadBlink" class="absolute top-4 right-4 h-3 w-3 rounded-full bg-rose-500"></span>
+                </div>
+            </div>
+
+            <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <div class="bg-white/80 backdrop-blur-xl rounded-2xl shadow-md ring-1 ring-black/5 p-6">
+                    <h2 class="text-xl font-bold text-ink-800">Active 1-on-1 Classes</h2>
+                    <p class="text-sm text-ink-600 mt-1">You have 4 active students in your mentorship program.</p>
+                    <button id="view-students-btn" class="mt-4 text-sm font-semibold text-brand-600 hover:text-brand-800">View All Students &rarr;</button>
+                </div>
+
+                <div class="bg-white/80 backdrop-blur-xl rounded-2xl shadow-md ring-1 ring-black/5 p-6">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <h2 class="text-xl font-bold text-ink-800">My Messages</h2>
+                            <p class="text-sm text-ink-600 mt-1">You have <span id="summaryUnread">3</span> unread messages, including <span id="pendingRequestsCount">2</span> pending Buddy Day requests.</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xs text-ink-500">Please respond to messages within <strong>2 hours</strong> to help candidates — we'll notify them if you don’t.</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 flex gap-3">
+                        <button id="view-messages-btn" class="mt-4 text-sm font-semibold text-brand-600 hover:text-brand-800">Open Chat Panel &rarr;</button>
+                        <button id="markAllReadBtn" class="mt-4 text-sm font-medium text-ink-600 hover:text-ink-800">Mark all read</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals & hidden widgets -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden animate-fade-in"></div>
+
+    <div id="profile-modal" class="fixed inset-0 flex items-center justify-center z-50 p-4 hidden"></div>
+    <div id="students-modal" class="fixed inset-0 flex items-center justify-center z-50 p-4 hidden"></div>
+    <div id="chat-modal" class="fixed inset-0 flex items-center justify-center z-50 p-4 hidden"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function(){
+            const qs = (s) => document.querySelector(s);
+            const qsa = (s) => document.querySelectorAll(s);
+
+            // DEBUG: set to true for local testing (20 seconds instead of 2 hours)
+            const DEBUG_SHORT_TIMER = false;
+            const NO_RESPONSE_MS = DEBUG_SHORT_TIMER ? 20_000 : 2 * 60 * 60 * 1000; // 2 hours normally
+
+            // --- CHAT SYSTEM DATA & LOGIC ---
+            const chatData = {
+                'request-amit': { name: 'Amit Kumar', unread: 1, type: 'request', status: 'pending', details: 'TCS - Technical Round (Java)', messages: [ { id: 'm1', sender: 'student', text: 'Hi, I would like to request you as my buddy for my upcoming interview.', time: Date.now() - (2*60*60*1000) } ]},
+                'request-sneha': { name: 'Sneha Reddy', unread: 1, type: 'request', status: 'pending', details: 'Infosys - HR Round', messages: [ { id: 'm2', sender: 'student', text: 'Hello, are you available for an interview buddy session next week?', time: Date.now() - (5*60*60*1000) } ]},
+                'priya-sharma': { name: 'Priya Sharma', unread: 1, type: 'normal', messages: [ { id: 'm3', sender: 'student', text: 'Hi Biswajit, can we focus on advanced ABAP debugging tomorrow?', time: Date.now() - (1*60*60*1000) } ]},
+                'rohan-mehta': { name: 'Rohan Mehta', unread: 0, type: 'normal', messages: [ { id: 'm4', sender: 'trainer', text: 'Great session today, Rohan!', time: Date.now() - (24*60*60*1000) }, { id: 'm5', sender: 'student', text: 'Thanks! It was very helpful.', time: Date.now() - (24*60*60*1000) } ]},
+                'admin-support': { name: 'Admin Support', unread: 0, type: 'admin', messages: [ { id: 'm6', sender: 'admin', text: 'Hi Biswajit, your payout has been processed.', time: Date.now() - (3*24*60*60*1000) } ]}
+            };
+
+            // Track scheduled no-response timers per chat id
+            const noResponseTimers = {};
+
+            // For simplicity activeChatId default
+            let activeChatId = 'request-amit';
+
+
+             
+            function getStorage() {
+                if (localStorage.getItem("refreshToken")) return localStorage;
+                if (sessionStorage.getItem("refreshToken")) return sessionStorage;
+                return null;
+            }
+
+            function getToken(key) {
+                const storage = getStorage();
+                return storage ? storage.getItem(key) : null;
+            }
+
+            function setToken(key, value) {
+                const storage = getStorage();
+                if (storage) storage.setItem(key, value);
+            }
+
+            function clearTokensAndRedirect() {
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken");
+                sessionStorage.removeItem("accessToken");
+                sessionStorage.removeItem("refreshToken");
+                sessionStorage.removeItem('role')
+                localStorage.removeItem('role')
+                window.location.href = "trainer_login.html";
+            }
+
+            let accessToken = getToken("accessToken");
+            let refreshToken = getToken("refreshToken");
+            let spinner = document.getElementById("spinner");
+            let content = document.querySelector('.content');
+
+            if (!refreshToken) {
+                clearTokensAndRedirect();
+            } else {
+                try {
+                    let response = await fetch("http://127.0.0.1:8000/api/trainer/profile/", {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${accessToken}`
+                        }
+                    });
+
+                    if (response.status === 401) {
+                        accessToken = await refreshAccessToken();
+                        if (!accessToken) return;
+
+                        response = await fetch("http://127.0.0.1:8000/api/trainer/profile/", {
+                            method: "GET",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer ${accessToken}`
+                            }
+                        });
+                    }
+                    if (response.status === 403) {
+                             spinner.style.display = "none"; 
+                            window.location.href = "404.html";
+                            }
+                            else{
+                            content.style.display = "block"; 
+                            spinner.style.display = "none"; 
+
+                            }
+                    
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log("data:", data);
+                         
+                        const greeting = qs("#greeting");
+                        const welcomeHeader = qs("#welcome-header");
+                        const profileInitial = qs(".profile-initial");
+
+                        const userInitial = data.first_name[0];
+                        const hour = new Date().getHours();
+                        let welcomeText = "Welcome back";
+
+                        if (hour < 12) welcomeText = "Good Morning";
+                        else if (hour < 18) welcomeText = "Good Afternoon";
+                        else welcomeText = "Good Evening";
+
+                        profileInitial.innerText = userInitial;
+                        welcomeHeader.textContent = `${welcomeText}, ${data.first_name}!`;
+                        greeting.textContent = `${welcomeText}, ${data.first_name}!`;
+                    } else {
+                        console.error("failed to fetch user data");
+                    }
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+
+            async function refreshAccessToken() {
+                const refreshToken = getToken("refreshToken");
+                if (!refreshToken) return null;
+
+                try {
+                    const response = await fetch("http://127.0.0.1:8000/api/token/refresh/", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ refresh: refreshToken })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        setToken("accessToken", data.access);
+                        setToken("refreshToken", data.refresh);
+                        return data.access;
+                    } else {
+                        clearTokensAndRedirect();
+                        return null;
+                    }
+                } catch (err) {
+                    console.error(err);
+                    return null;
+                }
+            }
+
+            const logoutBtn = qs("#logoutBtn");
+            logoutBtn.addEventListener("click", async function () {
+                if (!confirm("Confirm logout?")) return;
+
+                let accessToken = getToken("accessToken");
+                let refreshToken = getToken("refreshToken");
+
+                if (!refreshToken) {
+                    clearTokensAndRedirect();
+                    return;
+                }
+
+                try {
+                    let response = await fetch("http://127.0.0.1:8000/api/trainer/logout/", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${accessToken}`
+                        },
+                        body: JSON.stringify({ refresh: refreshToken })
+                    });
+
+                    if (response.status === 401) {
+                        accessToken = await refreshAccessToken();
+                        if (!accessToken) return;
+
+                        response = await fetch("http://127.0.0.1:8000/api/trainer/logout/", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer ${accessToken}`
+                            },
+                            body: JSON.stringify({ refresh: refreshToken })
+                        });
+                    }
+
+                    if (response.ok) {
+                        clearTokensAndRedirect();
+                    } else {
+                         clearTokensAndRedirect();
+                        console.error("Logout failed");
+                    }
+                } catch (err) {
+                    console.error(err);
+                }
+            });
+
+
+            // Add simple interactions for rules notice buttons
+            qs('#ackRulesBtn')?.addEventListener('click', () => {
+                // visually acknowledge and collapse notice
+                const el = qs('#rulesNotice');
+                el.classList.add('opacity-60');
+                el.style.transform = 'scale(.995)';
+                setTimeout(() => el.style.display = 'none', 300);
+                // optionally send acknowledgement to server
+                // fetch('/api/ack-rules', { method: 'POST' });
+            });
+            qs('#reportNowBtn')?.addEventListener('click', () => {
+                // open support chat/modal — for demo we'll redirect to support page
+                window.location.href = '/support';
+            });
+
+            // Update unread summary & blinker
+            function updateUnreadSummary() {
+                const unreadTotal = Object.values(chatData).reduce((s, c) => s + (c.unread || 0), 0);
+                const pendingRequests = Object.values(chatData).filter(c => c.type === 'request' && c.status === 'pending').length;
+                qs('#unreadCount').textContent = unreadTotal;
+                qs('#summaryUnread').textContent = unreadTotal;
+                qs('#pendingRequestsCount').textContent = pendingRequests;
+
+                const blinkEl = qs('#unreadBlink');
+                if (unreadTotal > 0) {
+                    blinkEl.classList.add('blink');
+                } else {
+                    blinkEl.classList.remove('blink');
+                }
+            }
+
+            // Chat modal rendering
+            const chatModal = qs('#chat-modal');
+            const viewMessagesBtn = qs('#view-messages-btn');
+
+            function renderChatModal() {
+                chatModal.innerHTML = `
+                    <div class="chat-modal-glass rounded-2xl shadow-lift ring-1 ring-black/5 w-full max-w-6xl h-[90vh] flex flex-col md:flex-row animate-scale-in p-0">
+                        <aside id="chat-contacts" class="w-full md:w-1/3 border-r border-ink-200/50 flex flex-col">
+                            <div class="p-4 border-b border-ink-200/50">
+                                <h2 class="font-bold text-lg text-ink-800">My Conversations</h2>
+                                <div class="mt-2 text-xs text-ink-500">Requests and unread chats are highlighted.</div>
+                            </div>
+                            <div class="flex-grow overflow-y-auto"></div>
+                        </aside>
+                        <main id="chat-window-main" class="w-full md:w-2/3 flex-col h-full flex bg-white/50"></main>
+                    </div>
+                `;
+                renderContactList();
+                renderActiveChat();
+                attachChatListeners();
+            }
+
+            function makeCategoryBadge(type, unread) {
+                const base = type === 'request' ? 'bg-amber-100 text-amber-800' : type === 'admin' ? 'bg-ink-100 text-ink-700' : 'bg-brand-50 text-brand-700';
+                const blinkClass = unread > 0 ? ' blink' : '';
+                const label = type === 'request' ? 'Request' : type === 'admin' ? 'Support' : 'Student';
+                return `<span class="catBadge ${base}${blinkClass}">${label}${unread>0 ? ' • '+unread : ''}</span>`;
+            }
+
+            function renderContactList() {
+                const contactsContainer = chatModal.querySelector('#chat-contacts .flex-grow');
+                const requests = Object.keys(chatData).filter(id => chatData[id].type === 'request');
+                const normals = Object.keys(chatData).filter(id => chatData[id].type === 'normal');
+                const admins = Object.keys(chatData).filter(id => chatData[id].type === 'admin');
+                
+                const createContactHTML = (id) => {
+                    const contact = chatData[id];
+                    const lastMessage = contact.messages[contact.messages.length-1] || { text: '' };
+                    const icon = contact.type === 'admin' ? '<i class="fa-solid fa-headset"></i>' : contact.name.charAt(0);
+                    const bgColor = contact.type === 'admin' ? 'bg-ink-200 text-ink-600' : 'bg-brand-100 text-brand-600';
+                    const unreadHtml = contact.unread > 0 ? `<div class="flex-shrink-0 h-5 w-5 bg-rose-500 text-white text-xs rounded-full flex items-center justify-center">${contact.unread}</div>` : '';
+                    const catBadge = makeCategoryBadge(contact.type, contact.unread || 0);
+                    return `<button data-id="${id}" class="contact-btn flex items-center gap-3 w-full text-left p-4 hover:bg-white/50 transition ${id === activeChatId ? 'bg-brand-50' : ''}">
+                        <div class="relative h-10 w-10 rounded-full ${bgColor} flex items-center justify-center font-bold flex-shrink-0">${icon}${contact.unread>0 ? '<span class="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-rose-500 blink"></span>' : ''}</div>
+                        <div class="flex-grow overflow-hidden"><p class="font-semibold text-sm text-ink-800 truncate">${contact.name}</p><p class="text-xs text-ink-600 truncate">${lastMessage.text}</p></div>
+                        <div class="flex flex-col items-end gap-1">
+                            ${catBadge}
+                            ${unreadHtml}
+                        </div>
+                    </button>`;
+                };
+
+                contactsContainer.innerHTML = `
+                    <div class="px-4 pt-4 pb-2 text-xs font-semibold text-ink-500 uppercase tracking-wider">Buddy Day Requests</div>
+                    ${requests.length > 0 ? requests.map(createContactHTML).join('') : '<p class="px-4 text-sm text-ink-500">No pending requests.</p>'}
+                    <div class="px-4 pt-4 pb-2 text-xs font-semibold text-ink-500 uppercase tracking-wider">Student Chats</div>
+                    ${normals.map(createContactHTML).join('')}
+                    <div class="px-4 pt-4 pb-2 text-xs font-semibold text-ink-500 uppercase tracking-wider">Support</div>
+                    ${admins.map(createContactHTML).join('')}
+                `;
+            }
+
+            function renderActiveChat() {
+                const chatMainWindow = chatModal.querySelector('#chat-window-main');
+                const contact = chatData[activeChatId];
+                if (!contact) return;
+                let headerHTML = `<div class="p-4 border-b border-ink-200/50 flex justify-between items-center"><div><h3 class="font-bold text-ink-800">${contact.name}</h3><div class="text-xs text-ink-500 mt-1">${contact.type === 'request' ? contact.details || '' : ''}</div></div><button class="close-modal-btn text-ink-400 hover:text-ink-600 text-2xl">&times;</button></div>`;
+
+                if(contact.type === 'request' && contact.status === 'pending') {
+                    headerHTML += `<div class="p-3 bg-amber-50 border-b border-amber-200 text-center text-sm text-amber-800">
+                        <p><strong>New Request:</strong> ${contact.details}</p>
+                        <div class="mt-2 space-x-2"><button class="request-action-btn bg-brand-600 text-white px-3 py-1 rounded" data-action="accept">Accept</button><button class="request-action-btn bg-rose-500 text-white px-3 py-1 rounded" data-action="reject">Reject</button></div>
+                    </div>`;
+                } else if (contact.status === 'rejected') {
+                    headerHTML += `<div class="p-3 bg-rose-50 border-b border-rose-200 text-center text-sm text-rose-800">
+                        <p><strong>Request rejected</strong></p>
+                    </div>`;
+                }
+
+                chatMainWindow.innerHTML = `
+                    ${headerHTML}
+                    <div id="message-area" class="flex-grow p-6 space-y-6 overflow-y-auto">
+                        ${contact.messages.map(msg => {
+                            const timeText = new Date(msg.time).toLocaleString();
+                            if (msg.sender === 'trainer') return `<div class="flex items-start gap-3 flex-row-reverse"><div class="bg-brand-600 text-white p-3 rounded-2xl rounded-tr-none max-w-lg"><p class="text-sm">${escapeHtml(msg.text)}</p><div class="text-xs opacity-60 mt-1">${timeText}</div></div></div>`;
+                            const isStudent = msg.sender === 'student';
+                            const icon = isStudent ? contact.name.charAt(0) : '<i class="fa-solid fa-headset text-ink-600"></i>';
+                            const bgColor = isStudent ? 'bg-accent-iris' : 'bg-ink-200';
+                            return `<div class="flex items-start gap-3"><div class="h-8 w-8 rounded-full ${bgColor} text-white flex items-center justify-center font-bold text-sm flex-shrink-0">${icon}</div><div class="bg-white p-3 rounded-2xl rounded-tl-none max-w-lg shadow-sm"><p class="text-sm">${escapeHtml(msg.text)}</p><div class="text-xs opacity-60 mt-1">${timeText}</div></div></div>`;
+                        }).join('')}
+                    </div>
+                    <div class="p-4 border-t border-ink-200/50">
+                        <form id="chat-form" class="flex items-center gap-3">
+                            <input type="text" id="message-input" placeholder="Type your reply to ${contact.name}..." class="w-full h-10 px-4 text-sm rounded-full border border-ink-200 bg-white flex-grow focus-ring" required>
+                            <button type="submit" class="h-10 w-10 bg-brand-600 text-white rounded-full flex items-center justify-center flex-shrink-0 hover:bg-brand-700 transition focus-ring"><i class="fa-solid fa-paper-plane"></i></button>
+                        </form>
+                    </div>
+                `;
+                 const messageArea = chatMainWindow.querySelector('#message-area');
+                 messageArea.scrollTop = messageArea.scrollHeight;
+            }
+
+            // clear pending timer for a chat
+            function clearNoResponseTimer(chatId) {
+                if (noResponseTimers[chatId]) {
+                    clearTimeout(noResponseTimers[chatId]);
+                    delete noResponseTimers[chatId];
+                    console.debug('[no-response] cleared for', chatId);
+                }
+            }
+
+            // schedule no-response notification for last incoming student message
+            function scheduleNoResponseNotification(chatId) {
+                // find last student message that is unread / without trainer reply after it
+                const contact = chatData[chatId];
+                if (!contact) return;
+
+                // find last message index where sender === 'student'
+                const lastIndex = [...contact.messages].reverse().findIndex(m => m.sender === 'student');
+                if (lastIndex === -1) return;
+                // convert reversed index back
+                const idx = contact.messages.length - 1 - lastIndex;
+                const lastMsg = contact.messages[idx];
+
+                // If trainer has replied after that message, no need to schedule
+                const repliedAfter = contact.messages.slice(idx+1).some(m => m.sender === 'trainer');
+                if (repliedAfter) return;
+
+                // clear any existing
+                clearNoResponseTimer(chatId);
+
+                const timerId = setTimeout(() => {
+                    // call server notify endpoint (placeholder)
+                    console.info('[no-response] sending notification for', chatId, lastMsg.id || 'no-id');
+                    // Example fetch - enable in prod:
+                    /*
+                    fetch('/api/notify-no-response', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ chatId, messageId: lastMsg.id, reason: 'no_response_within_2_hours' })
+                    }).then(res => console.log('notify sent', res)).catch(err => console.error(err));
+                    */
+                    // for demo, we update UI: add a system message
+                    chatData[chatId].messages.push({ id: 'sys-' + Date.now(), sender: 'system', text: 'We notified the candidate due to no response within 2 hours.', time: Date.now() });
+                    renderContactList();
+                    renderActiveChat();
+                }, NO_RESPONSE_MS);
+
+                noResponseTimers[chatId] = timerId;
+                console.debug('[no-response] scheduled for', chatId, 'ms', NO_RESPONSE_MS);
+            }
+
+            // mark unread->0 when opened; when new message arrives increase unread and schedule timer
+            function attachChatListeners() {
+                chatModal.querySelectorAll('.contact-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        activeChatId = btn.dataset.id;
+                        chatData[activeChatId].unread = 0;
+                        renderContactList();
+                        renderActiveChat();
+                        attachChatListeners();
+                        // clear timer if exists (now user opened)
+                        clearNoResponseTimer(activeChatId);
+                    });
+                });
+
+                const chatForm = chatModal.querySelector('#chat-form');
+                if (chatForm) {
+                    chatForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        const input = chatModal.querySelector('#message-input');
+                        const text = input.value.trim();
+                        if (!text) return;
+                        const msg = { id: 't-' + Date.now(), sender: 'trainer', text, time: Date.now() };
+                        chatData[activeChatId].messages.push(msg);
+                        // sending reply clears any pending timer for that chat
+                        clearNoResponseTimer(activeChatId);
+                        // update unread - trainer replied so unread remains for other chats unchanged
+                        renderActiveChat(); renderContactList(); attachChatListeners();
+                    });
+                }
+
+                // request accept/reject buttons
+                chatModal.querySelectorAll('.request-action-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const action = btn.dataset.action;
+                        if (action === 'accept') {
+                            chatData[activeChatId].status = 'accepted';
+                            chatData[activeChatId].messages.push({ id: 't-' + Date.now(), sender: 'trainer', text: 'I have accepted this request.', time: Date.now() });
+                            // accepted -> clear timer (no need to notify)
+                            clearNoResponseTimer(activeChatId);
+                            renderContactList(); renderActiveChat(); attachChatListeners();
+                        } else if (action === 'reject') {
+                            // Direct reject (no reason required). This replaces the old modal-based flow.
+                            rejectChat(activeChatId);
+                        }
+                    });
+                });
+
+                chatModal.querySelectorAll('.close-modal-btn').forEach(btn => btn.addEventListener('click', closeModal));
+            }
+
+            // helper to escape html in messages
+            function escapeHtml(str) {
+                if (!str) return '';
+                return String(str).replace(/[&<>\"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+            }
+
+            // open/close modals
+            const modalBackdrop = qs('#modal-backdrop');
+            const profileModal = qs('#profile-modal');
+            const studentsModal = qs('#students-modal');
+
+            const openModal = (modal) => { modalBackdrop.classList.remove('hidden'); modal.classList.remove('hidden'); };
+            const closeModal = () => {
+                modalBackdrop.classList.add('hidden');
+                profileModal.classList.add('hidden');
+                studentsModal.classList.add('hidden');
+                chatModal.classList.add('hidden');
+            };
+
+            // New: single reject helper (no reason requested or stored)
+            function rejectChat(chatId) {
+                if (!chatData[chatId]) return;
+                chatData[chatId].status = 'rejected';
+                chatData[chatId].messages.push({ id: 't-' + Date.now(), sender: 'trainer', text: 'Request rejected.', time: Date.now() });
+                // clear any pending no-response timer
+                clearNoResponseTimer(chatId);
+                renderContactList();
+                renderActiveChat();
+            }
+
+            // open/close profile & students modals
+            
+            
+            profileModal.innerHTML = `<div class="bg-white rounded-2xl p-6 shadow-lift max-w-2xl w-full animate-scale-in"><div class="flex justify-between items-center"><h2 class="text-xl font-bold text-ink-800">My Mentor Profile</h2><button class="close-modal-btn text-ink-400 hover:text-ink-600 text-2xl">&times;</button></div><div class="mt-6 border-t pt-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-sm"><div><h3 class="font-semibold text-ink-700">Personal Details</h3><div class="mt-2 space-y-2"><div><p class="text-xs text-ink-500">Full Name</p><p>Biswajit Panda</p></div><div><p class="text-xs text-ink-500">Gender</p><p>Male</p></div></div></div><div><h3 class="font-semibold text-ink-700">Professional Details</h3><div class="mt-2 space-y-2"><div><p class="text-xs text-ink-500">Primary Domain</p><p>SAP ABAP Consultant</p></div><div><p class="text-xs text-ink-500">Years of Experience</p><p>10</p></div></div></div></div></div>`;
+            studentsModal.innerHTML = `<div class="bg-white rounded-2xl p-0 shadow-lift max-w-4xl w-full animate-scale-in"><div class="p-4 flex justify-between items-center border-b"><h2 class="text-xl font-bold text-ink-800">Active 1-on-1 Students</h2><button class="close-modal-btn text-ink-400 hover:text-ink-600 text-2xl">&times;</button></div><div class="p-4"><div class="overflow-x-auto"><table class="w-full text-sm"><thead><tr class="text-left text-ink-600 font-semibold bg-ink-50"><th class="p-3">Student Name</th><th>Domain</th><th>Timings</th><th>Joined On</th><th>Status</th></tr></thead><tbody class="divide-y divide-ink-100"><tr><td class="p-3">Priya Sharma</td><td>SAP ABAP</td><td>8:00 PM - 9:00 PM</td><td>Aug 15, 2025</td><td><span class="text-xs font-medium text-white bg-accent-mint px-2 py-0.5 rounded-full">Active</span></td></tr><tr><td class="p-3">Rohan Mehta</td><td>SAP ABAP</td><td>8:00 PM - 9:00 PM</td><td>Aug 22, 2025</td><td><span class="text-xs font-medium text-white bg-accent-mint px-2 py-0.5 rounded-full">Active</span></td></tr></tbody></table></div></div></div>`;
+
+            qs('#profile-btn').addEventListener('click', () => openModal(profileModal));
+            qs('#view-students-btn').addEventListener('click', () => openModal(studentsModal));
+
+            // close modal listeners
+            qsa('.close-modal-btn').forEach(btn => btn.addEventListener('click', closeModal));
+            modalBackdrop.addEventListener('click', closeModal);
+
+            // Mark all read
+            qs('#markAllReadBtn').addEventListener('click', () => {
+                Object.keys(chatData).forEach(id => chatData[id].unread = 0);
+                updateUnreadSummary();
+                // if chat modal open, re-render
+                if (!chatModal.classList.contains('hidden')) { renderContactList(); renderActiveChat(); attachChatListeners(); }
+            });
+
+            // Initial unread UI
+            updateUnreadSummary();
+
+            // --- Incoming message simulation and scheduling of no-response ---
+            // For each existing unread chat, schedule a no-response notification if needed
+            Object.keys(chatData).forEach(cid => {
+                if ((chatData[cid].unread || 0) > 0) {
+                    scheduleNoResponseNotification(cid);
+                }
+            });
+
+            // Expose helper to simulate incoming message (for testing)
+            window.simulateIncomingMessage = (chatId, text) => {
+                const id = 's-' + Date.now();
+                chatData[chatId].messages.push({ id, sender: 'student', text, time: Date.now() });
+                chatData[chatId].unread = (chatData[chatId].unread || 0) + 1;
+                updateUnreadSummary();
+                if (!chatModal.classList.contains('hidden')) {
+                    renderContactList(); renderActiveChat(); attachChatListeners();
+                }
+                // schedule no-response notification
+                scheduleNoResponseNotification(chatId);
+            };
+
+            // open chat modal
+            viewMessagesBtn.addEventListener('click', () => { renderChatModal(); openModal(chatModal); updateUnreadSummary(); });
+
+            // Example: to test quickly in debug mode, run:
+            // simulateIncomingMessage('priya-sharma', 'Test incoming — please respond soon!');
+        });
+    </script>
+</body>
+</html>

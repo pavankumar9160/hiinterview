@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin: Student Assignments — Hi Interviews</title>
+    <meta name="robots" content="noindex, nofollow">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ink: { 50: '#f8fafc', 100: '#eef2f7', 200: '#e5eaf1', 300: '#cfd8e3', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a', 950: '#0c1324' },
+                        brand: { 50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81' },
+                        'accent-iris': '#8B5CF6', 'accent-mint': '#10B981', 'accent-rose': '#F43F5E', 'accent-amber': '#FBBF24',
+                    },
+                    fontFamily: { sans: ["Inter", "system-ui", "sans-serif"], heading: ["Poppins", "sans-serif"] },
+                     animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'scale-in': 'scaleIn 0.3s cubic-bezier(0.25,1,0.5,1) forwards',
+                    },
+                    keyframes: {
+                        fadeIn: { '0%': { opacity: 0 }, '100%': { opacity: 1 } },
+                        scaleIn: { '0%': { transform: 'scale(0.95)', opacity: '0' }, '100%': { transform: 'scale(1)', opacity: '1' } },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .focus-ring:focus-visible { outline: 2px solid rgba(79, 70, 229,.35); outline-offset: 3px }
+        .bg-pattern { background-image: radial-gradient(circle at top, rgba(79,70,229,0.08) 0%, transparent 30%), radial-gradient(circle at bottom, rgba(139,92,246,0.08) 0%, transparent 40%); }
+        .bg-glass { background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        /* small responsive tweaks for table */
+        @media (max-width: 720px) {
+            .hide-sm { display: none; }
+            .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        }
+    </style>
+</head>
+<body class="bg-ink-50 text-ink-950 antialiased font-sans">
+    <header class="bg-white/80 backdrop-blur-sm border-b border-ink-100 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <h1 class="font-semibold tracking-tight text-xl font-heading text-ink-900">Hi Interviews <span class="text-brand-600 font-normal">| Admin Panel</span></h1>
+                <a href="admin_map.html" class="text-sm font-medium text-brand-600 hover:text-brand-800">Back to Admin Map</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow bg-pattern min-h-[70vh]">
+        <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+            <h1 class="text-3xl font-bold text-ink-800">Student Assignment Panel</h1>
+            
+            <div class="mt-4 bg-brand-50 border-l-4 border-brand-500 p-4 rounded-r-lg">
+                <div class="flex">
+                    <div class="flex-shrink-0"><i class="fa-solid fa-circle-info text-brand-600"></i></div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-semibold text-brand-800">Admin Note</h3>
+                        <div class="mt-2 text-sm text-brand-700">
+                            <p>Assigning a Trainer or Buddy will automatically grant them access to the student's chat channel. Mentor display names may duplicate; UI shows email and id to disambiguate while assignment still uses unique IDs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 bg-white/80 backdrop-blur-xl rounded-2xl shadow-md ring-1 ring-black/5 overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-xl font-bold text-ink-800">All Students</h2>
+                    <p class="text-sm text-ink-600 mt-1">Manage mentor assignments for all registered students.</p>
+                </div>
+                <div class="overflow-x-auto table-responsive">
+                    <table class="w-full text-sm">
+                        <thead class="bg-ink-50">
+                            <tr>
+                                <th class="p-3 text-left font-semibold">Student</th>
+                                <th class="p-3 text-left font-semibold hide-sm">Joined Date</th>
+                                <th class="p-3 text-left font-semibold">Assigned Trainer</th>
+                                <th class="p-3 text-left font-semibold">Assigned Buddy</th>
+                                <th class="p-3 text-left font-semibold">Status</th>
+                                <th class="p-3 text-left font-semibold">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="students-table-body" class="divide-y divide-ink-100">
+                            <!-- Student rows will be dynamically inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Assignment Modal -->
+    <div id="assignment-modal" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4 animate-fade-in">
+        <div class="bg-glass rounded-2xl shadow-lift ring-1 ring-black/5 w-full max-w-lg animate-scale-in">
+            <div class="p-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-xl font-bold text-ink-800">Assign Mentors</h2>
+                        <p id="modal-student-name" class="text-sm text-ink-600"></p>
+                    </div>
+                    <button id="close-modal-btn" class="text-ink-400 hover:text-ink-600 text-2xl" aria-label="Close modal">&times;</button>
+                </div>
+                <div class="mt-6 border-t border-ink-200 pt-6 space-y-6">
+                    <div>
+                        <label for="assign-trainer" class="block text-sm font-medium text-ink-700">1-on-1 Trainer</label>
+                        <select id="assign-trainer" class="mt-1 block w-full rounded-lg border-ink-200 bg-white py-2.5 px-3 focus-ring" aria-label="Assign trainer"></select>
+                    </div>
+                     <div>
+                        <label for="assign-buddy" class="block text-sm font-medium text-ink-700">Interview Buddy</label>
+                        <select id="assign-buddy" class="mt-1 block w-full rounded-lg border-ink-200 bg-white py-2.5 px-3 focus-ring" aria-label="Assign buddy"></select>
+                    </div>
+                    <div class="flex items-center">
+                        <input id="same-mentor-checkbox" type="checkbox" class="h-4 w-4 text-brand-600 border-ink-300 rounded focus:ring-brand-500" />
+                        <label for="same-mentor-checkbox" class="ml-2 block text-sm text-ink-800">Assign same mentor for both roles</label>
+                    </div>
+                </div>
+                <div class="mt-8 flex justify-end gap-3">
+                    <button id="cancel-btn" class="bg-ink-100 text-ink-700 font-medium py-2 px-4 rounded-lg hover:bg-ink-200 transition text-sm">Cancel</button>
+                    <button id="save-assignment-btn" class="bg-brand-600 text-white font-medium py-2 px-5 rounded-lg hover:bg-brand-700 transition text-sm">Save Assignment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // utility selectors in camelCase variable style
+        const qs = (s) => document.querySelector(s);
+        const qsa = (s) => Array.from(document.querySelectorAll(s));
+
+        // --- DATA (Simulated Backend) ---
+        // Note: each mentor MUST have a unique `id`. Display fields may duplicate (name) but UI will show email/id to disambiguate.
+        const mentors = [
+            { id: 'none', name: 'Not Assigned', email: '' },
+            { id: 'kevin1', name: 'Mr. Kevin Mathew', email: 'kevin.mathew@example.com' },
+            { id: 'kevin2', name: 'Mr. Kevin Mathew', email: 'kevin.secondary@example.com' }, // duplicate display name
+            { id: 'biswajit', name: 'Mr. Biswajit Panda', email: 'biswajit@example.com' },
+            { id: 'sara', name: 'Ms. Sara Khan', email: 'sara.khan@example.com' },
+        ];
+
+        let students = [
+            { id: 'monica', name: 'Monica Geller', email: 'monica@example.com', joined: '2025-09-08', trainerId: 'kevin1', buddyId: 'kevin2' },
+            { id: 'priya', name: 'Priya Sharma', email: 'priya.s@example.com', joined: '2025-09-05', trainerId: 'none', buddyId: 'none' },
+            { id: 'rohan', name: 'Rohan Mehta', email: 'rohan.m@example.com', joined: '2025-09-01', trainerId: 'sara', buddyId: 'none' },
+        ];
+
+        // --- DOM ELEMENTS ---
+        const tableBody = qs('#students-table-body');
+        const modal = qs('#assignment-modal');
+        const closeModalBtn = qs('#close-modal-btn');
+        const cancelBtn = qs('#cancel-btn');
+        const saveBtn = qs('#save-assignment-btn');
+        const modalStudentName = qs('#modal-student-name');
+        const trainerSelect = qs('#assign-trainer');
+        const buddySelect = qs('#assign-buddy');
+        const sameMentorCheckbox = qs('#same-mentor-checkbox');
+
+        let currentEditingStudentId = null;
+
+        // --- HELPERS ---
+        function getMentorById(id) {
+            return mentors.find(m => m.id === id) || { id: 'none', name: 'Not Assigned', email: '' };
+        }
+
+        function mentorLabel(m) {
+            if (!m || m.id === 'none') return 'Not Assigned';
+            // label includes name, email and id to disambiguate duplicates
+            return `${m.name} — ${m.email} (${m.id})`;
+        }
+
+        function initials(name) {
+            if (!name) return '';
+            return name.split(' ').map(p => p[0]).slice(0,2).join('').toUpperCase();
+        }
+
+        function safeDateFormat(dateStr) {
+            try {
+                return new Date(dateStr).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+            } catch (err) {
+                return dateStr;
+            }
+        }
+
+        // --- RENDERING ---
+        function renderTable() {
+            tableBody.innerHTML = students.map(student => {
+                const trainer = getMentorById(student.trainerId);
+                const buddy = getMentorById(student.buddyId);
+
+                let status, statusColor;
+                if (trainer.id !== 'none' && buddy.id !== 'none') {
+                    status = 'Fully Assigned';
+                    statusColor = 'bg-accent-mint text-white';
+                } else if (trainer.id !== 'none' || buddy.id !== 'none') {
+                    status = 'Partially Assigned';
+                    statusColor = 'bg-amber-100 text-amber-800';
+                } else {
+                    status = 'Needs Assignment';
+                    statusColor = 'bg-rose-100 text-rose-800';
+                }
+
+                // Build small card for mentor showing initials + name + email (disambiguates duplicates)
+                const mentorCell = (m) => {
+                    if (!m || m.id === 'none') return `<div class="text-ink-600">Not Assigned</div>`;
+                    return `
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-ink-100 flex items-center justify-center text-sm font-semibold" title="${m.name} — ${m.email}">
+                                ${initials(m.name)}
+                            </div>
+                            <div class="leading-tight">
+                                <div class="font-medium">${m.name}</div>
+                                <div class="text-xs text-ink-500">${m.email} <span class="text-ink-300">(${m.id})</span></div>
+                            </div>
+                        </div>
+                    `;
+                };
+
+                return `
+                    <tr id="student-${escapeHtml(student.id)}">
+                        <td class="p-3"><div class="font-semibold">${escapeHtml(student.name)}</div><div class="text-ink-500">${escapeHtml(student.email)}</div></td>
+                        <td class="p-3 text-ink-600 hide-sm">${safeDateFormat(student.joined)}</td>
+                        <td class="p-3 trainer-name">${mentorCell(trainer)}</td>
+                        <td class="p-3 buddy-name">${mentorCell(buddy)}</td>
+                        <td class="p-3"><span class="status-badge text-xs font-medium px-2 py-1 rounded-full ${statusColor}">${status}</span></td>
+                        <td class="p-3"><button data-id="${escapeHtml(student.id)}" class="assign-btn bg-ink-100 text-ink-700 font-medium py-1 px-3 rounded-md hover:bg-ink-200 text-sm">Assign / Edit</button></td>
+                    </tr>
+                `;
+            }).join('');
+            attachTableListeners();
+        }
+
+        // simple HTML escaper for inserted values (defensive)
+        function escapeHtml(unsafe) {
+            if (unsafe === null || unsafe === undefined) return '';
+            return String(unsafe)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function populateSelects(student) {
+            const optionsHtml = mentors.map(m => {
+                const label = mentorLabel(m);
+                return `<option value="${escapeHtml(m.id)}" title="${escapeHtml(m.email || '')}">${escapeHtml(label)}</option>`;
+            }).join('');
+            trainerSelect.innerHTML = optionsHtml;
+            buddySelect.innerHTML = optionsHtml;
+
+            if (student) {
+                trainerSelect.value = student.trainerId || 'none';
+                buddySelect.value = student.buddyId || 'none';
+            }
+        }
+
+        // --- MODAL HANDLERS ---
+        function openAssignmentModal(studentId) {
+            currentEditingStudentId = studentId;
+            const student = students.find(s => s.id === studentId);
+            if (!student) return;
+
+            modalStudentName.textContent = `For: ${student.name} (${student.email})`;
+            populateSelects(student);
+            sameMentorCheckbox.checked = student.trainerId === student.buddyId && student.trainerId !== 'none';
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeAssignmentModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            currentEditingStudentId = null;
+        }
+
+        function handleSaveAssignment() {
+            if (!currentEditingStudentId) return;
+            const studentIndex = students.findIndex(s => s.id === currentEditingStudentId);
+            if (studentIndex === -1) return;
+
+            // IMPORTANT: value is the unique mentor id — safe even when display names duplicate
+            students[studentIndex].trainerId = trainerSelect.value;
+            students[studentIndex].buddyId = buddySelect.value;
+
+            renderTable();
+            closeAssignmentModal();
+        }
+
+        function attachTableListeners() {
+            qsa('.assign-btn').forEach(btn => {
+                btn.removeEventListener('click', assignBtnHandler); // ensure no dup listeners
+                btn.addEventListener('click', assignBtnHandler);
+            });
+        }
+
+        function assignBtnHandler(e) {
+            const id = e.currentTarget.dataset.id;
+            openAssignmentModal(id);
+        }
+
+        // --- EVENTS: keep checkbox & trainer change sync behavior ---
+        sameMentorCheckbox.addEventListener('change', () => {
+            if (sameMentorCheckbox.checked) {
+                buddySelect.value = trainerSelect.value;
+            }
+        });
+        trainerSelect.addEventListener('change', () => {
+            if (sameMentorCheckbox.checked) {
+                buddySelect.value = trainerSelect.value;
+            }
+        });
+
+        // Modal buttons
+        closeModalBtn.addEventListener('click', closeAssignmentModal);
+        cancelBtn.addEventListener('click', closeAssignmentModal);
+        saveBtn.addEventListener('click', handleSaveAssignment);
+
+        // --- INITIALIZE ---
+        renderTable();
+
+        // Expose for debugging in console (optional)
+        window.__adminAssignData = { mentors, students, renderTable };
+
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Business Ecosystem & Roadmap — Hi Interviews</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ink: { 50: '#f8fafc', 100: '#eef2f7', 200: '#e5eaf1', 300: '#cfd8e3', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a', 950: '#0c1324' },
+                        brand: { 50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81' },
+                        'accent-iris': '#8B5CF6', 'accent-mint': '#10B981', 'accent-rose': '#F43F5E', 'accent-amber': '#FBBF24',
+                    },
+                    fontFamily: { sans: ["Inter", "system-ui", "sans-serif"], heading: ["Poppins", "sans-serif"] },
+                    boxShadow: { 'soft-lg': '0 8px 30px rgba(2,6,23,0.08)' }
+                }
+            }
+        }
+    </script>
+    <style>
+        .bg-pattern { background-image: radial-gradient(circle at top, rgba(79,70,229,0.06) 0%, transparent 30%), radial-gradient(circle at bottom, rgba(139,92,246,0.05) 0%, transparent 40%); }
+        /* small focus style override to keep focus visible */
+        .focus-ring:focus { outline: 3px solid rgba(99,102,241,0.18); outline-offset: 2px; }
+        /* quickCard utility (keeps markup tidy) */
+        .quickCard { text-decoration: none; }
+        .quickCard > div { transition: transform .18s ease, box-shadow .18s ease; }
+        .quickCard:focus > div, .quickCard:hover > div { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(2,6,23,0.07); }
+    </style>
+</head>
+<body class="bg-ink-50 text-ink-950 antialiased font-sans min-h-screen">
+    <header class="bg-white/90 backdrop-blur-sm border-b border-ink-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 gap-4">
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-lg bg-brand-600 flex items-center justify-center text-white shadow-sm">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <div class="text-sm">
+                            <div class="font-semibold text-ink-900 leading-none">Hi Interviews</div>
+                            <div class="text-xs text-ink-500 -mt-0.5">Business Ecosystem</div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- search (compact) -->
+                <div class="flex-1 max-w-xl mx-4 hidden sm:block">
+                    <label for="globalSearch" class="sr-only">Search pages</label>
+                    <div class="relative">
+                        <input id="globalSearch" type="search" placeholder="Search pages, trainer, help... (press /)" class="w-full py-2.5 pl-10 pr-4 rounded-lg bg-white border border-ink-100 focus-ring shadow-sm text-sm" />
+                        <span class="absolute left-3 top-2.5 text-ink-400">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <nav class="hidden md:flex items-center gap-2">
+                        <a href="#" class="text-sm text-ink-600 px-3 py-2 rounded-md hover:bg-ink-100 transition">Docs</a>
+                        <a href="#" class="text-sm text-ink-600 px-3 py-2 rounded-md hover:bg-ink-100 transition">Analytics</a>
+                    </nav>
+
+                    <div class="flex items-center gap-3">
+                        <button aria-label="Notifications" class="relative p-2 rounded-md hover:bg-ink-100 transition focus-ring">
+                            <i class="fa-regular fa-bell text-ink-600"></i>
+                            <span class="absolute -top-1 -right-1 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-medium rounded-full bg-accent-rose text-white">3</span>
+                        </button>
+
+                        <div class="flex items-center gap-2">
+                            <img src="https://ui-avatars.com/api/?name=Trainer&background=6366f1&color=ffffff&rounded=true" alt="Admin avatar" class="w-9 h-9 rounded-full border border-ink-100 shadow-sm" />
+                            <div class="hidden sm:block text-right">
+                                <div class="text-xs text-ink-700 font-medium">Admin</div>
+                                <div class="text-xxs text-ink-500">hi@hiinterviews.com</div>
+                            </div>
+                            <a href="#" class="ml-2 text-sm text-ink-600 hover:text-ink-800 px-3 py-2 rounded-md border border-transparent hover:border-ink-100 transition">Logout</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow bg-pattern py-8">
+        <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:px-8">
+
+            <!-- quick access + controls -->
+            <section id="quick-access" aria-labelledby="quickAccessTitle">
+                <div class="flex items-start justify-between gap-4">
+                    <h2 id="quickAccessTitle" class="text-2xl font-bold text-ink-800">Developer Quick Access</h2>
+                    <div class="flex items-center gap-3">
+                        <a href="#" class="text-sm inline-flex items-center gap-2 px-3 py-2 bg-white rounded-lg border border-ink-100 shadow-sm hover:bg-brand-50 transition">
+                            <i class="fa-solid fa-plus"></i> New Page
+                        </a>
+                        <a href="#" class="text-sm inline-flex items-center gap-2 px-3 py-2 bg-white rounded-lg border border-ink-100 shadow-sm hover:bg-ink-100 transition">
+                            <i class="fa-solid fa-download"></i> Export
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <!-- keep cards consistent: icon, title -->
+                    <a href="index.html" class="quickCard" aria-label="Landing Page">
+                        <div class="text-center bg-white p-4 rounded-xl shadow-sm border border-ink-200">
+                            <i class="fa-solid fa-house text-2xl text-brand-600"></i>
+                            <p class="mt-2 text-sm font-semibold">Landing Page</p>
+                        </div>
+                    </a>
+
+                    <a href="why.html" class="quickCard" aria-label="Why Us">
+                        <div class="text-center bg-white p-4 rounded-xl shadow-sm border border-ink-200">
+                            <i class="fa-solid fa-award text-2xl text-brand-600"></i>
+                            <p class="mt-2 text-sm font-semibold">Why Us</p>
+                        </div>
+                    </a>
+
+                    <a href="login.html" class="quickCard" aria-label="Login">
+                        <div class="text-center bg-white p-4 rounded-xl shadow-sm border border-ink-200">
+                            <i class="fa-solid fa-right-to-bracket text-2xl text-brand-600"></i>
+                            <p class="mt-2 text-sm font-semibold">Login/Sign Up</p>
+                        </div>
+                    </a>
+
+                    <a href="payment.html" class="quickCard" aria-label="Payment">
+                        <div class="text-center bg-white p-4 rounded-xl shadow-sm border border-ink-200">
+                            <i class="fa-solid fa-credit-card text-2xl text-brand-600"></i>
+                            <p class="mt-2 text-sm font-semibold">Payment</p>
+                        </div>
+                    </a>
+
+                    <a href="profile.html" class="quickCard" aria-label="User Profile">
+                        <div class="text-center bg-white p-4 rounded-xl shadow-sm border border-ink-200">
+                            <i class="fa-solid fa-user-gear text-2xl text-brand-600"></i>
+                            <p class="mt-2 text-sm font-semibold">User Profile</p>
+                        </div>
+                    </a>
+
+                    <a href="customer_chat.html" class="quickCard" aria-label="Customer Chat">
+                        <div class="text-center bg-white p-4 rounded-xl shadow-sm border border-ink-200">
+                            <i class="fa-solid fa-comments text-2xl text-brand-600"></i>
+                            <p class="mt-2 text-sm font-semibold">Customer Chat</p>
+                        </div>
+                    </a>
+
+                    <a href="admin_chat.html" class="quickCard" aria-label="Admin Chat">
+                        <div class="text-center bg-white p-4 rounded-xl shadow-sm border border-ink-200">
+                            <i class="fa-solid fa-user-shield text-2xl text-brand-600"></i>
+                            <p class="mt-2 text-sm font-semibold">Admin Chat</p>
+                        </div>
+                    </a>
+
+                    <a href="admin_masterdata.html" class="quickCard" aria-label="Admin Master Data">
+                        <div class="text-center bg-white p-4 rounded-xl shadow-sm border border-ink-200 hover:ring-2 hover:ring-accent-mint">
+                            <i class="fa-solid fa-database text-2xl text-accent-mint"></i>
+                            <p class="mt-2 text-sm font-semibold">Admin Masterdata</p>
+                        </div>
+                    </a>
+
+                    <a href="admin_assignments.html" class="quickCard" aria-label="Admin Assignments">
+                        <div class="text-center bg-white p-4 rounded-xl shadow-sm border border-ink-200 hover:ring-2 hover:ring-accent-iris">
+                            <i class="fa-solid fa-tasks text-2xl text-accent-iris"></i>
+                            <p class="mt-2 text-sm font-semibold">Admin Assignments</p>
+                        </div>
+                    </a>
+
+                    <a href="forgot_password.html" class="quickCard" aria-label="Forgot Password">
+                        <div class="text-center bg-white p-4 rounded-xl shadow-sm border border-ink-200">
+                            <i class="fa-solid fa-key text-2xl text-brand-600"></i>
+                            <p class="mt-2 text-sm font-semibold">Forgot Password</p>
+                        </div>
+                    </a>
+
+                    <a href="elements.html" class="quickCard" aria-label="UI Kit">
+                        <div class="text-center bg-white p-4 rounded-xl shadow-sm border border-ink-200">
+                            <i class="fa-solid fa-swatchbook text-2xl text-brand-600"></i>
+                            <p class="mt-2 text-sm font-semibold">UI Kit</p>
+                        </div>
+                    </a>
+
+                    <a href="privacy_policy.html" class="quickCard" aria-label="Privacy Policy">
+                        <div class="text-center bg-white p-4 rounded-xl shadow-sm border border-ink-200">
+                            <i class="fa-solid fa-shield-halved text-2xl text-brand-600"></i>
+                            <p class="mt-2 text-sm font-semibold">Privacy Policy</p>
+                        </div>
+                    </a>
+
+                    <a href="t&c.html" class="quickCard" aria-label="Terms and Conditions">
+                        <div class="text-center bg-white p-4 rounded-xl shadow-sm border border-ink-200">
+                            <i class="fa-solid fa-file-signature text-2xl text-brand-600"></i>
+                            <p class="mt-2 text-sm font-semibold">Terms & Conditions</p>
+                        </div>
+                    </a>
+
+                    <!-- Trainer pages added -->
+                    <a href="trainer_signup.html" class="quickCard" aria-label="Trainer Signup">
+                        <div class="text-center bg-white p-4 rounded-xl shadow-sm border border-ink-200 hover:ring-2 hover:ring-accent-iris transition">
+                            <i class="fa-solid fa-user-plus text-2xl text-accent-iris"></i>
+                            <p class="mt-2 text-sm font-semibold">Trainer Signup</p>
+                        </div>
+                    </a>
+
+                    <a href="trainer_login.html" class="quickCard" aria-label="Trainer Login">
+                        <div class="text-center bg-white p-4 rounded-xl shadow-sm border border-ink-200 hover:ring-2 hover:ring-accent-iris transition">
+                            <i class="fa-solid fa-right-to-bracket text-2xl text-accent-iris"></i>
+                            <p class="mt-2 text-sm font-semibold">Trainer Login</p>
+                        </div>
+                    </a>
+
+                    <a href="trainer_profile.html" class="quickCard" aria-label="Trainer Profile">
+                        <div class="text-center bg-white p-4 rounded-xl shadow-sm border border-ink-200 hover:ring-2 hover:ring-accent-iris transition">
+                            <i class="fa-solid fa-chalkboard-user text-2xl text-accent-iris"></i>
+                            <p class="mt-2 text-sm font-semibold">Trainer Profile</p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <div class="my-12 border-t border-ink-200"></div>
+
+            <section id="workflow">
+                <div class="text-center">
+                    <h2 class="text-4xl font-extrabold text-ink-800 tracking-tight">The Hi Interviews Ecosystem</h2>
+                    <p class="text-lg text-ink-600 mt-3 max-w-3xl mx-auto">A strategic overview of our user journey, value delivery, and long-term retention model.</p>
+                </div>
+
+                <div class="mt-12 space-y-8">
+
+                    <!-- Phase 1 -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        <div class="lg:col-span-2 text-center">
+                           <div class="bg-brand-600 text-white w-20 h-20 rounded-full flex flex-col items-center justify-center mx-auto shadow-sm">
+                                <span class="text-xs font-semibold">PHASE</span>
+                                <span class="text-4xl font-extrabold">1</span>
+                           </div>
+                           <p class="mt-2 font-bold text-brand-700">Acquisition & Conversion</p>
+                        </div>
+                        <div class="lg:col-span-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-white p-6 rounded-xl shadow-soft-lg border border-ink-100 hover:shadow-lg transition">
+                                <i class="fa-solid fa-magnifying-glass text-2xl text-brand-500"></i>
+                                <h4 class="mt-3 font-semibold">Discovery</h4>
+                                <p class="mt-1 text-sm text-ink-600">"Monica" discovers our platform via targeted marketing, landing on <strong class="text-ink-800">index.html</strong> and exploring <strong class="text-ink-800">why.html</strong>.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-soft-lg border border-ink-100 hover:shadow-lg transition">
+                                <i class="fa-solid fa-user-plus text-2xl text-brand-500"></i>
+                                <h4 class="mt-3 font-semibold">Onboarding</h4>
+                                <p class="mt-1 text-sm text-ink-600">She proceeds to <strong class="text-ink-800">login.html</strong> to create her account, a seamless and simple process.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-soft-lg border border-ink-100 ring-2 ring-brand-500">
+                                <i class="fa-solid fa-tags text-2xl text-brand-500"></i>
+                                <h4 class="mt-3 font-semibold">Strategic Conversion</h4>
+                                <p class="mt-1 text-sm text-ink-600">On <strong class="text-ink-800">payment.html</strong>, she selects a package. We highlight our flexible coupon system—a key tool that allows us to offer targeted discounts to maximize conversions.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 2 -->
+                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        <div class="lg:col-span-2 text-center">
+                           <div class="bg-accent-iris text-white w-20 h-20 rounded-full flex flex-col items-center justify-center mx-auto shadow-sm">
+                                <span class="text-xs font-semibold">PHASE</span>
+                                <span class="text-4xl font-extrabold">2</span>
+                           </div>
+                           <p class="mt-2 font-bold text-accent-iris">Core Service & Success</p>
+                        </div>
+                        <div class="lg:col-span-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+                             <div class="bg-white p-6 rounded-xl shadow-soft-lg border border-ink-100 hover:shadow-lg transition">
+                                <i class="fa-solid fa-rocket text-2xl text-accent-iris"></i>
+                                <h4 class="mt-3 font-semibold">Activation</h4>
+                                <p class="mt-1 text-sm text-ink-600">Her payment is confirmed, and she's redirected to her new <strong class="text-ink-800">profile.html</strong> dashboard.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-soft-lg border border-ink-100 hover:shadow-lg transition">
+                                <i class="fa-solid fa-arrows-spin text-2xl text-accent-iris"></i>
+                                <h4 class="mt-3 font-semibold">Mentorship Loop</h4>
+                                <p class="mt-1 text-sm text-ink-600">Monica engages in 1-to-1 training and uses Buddy Coins for interviews, building skills and confidence.</p>
+                            </div>
+                            <div class="bg-green-50 border-green-300 p-6 rounded-xl shadow-soft-lg border">
+                                <i class="fa-solid fa-trophy text-2xl text-green-600"></i>
+                                <h4 class="mt-3 font-semibold text-green-800">SUCCESS: Job Cracked!</h4>
+                                <p class="mt-1 text-sm text-green-700">Monica lands her dream job. This is our primary success metric and the foundation for our next phase.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 3 -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        <div class="lg:col-span-2 text-center">
+                           <div class="bg-accent-rose text-white w-20 h-20 rounded-full flex flex-col items-center justify-center mx-auto shadow-sm">
+                                <span class="text-xs font-semibold">PHASE</span>
+                                <span class="text-4xl font-extrabold">3</span>
+                           </div>
+                           <p class="mt-2 font-bold text-accent-rose">Retention & LTV Growth</p>
+                        </div>
+                        <div class="lg:col-span-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-white p-6 rounded-xl shadow-soft-lg border border-ink-100 hover:shadow-lg transition">
+                                <i class="fa-solid fa-ticket text-2xl text-accent-rose"></i>
+                                <h4 class="mt-3 font-semibold">The New Challenge</h4>
+                                <p class="mt-1 text-sm text-ink-600">Months into her new role, Monica faces a complex task she has never seen before.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-soft-lg border border-ink-100 hover:shadow-lg transition">
+                                <i class="fa-solid fa-life-ring text-2xl text-accent-rose"></i>
+                                <h4 class="mt-3 font-semibold">On-Demand Guide</h4>
+                                <p class="mt-1 text-sm text-ink-600">She returns to her profile and uses our innovative "Book a Guide" service for real-time help on her specific work task.</p>
+                            </div>
+                             <div class="bg-white p-6 rounded-xl shadow-soft-lg border border-ink-100 hover:shadow-lg transition">
+                                <i class="fa-solid fa-person-chalkboard text-2xl text-accent-rose"></i>
+                                <h4 class="mt-3 font-semibold">Task Mastery & Trust</h4>
+                                <p class="mt-1 text-sm text-ink-600">An expert helps her solve the ticket and teaches her the concepts, establishing us as a long-term career partner.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <div class="my-12 border-t border-ink-200"></div>
+
+            <section class="text-center" aria-labelledby="supportTitle">
+                <h3 id="supportTitle" class="text-2xl font-bold text-ink-800">Support & Admin Backbone</h3>
+                <div class="mt-6 max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-soft-lg border border-ink-100">
+                        <i class="fa-solid fa-comment-dots text-3xl text-ink-500"></i>
+                        <h4 class="mt-3 font-semibold">User Support</h4>
+                        <p class="text-sm text-ink-600">Users access support via <strong class="text-ink-800">customer_chat.html</strong>, with clear expectations on response times.</p>
+                     </div>
+                      <div class="bg-white p-6 rounded-xl shadow-soft-lg border border-ink-100">
+                        <i class="fa-solid fa-headset text-3xl text-ink-500"></i>
+                        <h4 class="mt-3 font-semibold">Admin Panel</h4>
+                        <p class="text-sm text-ink-600">Our team uses <strong class="text-ink-800">admin_chat.html</strong> to manage all conversations efficiently, ensuring a high-quality support experience.</p>
+                     </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Floating quick action (Create Trainer) -->
+        <a href="trainer_signup.html" class="fixed right-6 bottom-6 z-40 group" aria-label="Create Trainer">
+            <div class="w-14 h-14 rounded-full bg-accent-iris flex items-center justify-center shadow-lg transform group-hover:scale-105 transition">
+                <i class="fa-solid fa-user-plus text-white text-lg"></i>
+            </div>
+            <div class="hidden group-hover:block mt-2 text-xs text-white text-center">Create Trainer</div>
+        </a>
+    </main>
+
+    <footer class="bg-white border-t border-ink-100">
+        <div class="max-w-7xl mx-auto px-4 py-6 text-sm text-ink-500 flex items-center justify-between">
+            <div>© <span id="year"></span> Hi Interviews — All rights reserved</div>
+            <div class="flex gap-4">
+                <a href="privacy_policy.html" class="hover:underline">Privacy</a>
+                <a href="t&c.html" class="hover:underline">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // simple year filler + small keyboard shortcut for search focus: press "/" to focus search
+        document.getElementById('year').textContent = new Date().getFullYear();
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/') {
+                const s = document.getElementById('globalSearch');
+                if (s) { e.preventDefault(); s.focus(); s.select(); }
+            }
+        });
+    </script>
+</body>
+</html>

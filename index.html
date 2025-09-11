@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth h-full">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hi Interviews — One-to-One Mentorship & Interview Day Buddy</title>
+    <meta name="description" content="Premium one-to-one mentorship with real engineers and an Interview Day Buddy. Land your dream job in tech with our expert-led programs." />
+    <link rel="canonical" href="https://www.hi-interviews.com/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.hi-interviews.com/">
+    <meta property="og:title" content="Hi Interviews — One-to-One Mentorship & Interview Day Buddy">
+    <meta property="og:description" content="Premium one-to-one mentorship with real engineers and an Interview Day Buddy. Land your dream job in tech with our expert-led programs.">
+    <meta property="og:image" content="https://www.hi-interviews.com/social-share-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.hi-interviews.com/">
+    <meta property="twitter:title" content="Hi Interviews — One-to-One Mentorship & Interview Day Buddy">
+    <meta property="twitter:description" content="Premium one-to-one mentorship with real engineers and an Interview Day Buddy. Land your dream job in tech with our expert-led programs.">
+    <meta property="twitter:image" content="https://www.hi-interviews.com/social-share-image.jpg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'media',
+            theme: {
+                extend: {
+                    colors: {
+                        ink: { 50: '#f8fafc', 100: '#eef2f7', 200: '#e5eaf1', 300: '#cfd8e3', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a', 950: '#0c1324' },
+                        brand: { 50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81' },
+                        'accent-iris': '#8B5CF6',
+                        'accent-mint': '#10B981',
+                        'accent-sky': '#38BDF8',
+                        'accent-amber': '#FBBF24',
+                        'accent-peach': '#FDA4AF',
+                        'accent-rose': '#F43F5E',
+                    },
+                    boxShadow: { soft: '0 10px 30px rgba(2,6,23,.08)', card: '0 6px 18px rgba(2,6,23,.06)', lift: '0 16px 40px rgba(2,6,23,.12)' },
+                    fontFamily: { sans: ["Inter", "system-ui", "-apple-system", "Segoe UI", "Helvetica", "Arial", "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"], heading: ["Poppins", "sans-serif"] },
+                    keyframes: {
+                        'fade-in-up': {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                    },
+                    animation: {
+                        'fade-in-up': 'fade-in-up 0.6s ease-out forwards',
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        .focus-ring:focus-visible { outline: 2px solid rgba(79, 70, 229,.35); outline-offset: 3px }
+        .container { max-width: 1200px }
+        .card-hover-effect{transition:transform .25s ease, box-shadow .25s ease, background-color .25s ease, border-color .25s ease}
+        .card-hover-effect:hover { transform: translateY(-0.5rem); box-shadow: 0 16px 40px rgba(2,6,23,.12); }
+        .bg-pattern { background-image: radial-gradient(circle at top right, rgba(79, 70, 229,0.05) 0%, transparent 40%), radial-gradient(circle at bottom left, rgba(79, 70, 229,0.05) 0%, transparent 50%); }
+        details summary::-webkit-details-marker { display: none; }
+        .chevron-icon { transition: transform 0.2s ease-in-out; }
+        details[open] summary .chevron-icon { transform: rotate(180deg); }
+        .animate-fade-in-up {
+            animation-delay: var(--animation-delay, 0s);
+            opacity: 0;
+        }
+        details .faq-content {
+            transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        details[open] .faq-content {
+            max-height: 200px;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-white text-ink-950 antialiased selection:bg-brand-500 selection:text-white font-sans">
+    <header id="pageHeader" class="sticky top-0 z-50 border-b border-transparent bg-white/90 backdrop-blur transition-shadow duration-300">
+        <div class="mx-auto container px-5">
+            <div class="flex items-center justify-between py-4">
+                <a href="#top" class="font-semibold tracking-tight text-lg font-heading">Hi Interviews</a>
+                <nav class="hidden md:flex items-center gap-8 text-sm" aria-label="Main">
+                    <a class="hover:text-brand-600 font-medium transition" href="#why" data-spy>Why One-to-One</a>
+                    <a class="hover:text-brand-600 font-medium transition" href="why.html">Why Hi Interviews</a>
+                    <a class="hover:text-brand-600 font-medium transition" href="#tracks" data-spy>Tracks</a>
+                    <a class="hover:text-brand-600 font-medium transition" href="#packages" data-spy>Our Services</a>
+                    <a class="hover:text-brand-600 font-medium transition" href="#how" data-spy>How it works</a>
+                    <a class="hover:text-brand-600 font-medium transition" href="#faq" data-spy>FAQ</a>
+                    <a class="hover:text-brand-600 font-medium transition" href="#contact" data-spy>Contact</a>
+                    <a href="login.html" class="inline-flex items-center rounded-full border border-ink-200 px-4 py-2 font-medium text-ink-700 transition-all duration-300 hover:bg-ink-50 hover:shadow-card">
+                        Login
+                    </a>
+                </nav>
+                <button type="button" id="menuToggle" aria-label="Open menu" aria-controls="mobileNav" aria-expanded="false" class="md:hidden rounded-lg border border-ink-200 p-2 focus-ring">
+                    <i class="fa-solid fa-bars text-[1.75rem]" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+        <nav id="mobileNav" hidden aria-label="Mobile" class="md:hidden border-t border-ink-100 bg-white">
+            <div class="mx-auto container px-5 py-3 grid gap-2 text-sm">
+                <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="#why">Why One-to-One</a>
+                <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="#tracks">Tracks</a>
+                <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="#packages">Our Services</a>
+                <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="#how">How it works</a>
+                <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="#faq">FAQ</a>
+                <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="#contact">Contact</a>
+                <a class="rounded-full border border-transparent bg-brand-600 px-4 py-2 font-medium text-white text-center" href="login.html">Login</a>
+            </div>
+        </nav>
+    </header>
+
+    <main id="main" tabindex="-1">
+        <section id="top" class="relative isolate overflow-hidden bg-pattern">
+            <div class="mx-auto container px-5 py-24 md:py-32 grid gap-16 md:grid-cols-2 items-center">
+                <div class="animate-fade-in-up" style="--animation-delay: 0.1s;">
+                    <h1 class="text-4xl md:text-6xl font-bold tracking-tight leading-tight font-heading">
+                        Land your next job with <span class="text-brand-700">one-to-one mentorship</span> and an Interview Day Buddy.
+                    </h1>
+                    <p class="mt-5 max-w-xl text-ink-700 text-lg">
+                        Personal prep with real engineers with five-plus years of experience. On interview day, we stand by you—in-person where available or virtual anywhere. Calm, private, supportive.
+                    </p>
+                    <div class="mt-8 flex flex-wrap gap-4">
+                        <a class="inline-flex items-center rounded-full bg-gradient-to-r from-brand-600 via-accent-iris to-accent-mint px-6 py-3 font-medium text-white shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lift" href="#packages">View Our Services</a>
+                        <a class="inline-flex items-center rounded-full border border-ink-200 px-6 py-3 font-medium transition hover:bg-ink-50 hover:shadow-card" href="#contact">Request a Callback</a>
+                    </div>
+                </div>
+                <div class="relative animate-fade-in-up" style="--animation-delay: 0.3s;">
+                    <div class="rounded-2xl border border-ink-100 bg-white p-8 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lift">
+                        <div class="grid gap-6">
+                            <div class="flex items-start gap-4">
+                                <div class="grid h-12 w-12 place-items-center rounded-full bg-brand-100 text-brand-700 shrink-0 ring-8 ring-brand-50">
+                                    <i class="fa-solid fa-user-check text-2xl leading-none" aria-hidden="true"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-lg">Personal Plan and Roadmap</p>
+                                    <p class="text-sm text-ink-600">Designed for your goals and pace after a short discovery call.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="grid h-12 w-12 place-items-center rounded-full bg-brand-100 text-brand-700 shrink-0 ring-8 ring-brand-50">
+                                    <i class="fa-solid fa-chalkboard-user text-2xl leading-none" aria-hidden="true"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-lg">Daily Mock Interviews</p>
+                                    <p class="text-sm text-ink-600">Practice lowers fear and makes answers clear and simple.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="grid h-12 w-12 place-items-center rounded-full bg-brand-100 text-brand-700 shrink-0 ring-8 ring-brand-50">
+                                    <i class="fa-solid fa-user-group text-2xl leading-none" aria-hidden="true"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-lg">Interview Day Buddy</p>
+                                    <p class="text-sm text-ink-600">Warm up before rounds, support between, and a short review.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Other sections remain unchanged -->
+        <section id="why" class="bg-white">
+            <div class="mx-auto container px-5 py-20 md:py-28">
+                <div class="text-center mx-auto max-w-3xl">
+                    <h2 class="text-3xl font-medium tracking-tight font-heading">The Mentorship That Revolves Around You</h2>
+                    <p class="mt-2 text-ink-700">Generic group classes slow you down. We build a personal plan that gets you to your goal, faster.</p>
+                </div>
+                <div class="mt-12 grid md:grid-cols-2 gap-8 lg:gap-12 items-stretch">
+                    <div class="rounded-2xl border border-ink-200 bg-ink-50 p-8 h-full">
+                        <h3 class="text-xl font-medium text-ink-700">The Old Way: Group Batches</h3>
+                        <ul class="mt-4 space-y-3">
+                            <li class="flex items-start gap-4">
+                                <i class="fa-solid fa-circle-xmark text-accent-rose mt-1 text-xl" aria-hidden="true"></i>
+                                <div><span class="font-medium">Divided Attention:</span> You're one of many, lost in the crowd and fighting for the trainer's time.</div>
+                            </li>
+                             <li class="flex items-start gap-4">
+                                <i class="fa-solid fa-circle-xmark text-accent-rose mt-1 text-xl" aria-hidden="true"></i>
+                                <div><span class="font-medium">Fixed, Rigid Pace:</span> The whole batch moves at one speed, leaving you bored or behind.</div>
+                            </li>
+                             <li class="flex items-start gap-4">
+                                <i class="fa-solid fa-circle-xmark text-accent-rose mt-1 text-xl" aria-hidden="true"></i>
+                                <div><span class="font-medium">Generic Advice:</span> You get canned responses that don't apply to your unique background or goals.</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="rounded-2xl border-2 border-brand-500 bg-white p-8 h-full shadow-lift relative card-hover-effect">
+                         <span class="absolute -top-3 left-6 rounded-full bg-brand-600 px-3 py-1 text-xs font-medium text-white shadow-md">OUR WAY</span>
+                        <h3 class="text-xl font-medium text-brand-800">The New Way: One-to-One Mentorship</h3>
+                         <ul class="mt-4 space-y-3">
+                            <li class="flex items-start gap-4">
+                                <i class="fa-solid fa-circle-check text-accent-mint mt-1 text-xl" aria-hidden="true"></i>
+                                <div><span class="font-medium">100% Mentor Focus:</span> Every minute of every session is dedicated entirely to you and your progress.</div>
+                            </li>
+                             <li class="flex items-start gap-4">
+                                <i class="fa-solid fa-circle-check text-accent-mint mt-1 text-xl" aria-hidden="true"></i>
+                                <div><span class="font-medium">Pace Tailored to You:</span> We speed up on your strengths and slow down on your weak spots.</div>
+                            </li>
+                             <li class="flex items-start gap-4">
+                                <i class="fa-solid fa-circle-check text-accent-mint mt-1 text-xl" aria-hidden="true"></i>
+                                <div><span class="font-medium">An Actionable, Personal Plan:</span> We build a roadmap based on your goals to fill your specific knowledge gaps.</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tracks" class="bg-ink-50 relative overflow-hidden">
+            <div class="absolute inset-0 z-0 bg-pattern"></div>
+            <div class="mx-auto container px-5 py-20 md:py-28 relative z-10">
+                <div class="text-center mx-auto max-w-2xl">
+                    <h2 class="text-3xl font-medium tracking-tight font-heading">Tracks We Mentor</h2>
+                    <p class="mt-2 text-ink-700 max-w-xl mx-auto">We offer dedicated mentorship across a wide range of popular and emerging tech domains.</p>
+                </div>
+                <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                    <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect">
+                        <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50"><i class="fa-solid fa-code text-3xl" aria-hidden="true"></i></div>
+                        <p class="mt-4 font-medium">Full Stack Development</p><p class="mt-1 text-sm text-ink-600">JS, Python, Java, .NET</p>
+                    </div>
+                     <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect">
+                        <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50"><i class="fa-solid fa-chart-simple text-3xl" aria-hidden="true"></i></div>
+                        <p class="mt-4 font-medium">Data Science & ML</p><p class="mt-1 text-sm text-ink-600">Python, SQL, Scikit-learn</p>
+                    </div>
+                     <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect">
+                        <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50"><i class="fa-solid fa-robot text-3xl" aria-hidden="true"></i></div>
+                        <p class="mt-4 font-medium">Generative AI</p><p class="mt-1 text-sm text-ink-600">LLMs, LangChain, RAG</p>
+                    </div>
+                     <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect">
+                        <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50"><i class="fa-solid fa-cloud text-3xl" aria-hidden="true"></i></div>
+                        <p class="mt-4 font-medium">Cloud & DevOps</p><p class="mt-1 text-sm text-ink-600">Azure, AWS, GCP, Docker</p>
+                    </div>
+                     <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect">
+                        <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50"><i class="fa-solid fa-shield-halved text-3xl" aria-hidden="true"></i></div>
+                        <p class="mt-4 font-medium">Cyber Security</p><p class="mt-1 text-sm text-ink-600">Networks, Pen Testing</p>
+                    </div>
+                    <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect">
+                        <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50"><i class="fa-solid fa-cubes text-3xl" aria-hidden="true"></i></div>
+                        <p class="mt-4 font-medium">SAP</p><p class="mt-1 text-sm text-ink-600">ABAP, FICO, SD, MM</p>
+                    </div>
+                     <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect">
+                        <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50"><i class="fa-solid fa-vial-circle-check text-3xl" aria-hidden="true"></i></div>
+                        <p class="mt-4 font-medium">Software Testing</p><p class="mt-1 text-sm text-ink-600">Selenium, Cypress, API</p>
+                    </div>
+                    <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect">
+                        <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50"><i class="fa-solid fa-star text-3xl" aria-hidden="true"></i></div>
+                        <p class="mt-4 font-medium">Custom Track</p><p class="mt-1 text-sm text-ink-600">Have a different goal? Ask us!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="packages" class="bg-white relative overflow-hidden">
+             <div class="mx-auto container px-5 py-20 md:py-28 relative z-10">
+                <div class="text-center mx-auto max-w-3xl">
+                    <h2 class="text-3xl font-medium tracking-tight font-heading">Our Services: A Strategic Investment in Your Career</h2>
+                    <p class="mt-2 text-ink-700">We offer three targeted programs, each designed for a specific stage of your interview preparation journey.</p>
+                </div>
+                 <div class="mt-12 grid gap-8 md:grid-cols-1 lg:grid-cols-3 items-stretch">
+                     
+                     <!-- Tier 1: One-to-One Training -->
+                     <article class="group flex h-full flex-col rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect">
+                         <div class="flex-grow">
+                             <h3 class="text-lg font-semibold text-brand-700">The Foundation</h3>
+                             <h4 class="text-2xl font-bold font-heading mt-1">One-to-One Training</h4>
+                             <p class="mt-2 text-4xl font-bold font-heading text-ink-800">₹49,999</p>
+                             <p class="mt-3 text-sm text-ink-600">An intensive, month-long program designed to build deep technical expertise and unshakable confidence from the ground up.</p>
+                             <ul class="mt-6 space-y-3 text-sm">
+                                 <li class="flex items-start gap-3"><i class="fa-solid fa-check text-accent-mint mt-1" aria-hidden="true"></i><span><strong class="font-medium text-ink-800">Personalized Curriculum:</strong> Tailored to your target roles and skill gaps.</span></li>
+                                 <li class="flex items-start gap-3"><i class="fa-solid fa-check text-accent-mint mt-1" aria-hidden="true"></i><span><strong class="font-medium text-ink-800">Unlimited Mock Interviews:</strong> Practice until perfect with daily sessions.</span></li>
+                                 <li class="flex items-start gap-3"><i class="fa-solid fa-check text-accent-mint mt-1" aria-hidden="true"></i><span><strong class="font-medium text-ink-800">Expert Resume & Profile Overhaul:</strong> We craft a narrative that gets you noticed.</span></li>
+                             </ul>
+                         </div>
+                         <a class="mt-8 inline-flex w-full items-center justify-center rounded-full border border-ink-200 px-4 py-2.5 font-medium transition hover:bg-ink-50 hover:shadow-card" href="#contact">Build My Foundation</a>
+                     </article>
+
+                     <!-- Tier 2: Interview Day Buddy -->
+                     <article class="group flex h-full flex-col rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect">
+                         <div class="flex-grow">
+                             <h3 class="text-lg font-semibold text-brand-700">The Final Hurdle</h3>
+                             <h4 class="text-2xl font-bold font-heading mt-1">Interview Day Buddy</h4>
+                             <p class="mt-2 text-4xl font-bold font-heading text-ink-800">₹12,999</p>
+                             <p class="mt-3 text-sm text-ink-600">A high-impact, single-day service providing strategic support to ensure you perform at your peak when it matters most.</p>
+                             <ul class="mt-6 space-y-3 text-sm">
+                                 <li class="flex items-start gap-3"><i class="fa-solid fa-check text-accent-mint mt-1" aria-hidden="true"></i><span><strong class="font-medium text-ink-800">Pre-Interview Strategy Session:</strong> Final prep and confidence boost.</span></li>
+                                 <li class="flex items-start gap-3"><i class="fa-solid fa-check text-accent-mint mt-1" aria-hidden="true"></i><span><strong class="font-medium text-ink-800">Between-Round Resets:</strong> Quick debriefs to adjust your strategy on the fly.</span></li>
+                                 <li class="flex items-start gap-3"><i class="fa-solid fa-check text-accent-mint mt-1" aria-hidden="true"></i><span><strong class="font-medium text-ink-800">Post-Interview Debrief:</strong> Analyze performance and plan next steps.</span></li>
+                             </ul>
+                         </div>
+                         <a class="mt-8 inline-flex w-full items-center justify-center rounded-full border border-ink-200 px-4 py-2.5 font-medium transition hover:bg-ink-50 hover:shadow-card" href="#contact">Secure My Interview Day</a>
+                     </article>
+                     
+                     <!-- Tier 3: Combo Package -->
+                     <article class="group relative flex h-full flex-col rounded-2xl border-2 border-brand-500 bg-white p-8 shadow-lift card-hover-effect">
+                         <span class="absolute -top-3 left-6 rounded-full bg-brand-600 px-3 py-1 text-xs font-medium text-white shadow-md">ULTIMATE ADVANTAGE</span>
+                         <div class="flex-grow">
+                             <h3 class="text-lg font-semibold text-brand-700">The Bespoke Solution</h3>
+                             <h4 class="text-2xl font-bold font-heading mt-1">Customizable Combo</h4>
+                             <p class="mt-2 text-4xl font-bold font-heading text-ink-800">₹99,999</p>
+                             <p class="mt-3 text-sm text-ink-600">Our flagship, all-inclusive package offering a fully customized, on-demand mentorship and support experience tailored to your unique career goals.</p>
+                             <ul class="mt-6 space-y-3 text-sm">
+                                 <li class="flex items-start gap-3"><i class="fa-solid fa-check text-accent-mint mt-1" aria-hidden="true"></i><span><strong class="font-medium text-ink-800">Includes Everything:</strong> Full one-to-one training plus multiple Interview Buddy days.</span></li>
+                                 <li class="flex items-start gap-3"><i class="fa-solid fa-check text-accent-mint mt-1" aria-hidden="true"></i><span><strong class="font-medium text-ink-800">On-Demand Customization:</strong> We adapt the program in real-time based on your needs and interview schedule.</span></li>
+                                 <li class="flex items-start gap-3"><i class="fa-solid fa-check text-accent-mint mt-1" aria-hidden="true"></i><span><strong class="font-medium text-ink-800">Priority Support:</strong> Direct access to your mentor for guidance whenever you need it.</span></li>
+                             </ul>
+                         </div>
+                         <a class="mt-8 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-brand-600 via-accent-iris to-accent-mint px-4 py-2.5 font-medium text-white shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lift" href="#contact">Design My Program</a>
+                     </article>
+                 </div>
+             </div>
+        </section>
+
+        <section id="how" class="bg-ink-50 relative overflow-hidden">
+              <div class="absolute inset-0 z-0 bg-pattern"></div>
+            <div class="mx-auto container px-5 py-20 md:py-28 relative z-10">
+                <h2 class="text-3xl font-medium tracking-tight font-heading text-center">How It Works</h2>
+                <div class="mt-12 relative">
+                    <div class="hidden md:block absolute top-8 left-0 w-full h-0.5 bg-brand-200 -z-10"></div>
+                    <div class="relative grid gap-10 md:grid-cols-4">
+                        <div class="text-center">
+                             <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 border-4 border-white relative z-10 ring-8 ring-brand-50">
+                                 <i class="fa-solid fa-bullseye text-3xl leading-none" aria-hidden="true"></i>
+                            </div>
+                            <h3 class="mt-4 font-medium text-lg">1. Choose Your Service</h3>
+                            <p class="mt-1 text-sm text-ink-700">Select the program that best fits your immediate career goals.</p>
+                        </div>
+                        <div class="text-center">
+                             <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 border-4 border-white relative z-10 ring-8 ring-brand-50">
+                                 <i class="fa-solid fa-users-gear text-3xl leading-none" aria-hidden="true"></i>
+                            </div>
+                            <h3 class="mt-4 font-medium text-lg">2. Train One-to-One</h3>
+                            <p class="mt-1 text-sm text-ink-700">Join daily mock interviews and concept clarity sessions with your mentor.</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 border-4 border-white relative z-10 ring-8 ring-brand-50">
+                                 <i class="fa-solid fa-hands-holding-child text-3xl leading-none" aria-hidden="true"></i>
+                            </div>
+                            <h3 class="mt-4 font-medium text-lg">3. Interview with a Buddy</h3>
+                            <p class="mt-1 text-sm text-ink-700">Stay calm and focused with warm-ups, resets, and debriefs on the big day.</p>
+                        </div>
+                        <div class="text-center">
+                             <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 border-4 border-white relative z-10 ring-8 ring-brand-50">
+                                 <i class="fa-solid fa-trophy text-3xl leading-none" aria-hidden="true"></i>
+                            </div>
+                            <h3 class="mt-4 font-medium text-lg">4. Succeed & Grow</h3>
+                            <p class="mt-1 text-sm text-ink-700">Use feedback from real interviews to improve your approach and land the offer.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="bg-white relative overflow-hidden">
+            <div class="mx-auto container px-5 py-20 md:py-28 relative z-10">
+                <div class="text-center mx-auto max-w-3xl">
+                    <h2 class="text-3xl font-medium tracking-tight font-heading">Frequently Asked Questions</h2>
+                    <p class="mt-2 text-ink-700">Your questions, answered. Here’s some more information about our process and policies.</p>
+                </div>
+                <div class="mt-12 max-w-3xl mx-auto rounded-2xl border border-ink-100 bg-white shadow-card divide-y divide-ink-100">
+                    <details class="group">
+                        <summary class="flex items-center justify-between p-6 cursor-pointer font-medium text-lg list-none transition-colors group-hover:bg-ink-50 rounded-t-2xl">
+                            <span>Do you guarantee a job?</span>
+                            <i class="fa-solid fa-chevron-down chevron-icon" aria-hidden="true"></i>
+                        </summary>
+                        <div class="faq-content px-6 pb-4">
+                           <p class="mt-2 text-ink-700">No. Our goal is to raise your skill and confidence so that you perform your best. Job offers depend on company requirements, market conditions, and your performance on the day.</p>
+                        </div>
+                    </details>
+                    <details class="group">
+                        <summary class="flex items-center justify-between p-6 cursor-pointer font-medium text-lg list-none transition-colors group-hover:bg-ink-50">
+                            <span>What do you do during interviews?</span>
+                            <i class="fa-solid fa-chevron-down chevron-icon" aria-hidden="true"></i>
+                        </summary>
+                         <div class="faq-content px-6 pb-4">
+                            <p class="mt-3 text-ink-700">
+    We guide you where it matters most—before the first round, between stages, and after it’s done. Our mentors help you stay calm, focused, and confident, so you walk into every interview prepared and in control.
+</p>
+                        </div>
+                    </details>
+                    <details class="group">
+                        <summary class="flex items-center justify-between p-6 cursor-pointer font-medium text-lg list-none transition-colors group-hover:bg-ink-50">
+                           <span>How long does prep take?</span>
+                            <i class="fa-solid fa-chevron-down chevron-icon" aria-hidden="true"></i>
+                        </summary>
+                        <div class="faq-content px-6 pb-4">
+                           <p class="mt-2 text-ink-700">Our standard training package is for 30 days. Most learners feel confident and ready within this timeframe, but the "Ultimate Advantage" package is fully flexible to your timeline.</p>
+                        </div>
+                    </details>
+                    <details class="group">
+                        <summary class="flex items-center justify-between p-6 cursor-pointer font-medium text-lg list-none transition-colors group-hover:bg-ink-50 rounded-b-2xl">
+                            <span>Who are the mentors?</span>
+                            <i class="fa-solid fa-chevron-down chevron-icon" aria-hidden="true"></i>
+                        </summary>
+                        <div class="faq-content px-6 pb-4">
+                           <p class="mt-2 text-ink-700">Our mentors are experienced engineers and professionals currently working in the industry. Each has over five years of experience and has conducted real interviews for their companies.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="bg-ink-50 relative overflow-hidden">
+            <div class="mx-auto container px-5 py-20 md:py-28 relative z-10">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 class="text-3xl font-medium tracking-tight font-heading">Your Next Chapter Starts Here</h2>
+                        <p class="mt-3 text-ink-700 max-w-lg">Taking the first step is the hardest part. We make it easy. Fill out the form or ping us on WhatsApp, and we'll schedule a free discovery call to build your personalized prep plan. No commitment, just a conversation.</p>
+                        <div class="mt-6 border-t border-ink-200 pt-6">
+                            <h3 class="font-medium">What to expect next:</h3>
+                            <ul class="mt-4 space-y-3 text-sm">
+                                <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-brand-600" aria-hidden="true"></i> A free 15-minute discovery call</li>
+                                <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-brand-600" aria-hidden="true"></i> A personalized plan proposal</li>
+                                <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-brand-600" aria-hidden="true"></i> Your first session scheduled</li>
+                            </ul>
+                        </div>
+                         <div class="mt-6 flex flex-wrap gap-4">
+                            <a href="https://wa.me/919000000000" target="_blank" class="inline-flex items-center gap-2 rounded-full border border-accent-mint bg-accent-mint/10 px-5 py-2.5 font-medium text-accent-mint transition hover:bg-accent-mint/20 hover:shadow-card">
+                                <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+                                <span>Chat on WhatsApp</span>
+                            </a>
+                             <a href="mailto:hello@hiinterviews.com" class="inline-flex items-center gap-2 rounded-full border border-ink-200 bg-white px-5 py-2.5 font-medium transition hover:bg-ink-50 hover:shadow-card">
+                                <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                                <span>Email Us</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="rounded-2xl bg-white p-8 shadow-lift border border-ink-100">
+                        <form id="contactForm" class="grid gap-5" aria-describedby="contactHelp">
+                            <h3 class="text-xl font-medium">Tell us about yourself</h3>
+                            <div class="grid gap-5 md:grid-cols-2">
+                                <label class="grid gap-1"><span class="text-sm font-medium text-ink-700">Full name</span><input class="focus-ring rounded-lg border border-ink-200 px-4 py-2.5 bg-ink-50 transition focus:border-brand-500 focus:bg-white" id="fullName" autocomplete="name" required/></label>
+                                <label class="grid gap-1"><span class="text-sm font-medium text-ink-700">Email</span><input class="focus-ring rounded-lg border border-ink-200 px-4 py-2.5 bg-ink-50 transition focus:border-brand-500 focus:bg-white" type="email" id="emailAddress" autocomplete="email" required/></label>
+                            </div>
+                            <label class="grid gap-1"><span class="text-sm font-medium text-ink-700">Interest</span>
+                                <select class="focus-ring rounded-lg border border-ink-200 px-4 py-2.5 bg-ink-50 transition focus:border-brand-500 focus:bg-white" id="interest">
+                                    <option>Customizable Combo (₹99,999)</option>
+                                    <option>One-to-One Training (₹49,999)</option>
+                                    <option>Interview Day Buddy (₹12,999)</option>
+                                </select>
+                            </label>
+                            <label class="grid gap-1"><span class="text-sm font-medium text-ink-700">Message</span><textarea class="focus-ring min-h-[120px] rounded-lg border border-ink-200 px-4 py-2.5 bg-ink-50 transition focus:border-brand-500 focus:bg-white" id="message" rows="4" placeholder="Share your role, stack and timeline"></textarea></label>
+                            <div>
+                                <button type="submit" id="submitButton" class="w-full inline-flex items-center justify-center rounded-full bg-gradient-to-r from-brand-600 via-accent-iris to-accent-mint px-5 py-2.5 font-medium text-white shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lift">Send Message</button>
+                            </div>
+                            <div id="formFeedback" aria-live="polite"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-ink-900 text-ink-300">
+        <div class="mx-auto container px-5 py-16">
+            <div class="grid gap-12 md:grid-cols-4">
+                <div class="md:col-span-1">
+                    <a href="#top" class="font-heading font-semibold tracking-tight text-xl text-white">Hi Interviews</a>
+                    <p class="mt-2 text-sm">Your Personal Interview Coach.</p>
+                </div>
+                <div class="md:col-span-3 grid grid-cols-2 md:grid-cols-3 gap-8">
+                    <div>
+                        <h4 class="font-medium text-white">Quick Links</h4>
+                        <ul class="mt-4 space-y-2 text-sm">
+                            <li><a href="#why" class="hover:text-white transition">Why One-to-One</a></li>
+                            <li><a href="#tracks" class="hover:text-white transition">Tracks</a></li>
+                            <li><a href="#packages" class="hover:text-white transition">Our Services</a></li>
+                            <li><a href="#faq" class="hover:text-white transition">FAQ</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-white">Services</h4>
+                        <ul class="mt-4 space-y-2 text-sm">
+                              <li><a href="#packages" class="hover:text-white transition">One-to-One Training</a></li>
+                              <li><a href="#packages" class="hover:text-white transition">Interview Day Buddy</a></li>
+                              <li><a href="#packages" class="hover:text-white transition">Customizable Combo</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-white">Connect</h4>
+                        <ul class="mt-4 space-y-2 text-sm">
+                              <li><a href="mailto:hello@hiinterviews.com" class="hover:text-white transition">hello@hiinterviews.com</a></li>
+                              <li><a href="tel:+919000000000" class="hover:text-white transition">+91 90000 00000</a></li>
+                        </ul>
+                        <div class="mt-4 flex space-x-4">
+                           <a href="#" class="h-8 w-8 grid place-items-center rounded-full bg-ink-800 hover:bg-brand-600 text-white transition" aria-label="LinkedIn Profile"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
+                           <a href="#" class="h-8 w-8 grid place-items-center rounded-full bg-ink-800 hover:bg-brand-600 text-white transition" aria-label="X/Twitter Profile"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
+                           <a href="#" class="h-8 w-8 grid place-items-center rounded-full bg-ink-800 hover:bg-brand-600 text-white transition" aria-label="GitHub Profile"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-ink-700 flex flex-col md:flex-row justify-between items-center text-sm">
+                <p class="text-ink-400">© <span id="year">2025</span> Hi Interviews. Crafted with <i class="fa-solid fa-heart text-accent-rose" aria-hidden="true"></i> in Hyderabad.</p>
+                <div class="mt-4 md:mt-0 space-x-4">
+                    <a href="privacy_policy.html" class="hover:text-white transition">Privacy Policy</a>
+                    <a href="t&c.html" class="hover:text-white transition">Terms of Service</a>
+                    <a href="admin_map.html" class="hover:text-white transition">Admin Map</a>
+                    <a href="why.html" class="hover:text-white transition">Why us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const qs = (s, c = document) => c.querySelector(s);
+            const qsa = (s, c = document) => Array.from(c.querySelectorAll(s));
+
+            const yearEl = qs('#year');
+            if (yearEl) {
+              yearEl.textContent = new Date().getFullYear();
+            }
+
+            const pageHeader = qs('#pageHeader');
+            function handleHeaderScroll() {
+                if (window.scrollY > 10) {
+                    pageHeader.classList.add('shadow-sm', 'border-ink-100/80');
+                } else {
+                    pageHeader.classList.remove('shadow-sm', 'border-ink-100/80');
+                }
+            }
+            window.addEventListener('scroll', handleHeaderScroll, { passive: true });
+            handleHeaderScroll();
+
+            const menuToggle = qs('#menuToggle');
+            const mobileNav = qs('#mobileNav');
+            function toggleMenu() {
+                const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
+                menuToggle.setAttribute('aria-expanded', String(!expanded));
+                mobileNav.hidden = expanded;
+                document.body.style.overflow = expanded ? '' : 'hidden';
+            }
+            menuToggle?.addEventListener('click', toggleMenu);
+            qsa('#mobileNav a').forEach(a => a.addEventListener('click', () => {
+                if (menuToggle.getAttribute('aria-expanded') === 'true') {
+                     toggleMenu();
+                }
+            }));
+
+            const spyLinks = qsa('a[data-spy]');
+            const sections = spyLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+            if (sections.length > 0) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const id = '#' + entry.target.id;
+                            spyLinks.forEach(l => l.classList.toggle('text-brand-600', l.getAttribute('href') === id));
+                        }
+                    });
+                }, { rootMargin: '-45% 0px -50% 0px', threshold: 0.01 });
+                sections.forEach(s => observer.observe(s));
+            }
+
+            const contactForm = qs('#contactForm');
+            const formFeedback = qs('#formFeedback');
+            const submitButton = qs('#submitButton');
+
+            contactForm?.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const fullName = qs('#fullName').value.trim();
+                
+                submitButton.disabled = true;
+                submitButton.textContent = 'Sending...';
+                submitButton.classList.add('opacity-70', 'cursor-not-allowed');
+
+                setTimeout(() => {
+                    const successMessage = `
+                        <div role="status" class="mt-2 rounded-lg border border-green-300 bg-green-50 p-4 text-sm text-green-800">
+                            Thanks ${fullName || 'there'}! We've received your message and will get back to you within 24 hours.
+                        </div>
+                    `;
+                    formFeedback.innerHTML = successMessage;
+                    contactForm.reset();
+
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Send Message';
+                    submitButton.classList.remove('opacity-70', 'cursor-not-allowed');
+
+                    setTimeout(() => {
+                        formFeedback.innerHTML = '';
+                    }, 6000);
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+</html>
+
