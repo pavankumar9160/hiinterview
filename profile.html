@@ -479,6 +479,19 @@
               displayInitial.style.display = "none";
               profileInitial.style.display = "none";
             }
+            const userCvLink = document.querySelector(".user-cv");
+            if (data.cv) {
+                const fileName = data.cv.split("/").pop();
+                userCvLink.textContent = fileName; 
+                  let url ="https://hiinterview-backend-1.onrender.com"   
+                userCvLink.href = `${url}${data.cv_url}`;        
+                userCvLink.target = "_blank";   
+                                 
+            } else {
+                userCvLink.textContent = "N/A";
+                userCvLink.removeAttribute("href");
+                userCvLink.removeAttribute("target");
+            }
 
             document.querySelector(".user-mob-number").textContent = data.mobile_number || "N/A";
             document.querySelector(".user-alt-mob-number").textContent = data.alt_mobile_number || "N/A";
