@@ -156,7 +156,7 @@
 
         let mentors = []
         let candidates = []
-        let url = "http://127.0.0.1:8000/"
+        let url = "https://hiinterview-backend-1.onrender.com/"
 
       /*  let mentors = [
             { id: 'kevin', name: 'Mr. Kevin Mathew', email: 'kevin.m@example.com', avatar: 'https://placehold.co/100x100/312e81/e0e7ff?text=KM', domain: 'Python Developer', isActive: true },
@@ -187,7 +187,7 @@
             }
 
             try {
-                let response = await fetch('http://127.0.0.1:8000/api/users/', {
+                let response = await fetch('https://hiinterview-backend-1.onrender.com/api/users/', {
                     method: 'GET',                
                 });
 
@@ -325,7 +325,7 @@
                     user.is_active = e.target.checked;
                     if (user) {
                          try {
-                        let response = await fetch(`http://127.0.0.1:8000/api/update-user-status/${user.id}/`, {
+                        let response = await fetch(`https://hiinterview-backend-1.onrender.com/api/update-user-status/${user.id}/`, {
                             method: 'PUT',
                             headers: { 
                                 'Content-Type': 'application/json',

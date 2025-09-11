@@ -226,7 +226,7 @@
                 clearTokensAndRedirect();
             } else {
                 try {
-                    let response = await fetch("http://127.0.0.1:8000/api/trainer/profile/", {
+                    let response = await fetch("https://hiinterview-backend-1.onrender.com/api/trainer/profile/", {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
@@ -238,7 +238,7 @@
                         accessToken = await refreshAccessToken();
                         if (!accessToken) return;
 
-                        response = await fetch("http://127.0.0.1:8000/api/trainer/profile/", {
+                        response = await fetch("https://hiinterview-backend-1.onrender.com/api/trainer/profile/", {
                             method: "GET",
                             headers: {
                                 "Content-Type": "application/json",
@@ -289,7 +289,7 @@
                 if (!refreshToken) return null;
 
                 try {
-                    const response = await fetch("http://127.0.0.1:8000/api/token/refresh/", {
+                    const response = await fetch("https://hiinterview-backend-1.onrender.com/api/token/refresh/", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ refresh: refreshToken })
@@ -323,7 +323,7 @@
                 }
 
                 try {
-                    let response = await fetch("http://127.0.0.1:8000/api/trainer/logout/", {
+                    let response = await fetch("https://hiinterview-backend-1.onrender.com/api/trainer/logout/", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -336,7 +336,7 @@
                         accessToken = await refreshAccessToken();
                         if (!accessToken) return;
 
-                        response = await fetch("http://127.0.0.1:8000/api/trainer/logout/", {
+                        response = await fetch("https://hiinterview-backend-1.onrender.com/api/trainer/logout/", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
