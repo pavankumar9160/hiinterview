@@ -1214,7 +1214,7 @@ else {
                     setTimeout(() => {
                       cardLoadingOverlay.style.display = 'none';
                       cardLoadingOverlay.setAttribute('aria-hidden','true');
-                      runSuccessAnimation();
+                      runGuestSuccessAnimation();
                     }, 5000);
               }
         
@@ -1265,6 +1265,52 @@ else {
       backHomeBtn.style.opacity = '1'; backHomeBtn.style.transform = 'translateY(0)'; backHomeBtn.textContent = 'Go to My Profile'; backHomeBtn.href = 'profile.html';
       setTimeout(() => window.location.href = 'profile.html', 2400);
     }
+
+    async function runGuestSuccessAnimation() {
+      const successModal = document.getElementById('success-modal');
+      const statusText = document.getElementById('status-text');
+      const progressBar = document.getElementById('progress-bar');
+      const finalMessage = document.getElementById('final-message');
+      const backStoreBtn = document.getElementById('back-home-btn'); // reuse button
+
+      // Show the modal
+      successModal.style.display = 'flex';
+
+      // Step 1: Initializing purchase
+      statusText.textContent = 'Processing your purchase...';
+      progressBar.style.width = '33%';
+      await new Promise(r => setTimeout(r, 600));
+
+      // Step 2: Finalizing transaction
+      statusText.textContent = 'Almost done...';
+      progressBar.style.width = '66%';
+      await new Promise(r => setTimeout(r, 600));
+
+      // Step 3: Purchase complete
+      statusText.textContent = 'Purchase Successful!';
+      progressBar.style.width = '100%';
+      await new Promise(r => setTimeout(r, 600));
+
+      // Confetti celebration
+      confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+      await new Promise(r => setTimeout(r, 500));
+
+      // Show final message and button
+      statusText.style.opacity = '0';
+      finalMessage.innerHTML = "Thank you for your purchase! Click below to explore our services.";
+      finalMessage.style.opacity = '1';
+
+      backStoreBtn.style.opacity = '1';
+      backStoreBtn.style.transform = 'translateY(0)';
+      backStoreBtn.textContent = 'Go to Store';
+      backStoreBtn.href = 'store.html';
+
+      // Redirect automatically after 2.5 seconds
+      setTimeout(() => {
+        window.location.href = 'store.html';
+      }, 2500);
+    }
+
 
     // INIT
    // renderCorePackages(); renderBuddyPackages(); addEventListeners(); updateOrderSummary();
