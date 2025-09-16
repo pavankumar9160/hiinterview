@@ -1852,109 +1852,80 @@
                             const coinContainer = document.getElementById("coinContainer");
 
                             if (!data.paid_customer) {
-                                container.innerHTML = `
-                <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lift ring-1 ring-black/5 p-6">
-                  <h2 class="text-lg font-bold text-ink-800">Your Active Package</h2>
-                  <p class="text-sm text-ink-500 mt-2">You don’t have any active plan. Please purchase a plan.</p>
-                  <a href="store.html" id="buyPackageBtn" class="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-brand-600 text-white hover:bg-brand-700 mt-4">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span>Buy / Upgrade</span>
-                  </a>
-                </div>
-              `;
+                            container.innerHTML = `
+                                <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lift ring-1 ring-black/5 p-6">
+                                <h2 class="text-lg font-bold text-ink-800">Your Active Package</h2>
+                                <p class="text-sm text-ink-500 mt-2">You don’t have any active plan. Please purchase a plan.</p>
+                                <a href="store.html" id="buyPackageBtn"
+                                    class="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-brand-600 text-white hover:bg-brand-700 mt-4">
+                                    <i class="fa-solid fa-cart-shopping"></i>
+                                    <span>Buy / Upgrade</span>
+                                </a>
+                                </div>
+                            `;
+                            } else if (data.paid_customer && data.subscription) {
+                            container.innerHTML = '';
+                            coinContainer.innerHTML = '';
 
-                   } else if (data.paid_customer && data.subscription) {
+                            // Start the Active Package wrapper
+                            let html = `
+                                <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lift ring-1 ring-black/5 p-6">
+                                <div class="flex items-start justify-between gap-4">
+                                    <div>
+                                    <h2 class="text-lg font-bold text-ink-800">Your Active Package</h2>
+                                    <p class="text-sm text-ink-500 mt-1">
+                                        Keep your plan active to reserve Interview Buddy slots and priority scheduling.
+                                    </p>
+                                    </div>
+                                    <div class="flex gap-2 items-start"></div>
+                                </div>
+                            `;
 
-                    container.innerHTML = '';
-                    coinContainer.innerHTML = '';
+                            // Add each subscription card inside wrapper
+                            data.subscription.forEach(subscription => {
+                                html += `
+                                <div class="mt-4 bg-gradient-to-r from-brand-50 to-accent-iris/10 rounded-xl p-4">
+                                    <div class="flex items-center justify-between">
+                                    <p class="text-sm font-semibold text-brand-800">${subscription.subscription_name}</p>
+                                    </div>
+                                    <div class="mt-3 space-y-3">
+                                    <div>
+                                        <div class="flex justify-between text-sm font-medium text-ink-700">
+                                        <span>One-to-One Training</span>
+                                        <span>${subscription.weeks_completed} of 4 weeks completed</span>
+                                        </div>
+                                        <div class="w-full bg-ink-200 rounded-full h-2 mt-1"
+                                            role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                                            aria-valuenow="${subscription.one_to_one_progress}">
+                                        <div class="bg-brand-500 h-2 rounded-full"
+                                            style="width: ${subscription.one_to_one_progress}%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-ink-700">Interview Buddy Slots:
+                                        <span class="font-bold text-brand-600">${subscription.interview_buddy_slots_remaining} Remaining</span>
+                                        </p>
+                                    </div>
+                                    </div>
+                                    ${
+                                    subscription.interview_buddy_coins_remaining === 0
+                                        ? `<div class="mt-4 text-xs text-ink-500 bg-amber-50 border border-amber-200 rounded-lg p-3">
+                                            <strong>Please Note:</strong> your subscription details are getting updated, please log in back after 60 minutes.
+                                        </div>`
+                                        : `<div class="mt-4 text-xs text-ink-500 bg-amber-50 border border-amber-200 rounded-lg p-3">
+                                            <strong>Please Note:</strong> Your Profile is getting updated, please log in back after 60 minutes.
+                                        </div>`
+                                    }
+                                </div>
+                                `;
+                            });
 
+                            // Close the wrapper
+                            html += `</div>`;
 
-                    data.subscription.forEach((subscription)=>{
+                            container.innerHTML = html;
+                            }
 
-
-                                       container.innerHTML+= `
-                <!-- Active Package Widget (improved UX & CTA) -->
-                <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lift ring-1 ring-black/5 p-6">
-                  <div class="flex items-start justify-between gap-4">
-                    <div>
-                      <h2 class="text-lg font-bold text-ink-800">Your Active Package</h2>
-                      <p class="text-sm text-ink-500 mt-1">Keep your plan active to reserve Interview Buddy slots and priority scheduling.</p>
-                    </div>
-
-                    <!-- Primary CTA: Buy / Upgrade package -->
-                    <div class="flex gap-2 items-start">
-                     
-                     
-                    </div>
-                  </div>
-
-                  <div class="mt-4 bg-gradient-to-r from-brand-50 to-accent-iris/10 rounded-xl p-4">
-                    <div class="flex items-center justify-between">
-                      <p class="text-sm font-semibold text-brand-800">${subscription.subscription_name}</p>
-                    </div>
-                    <div class="mt-3 space-y-3">
-                      <div>
-                        <div class="flex justify-between text-sm font-medium text-ink-700">
-                          <span>One-to-One Training</span>
-                          <span>${subscription.weeks_completed} of 4 weeks completed</span>
-                        </div>
-                        <div class="w-full bg-ink-200 rounded-full h-2 mt-1" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${data.one_to_one_progress}">
-                          <div class="bg-brand-500 h-2 rounded-full" style="width: ${subscription.one_to_one_progress}%"></div>
-                        </div>
-                      </div>
-                      <div>
-                        <p class="text-sm font-medium text-ink-700">Interview Buddy Slots: 
-                          <span class="font-bold text-brand-600">${subscription.interview_buddy_slots_remaining} Remaining</span>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                    ${subscription.one_to_one_progress && subscription.weeks_completed && subscription.interview_buddy_coins_remaining === 0 ? `
-                    <div class="mt-4 text-xs text-ink-500 bg-amber-50 border border-amber-200 rounded-lg p-3">
-                      <strong>Please Note:</strong> your profile is getting updated, please log in back after 60 minutes.
-                    </div>` : ` <div class="mt-4 text-xs text-ink-500 bg-amber-50 border border-amber-200 rounded-lg p-3">
-                    <strong>Please Note:</strong> Your Profile is getting updated, please log in back after 60 minutes.
-                  </div>`}
-                  </div><br>
-                `;
-
-              coinContainer.innerHTML += `
-    <div id="coin-card" class="card-flip-container h-40">
-      <div class="card-flipper w-full h-full relative">
-        <!-- Front -->
-        <div class="card-front absolute w-full h-full">
-          <button class="w-full h-full text-left bg-gradient-to-br from-brand-600 to-accent-iris text-white rounded-2xl shadow-lift p-6 flex flex-col justify-between clickable focus-ring" aria-label="Show coin history">
-            <div>
-              <p class="text-sm font-medium text-brand-200">Interview Buddy Coins</p>
-              <div class="flex items-baseline gap-2 mt-1">
-                <p class="text-5xl font-bold">${subscription.interview_buddy_coins_remaining || 0}</p>
-              </div>
-            </div>
-            <div class="text-xs text-brand-200 flex items-center gap-2">
-              <i class="fa-solid fa-rotate"></i><span>Tap to see history</span>
-            </div>
-          </button>
-        </div>
-        <!-- Back -->
-        <div class="card-back absolute w-full h-full">
-          <button class="w-full h-full text-left bg-gradient-to-br from-ink-800 to-ink-900 text-white rounded-2xl shadow-lift p-6 flex flex-col clickable focus-ring" aria-label="Show coin balance">
-            <p class="text-sm font-semibold">Transaction History</p>
-            <ul class="mt-2 space-y-1 text-xs flex-grow">
-              <li class="flex justify-between items-center"><span>Combo Package Credit</span><span class="font-medium text-accent-mint">0 Coins</span></li>
-             
-            <div class="text-xs text-ink-400 flex items-center gap-2">
-              <i class="fa-solid fa-rotate"></i><span>Tap to see balance</span>
-            </div>
-          </button>
-        </div>
-      </div>
-    </div><br>
-  `;
-
-                    })
-               
-            }
             
 
             const sessionHistory = data.session_history || [];
