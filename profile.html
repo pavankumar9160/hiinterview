@@ -1,601 +1,1878 @@
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My Dashboard — Hi Interviews</title>
-  <meta name="description" content="Manage your profile, sessions, and Interview Buddy balance.">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Dashboard — Hi Interviews</title>
+    <meta name="description" content="Manage your profile, sessions, and Interview Buddy balance.">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'media',
-      theme: {
-        extend: {
-          colors: {
-            ink: { 50:'#f8fafc',100:'#eef2f7',200:'#e5eaf1',300:'#cfd8e3',400:'#94a3b8',500:'#64748b',600:'#475569',700:'#334155',800:'#1e293b',900:'#0f172a',950:'#0c1324' },
-            brand: { 50:'#eef2ff',100:'#e0e7ff',200:'#c7d2fe',300:'#a5b4fc',400:'#818cf8',500:'#6366f1',600:'#4f46e5',700:'#4338ca',800:'#3730a3',900:'#312e81' },
-            'accent-iris':'#8B5CF6','accent-mint':'#10B981','accent-rose':'#F43F5E','accent-amber':'#FBBF24',
-          },
-          boxShadow: { lift:'0 25px 50px -12px rgb(0 0 0 / 0.25)' },
-          fontFamily: { sans:["Inter","system-ui","sans-serif"], heading:["Poppins","sans-serif"] },
-          animation: {
-            'fade-in':'fadeIn 0.5s ease-out forwards',
-            'scale-in':'scaleIn 0.3s cubic-bezier(0.25,1,0.5,1) forwards',
-            'glow-pulse':'glowPulse 2.5s ease-in-out infinite',
-          },
-          keyframes: {
-            fadeIn:{'0%':{opacity:0},'100%':{opacity:1}},
-            scaleIn:{'0%':{transform:'scale(0.95)',opacity:'0'},'100%':{transform:'scale(1)',opacity:'1'}},
-            glowPulse:{
-              '0%,100%':{ boxShadow:'0 0 12px 0px rgba(99,102,241,0.2)'},
-              '50%':{ boxShadow:'0 0 24px 3px rgba(139,92,246,0.3)'}
-            },
-          }
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'media',
+            theme: {
+                extend: {
+                    colors: {
+                        ink: {
+                            50: '#f8fafc',
+                            100: '#eef2f7',
+                            200: '#e5eaf1',
+                            300: '#cfd8e3',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#0c1324'
+                        },
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            200: '#c7d2fe',
+                            300: '#a5b4fc',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81'
+                        },
+                        'accent-iris': '#8B5CF6',
+                        'accent-mint': '#10B981',
+                        'accent-rose': '#F43F5E',
+                        'accent-amber': '#FBBF24',
+                    },
+                    boxShadow: {
+                        lift: '0 25px 50px -12px rgb(0 0 0 / 0.25)'
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "system-ui", "sans-serif"],
+                        heading: ["Poppins", "sans-serif"]
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'scale-in': 'scaleIn 0.3s cubic-bezier(0.25,1,0.5,1) forwards',
+                        'glow-pulse': 'glowPulse 2.5s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': {
+                                opacity: 0
+                            },
+                            '100%': {
+                                opacity: 1
+                            }
+                        },
+                        scaleIn: {
+                            '0%': {
+                                transform: 'scale(0.95)',
+                                opacity: '0'
+                            },
+                            '100%': {
+                                transform: 'scale(1)',
+                                opacity: '1'
+                            }
+                        },
+                        glowPulse: {
+                            '0%,100%': {
+                                boxShadow: '0 0 12px 0px rgba(99,102,241,0.2)'
+                            },
+                            '50%': {
+                                boxShadow: '0 0 24px 3px rgba(139,92,246,0.3)'
+                            }
+                        },
+                    }
+                }
+            }
         }
-      }
-    }
-  </script>
-  <style>
-    .focus-ring:focus-visible { outline:2px solid rgba(79,70,229,.35); outline-offset:3px }
-    .bg-pattern { background-image:
-      radial-gradient(circle at top, rgba(79,70,229,0.08) 0%, transparent 30%),
-      radial-gradient(circle at bottom, rgba(139,92,246,0.08) 0%, transparent 40%); }
-    .card-flip-container { perspective: 1000px; }
-    .card-flipper { transition: transform 0.6s; transform-style: preserve-3d; }
-    .card-flipped .card-flipper { transform: rotateY(180deg); }
-    .card-front, .card-back { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-    .card-back { transform: rotateY(180deg); }
-
-    /* small extras */
-    .img-circle { width:64px;height:64px;border-radius:9999px;object-fit:cover;border:2px solid rgba(255,255,255,0.08) }
-    .file-list { font-size: 0.9rem; color: #334155; }
-
-    /* subtle focus for clickable cards */
-    .clickable:focus { box-shadow: 0 8px 24px rgba(0,0,0,0.08); transform: translateY(-2px); }
-  </style>
-<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:Inter, system-ui, sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0px}.top-0{top:0px}.z-40{z-index:40}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.ml-2{margin-left:0.5rem}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.mt-3{margin-top:0.75rem}.mt-4{margin-top:1rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.hidden{display:none}.h-full{height:100%}.h-10{height:2.5rem}.h-14{height:3.5rem}.h-16{height:4rem}.h-2{height:0.5rem}.h-28{height:7rem}.h-32{height:8rem}.h-40{height:10rem}.w-10{width:2.5rem}.w-14{width:3.5rem}.w-full{width:100%}.max-w-6xl{max-width:72rem}.max-w-md{max-width:28rem}.max-w-sm{max-width:24rem}.flex-shrink-0{flex-shrink:0}.flex-grow{flex-grow:1}@keyframes fadeIn{0%{opacity:0}100%{opacity:1}}.animate-fade-in{animation:fadeIn 0.5s ease-out forwards}@keyframes glowPulse{0%,100%{box-shadow:0 0 12px 0px rgba(99,102,241,0.2)}50%{box-shadow:0 0 24px 3px rgba(139,92,246,0.3)}}.animate-glow-pulse{animation:glowPulse 2.5s ease-in-out infinite}@keyframes scaleIn{0%{transform:scale(0.95);opacity:0}100%{transform:scale(1);opacity:1}}.animate-scale-in{animation:scaleIn 0.3s cubic-bezier(0.25,1,0.5,1) forwards}.list-disc{list-style-type:disc}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-start{align-items:flex-start}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.gap-8{gap:2rem}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.space-y-8 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(2rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(2rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-md{border-radius:0.375rem}.rounded-xl{border-radius:0.75rem}.rounded{border-radius:0.25rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-amber-200{--tw-border-opacity:1;border-color:rgb(253 230 138 / var(--tw-border-opacity, 1))}.border-ink-100{--tw-border-opacity:1;border-color:rgb(238 242 247 / var(--tw-border-opacity, 1))}.border-ink-200{--tw-border-opacity:1;border-color:rgb(229 234 241 / var(--tw-border-opacity, 1))}.bg-ink-50{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.bg-accent-mint{--tw-bg-opacity:1;background-color:rgb(16 185 129 / var(--tw-bg-opacity, 1))}.bg-accent-mint\/10{background-color:rgb(16 185 129 / 0.1)}.bg-amber-50{--tw-bg-opacity:1;background-color:rgb(255 251 235 / var(--tw-bg-opacity, 1))}.bg-black\/50{background-color:rgb(0 0 0 / 0.5)}.bg-brand-500{--tw-bg-opacity:1;background-color:rgb(99 102 241 / var(--tw-bg-opacity, 1))}.bg-brand-600{--tw-bg-opacity:1;background-color:rgb(79 70 229 / var(--tw-bg-opacity, 1))}.bg-ink-100{--tw-bg-opacity:1;background-color:rgb(238 242 247 / var(--tw-bg-opacity, 1))}.bg-ink-200{--tw-bg-opacity:1;background-color:rgb(229 234 241 / var(--tw-bg-opacity, 1))}.bg-ink-500{--tw-bg-opacity:1;background-color:rgb(100 116 139 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-white\/80{background-color:rgb(255 255 255 / 0.8)}.bg-white\/90{background-color:rgb(255 255 255 / 0.9)}.bg-gradient-to-br{background-image:linear-gradient(to bottom right, var(--tw-gradient-stops))}.bg-gradient-to-r{background-image:linear-gradient(to right, var(--tw-gradient-stops))}.from-brand-50{--tw-gradient-from:#eef2ff var(--tw-gradient-from-position);--tw-gradient-to:rgb(238 242 255 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-brand-600{--tw-gradient-from:#4f46e5 var(--tw-gradient-from-position);--tw-gradient-to:rgb(79 70 229 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-ink-800{--tw-gradient-from:#1e293b var(--tw-gradient-from-position);--tw-gradient-to:rgb(30 41 59 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-accent-iris{--tw-gradient-to:#8B5CF6 var(--tw-gradient-to-position)}.to-accent-iris\/10{--tw-gradient-to:rgb(139 92 246 / 0.1) var(--tw-gradient-to-position)}.to-ink-900{--tw-gradient-to:#0f172a var(--tw-gradient-to-position)}.p-2{padding:0.5rem}.p-3{padding:0.75rem}.p-4{padding:1rem}.p-6{padding:1.5rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.pl-4{padding-left:1rem}.text-left{text-align:left}.text-center{text-align:center}.font-sans{font-family:Inter, system-ui, sans-serif}.font-heading{font-family:Poppins, sans-serif}.text-2xl{font-size:1.5rem;line-height:2rem}.text-5xl{font-size:3rem;line-height:1}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-normal{font-weight:400}.font-semibold{font-weight:600}.tracking-tight{letter-spacing:-0.025em}.text-ink-950{--tw-text-opacity:1;color:rgb(12 19 36 / var(--tw-text-opacity, 1))}.text-accent-mint{--tw-text-opacity:1;color:rgb(16 185 129 / var(--tw-text-opacity, 1))}.text-accent-rose{--tw-text-opacity:1;color:rgb(244 63 94 / var(--tw-text-opacity, 1))}.text-brand-200{--tw-text-opacity:1;color:rgb(199 210 254 / var(--tw-text-opacity, 1))}.text-brand-600{--tw-text-opacity:1;color:rgb(79 70 229 / var(--tw-text-opacity, 1))}.text-brand-800{--tw-text-opacity:1;color:rgb(55 48 163 / var(--tw-text-opacity, 1))}.text-ink-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.text-ink-500{--tw-text-opacity:1;color:rgb(100 116 139 / var(--tw-text-opacity, 1))}.text-ink-600{--tw-text-opacity:1;color:rgb(71 85 105 / var(--tw-text-opacity, 1))}.text-ink-700{--tw-text-opacity:1;color:rgb(51 65 85 / var(--tw-text-opacity, 1))}.text-ink-800{--tw-text-opacity:1;color:rgb(30 41 59 / var(--tw-text-opacity, 1))}.text-ink-900{--tw-text-opacity:1;color:rgb(15 23 42 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.shadow-lift{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow{--tw-shadow:0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.ring-1{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.ring-4{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.ring-black\/5{--tw-ring-color:rgb(0 0 0 / 0.05)}.ring-brand-200{--tw-ring-opacity:1;--tw-ring-color:rgb(199 210 254 / var(--tw-ring-opacity, 1))}.backdrop-blur-sm{--tw-backdrop-blur:blur(4px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.backdrop-blur-xl{--tw-backdrop-blur:blur(24px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition{transition-property:color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.selection\:bg-brand-500 *::selection{--tw-bg-opacity:1;background-color:rgb(99 102 241 / var(--tw-bg-opacity, 1))}.selection\:text-white *::selection{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.selection\:bg-brand-500::selection{--tw-bg-opacity:1;background-color:rgb(99 102 241 / var(--tw-bg-opacity, 1))}.selection\:text-white::selection{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.file\:mr-2::file-selector-button{margin-right:0.5rem}.file\:rounded-md::file-selector-button{border-radius:0.375rem}.file\:border-0::file-selector-button{border-width:0px}.file\:bg-brand-50::file-selector-button{--tw-bg-opacity:1;background-color:rgb(238 242 255 / var(--tw-bg-opacity, 1))}.file\:bg-ink-50::file-selector-button{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.file\:px-2::file-selector-button{padding-left:0.5rem;padding-right:0.5rem}.file\:py-1::file-selector-button{padding-top:0.25rem;padding-bottom:0.25rem}.file\:text-xs::file-selector-button{font-size:0.75rem;line-height:1rem}.file\:font-semibold::file-selector-button{font-weight:600}.file\:text-brand-700::file-selector-button{--tw-text-opacity:1;color:rgb(67 56 202 / var(--tw-text-opacity, 1))}.file\:text-ink-700::file-selector-button{--tw-text-opacity:1;color:rgb(51 65 85 / var(--tw-text-opacity, 1))}.hover\:bg-amber-100:hover{--tw-bg-opacity:1;background-color:rgb(254 243 199 / var(--tw-bg-opacity, 1))}.hover\:bg-brand-700:hover{--tw-bg-opacity:1;background-color:rgb(67 56 202 / var(--tw-bg-opacity, 1))}.hover\:bg-ink-100:hover{--tw-bg-opacity:1;background-color:rgb(238 242 247 / var(--tw-bg-opacity, 1))}.hover\:bg-ink-200:hover{--tw-bg-opacity:1;background-color:rgb(229 234 241 / var(--tw-bg-opacity, 1))}.hover\:bg-rose-50:hover{--tw-bg-opacity:1;background-color:rgb(255 241 242 / var(--tw-bg-opacity, 1))}.hover\:text-brand-600:hover{--tw-text-opacity:1;color:rgb(79 70 229 / var(--tw-text-opacity, 1))}.hover\:text-brand-800:hover{--tw-text-opacity:1;color:rgb(55 48 163 / var(--tw-text-opacity, 1))}.hover\:text-ink-600:hover{--tw-text-opacity:1;color:rgb(71 85 105 / var(--tw-text-opacity, 1))}.hover\:underline:hover{-webkit-text-decoration-line:underline;text-decoration-line:underline}.hover\:opacity-80:hover{opacity:0.8}.hover\:file\:bg-brand-100::file-selector-button:hover{--tw-bg-opacity:1;background-color:rgb(224 231 255 / var(--tw-bg-opacity, 1))}.hover\:file\:bg-ink-100::file-selector-button:hover{--tw-bg-opacity:1;background-color:rgb(238 242 247 / var(--tw-bg-opacity, 1))}@media (min-width: 640px){.sm\:block{display:block}.sm\:p-6{padding:1.5rem}.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}}@media (min-width: 768px){.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}}@media (min-width: 1024px){.lg\:col-span-2{grid-column:span 2 / span 2}.lg\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.lg\:p-8{padding:2rem}.lg\:px-8{padding-left:2rem;padding-right:2rem}}</style></head>
+    </script>
+    <style>
+        .focus-ring:focus-visible {
+            outline: 2px solid rgba(79, 70, 229, .35);
+            outline-offset: 3px
+        }
+        
+        .bg-pattern {
+            background-image: radial-gradient(circle at top, rgba(79, 70, 229, 0.08) 0%, transparent 30%), radial-gradient(circle at bottom, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
+        }
+        
+        .card-flip-container {
+            perspective: 1000px;
+        }
+        
+        .card-flipper {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        
+        .card-flipped .card-flipper {
+            transform: rotateY(180deg);
+        }
+        
+        .card-front,
+        .card-back {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        
+        .card-back {
+            transform: rotateY(180deg);
+        }
+        /* small extras */
+        
+        .img-circle {
+            width: 64px;
+            height: 64px;
+            border-radius: 9999px;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.08)
+        }
+        
+        .file-list {
+            font-size: 0.9rem;
+            color: #334155;
+        }
+        /* subtle focus for clickable cards */
+        
+        .clickable:focus {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+    </style>
+    <style>
+        *,
+         ::before,
+         ::after {
+            --tw-border-spacing-x: 0;
+            --tw-border-spacing-y: 0;
+            --tw-translate-x: 0;
+            --tw-translate-y: 0;
+            --tw-rotate: 0;
+            --tw-skew-x: 0;
+            --tw-skew-y: 0;
+            --tw-scale-x: 1;
+            --tw-scale-y: 1;
+            --tw-pan-x: ;
+            --tw-pan-y: ;
+            --tw-pinch-zoom: ;
+            --tw-scroll-snap-strictness: proximity;
+            --tw-gradient-from-position: ;
+            --tw-gradient-via-position: ;
+            --tw-gradient-to-position: ;
+            --tw-ordinal: ;
+            --tw-slashed-zero: ;
+            --tw-numeric-figure: ;
+            --tw-numeric-spacing: ;
+            --tw-numeric-fraction: ;
+            --tw-ring-inset: ;
+            --tw-ring-offset-width: 0px;
+            --tw-ring-offset-color: #fff;
+            --tw-ring-color: rgb(59 130 246 / 0.5);
+            --tw-ring-offset-shadow: 0 0 #0000;
+            --tw-ring-shadow: 0 0 #0000;
+            --tw-shadow: 0 0 #0000;
+            --tw-shadow-colored: 0 0 #0000;
+            --tw-blur: ;
+            --tw-brightness: ;
+            --tw-contrast: ;
+            --tw-grayscale: ;
+            --tw-hue-rotate: ;
+            --tw-invert: ;
+            --tw-saturate: ;
+            --tw-sepia: ;
+            --tw-drop-shadow: ;
+            --tw-backdrop-blur: ;
+            --tw-backdrop-brightness: ;
+            --tw-backdrop-contrast: ;
+            --tw-backdrop-grayscale: ;
+            --tw-backdrop-hue-rotate: ;
+            --tw-backdrop-invert: ;
+            --tw-backdrop-opacity: ;
+            --tw-backdrop-saturate: ;
+            --tw-backdrop-sepia: ;
+            --tw-contain-size: ;
+            --tw-contain-layout: ;
+            --tw-contain-paint: ;
+            --tw-contain-style:
+        }
+        
+         ::backdrop {
+            --tw-border-spacing-x: 0;
+            --tw-border-spacing-y: 0;
+            --tw-translate-x: 0;
+            --tw-translate-y: 0;
+            --tw-rotate: 0;
+            --tw-skew-x: 0;
+            --tw-skew-y: 0;
+            --tw-scale-x: 1;
+            --tw-scale-y: 1;
+            --tw-pan-x: ;
+            --tw-pan-y: ;
+            --tw-pinch-zoom: ;
+            --tw-scroll-snap-strictness: proximity;
+            --tw-gradient-from-position: ;
+            --tw-gradient-via-position: ;
+            --tw-gradient-to-position: ;
+            --tw-ordinal: ;
+            --tw-slashed-zero: ;
+            --tw-numeric-figure: ;
+            --tw-numeric-spacing: ;
+            --tw-numeric-fraction: ;
+            --tw-ring-inset: ;
+            --tw-ring-offset-width: 0px;
+            --tw-ring-offset-color: #fff;
+            --tw-ring-color: rgb(59 130 246 / 0.5);
+            --tw-ring-offset-shadow: 0 0 #0000;
+            --tw-ring-shadow: 0 0 #0000;
+            --tw-shadow: 0 0 #0000;
+            --tw-shadow-colored: 0 0 #0000;
+            --tw-blur: ;
+            --tw-brightness: ;
+            --tw-contrast: ;
+            --tw-grayscale: ;
+            --tw-hue-rotate: ;
+            --tw-invert: ;
+            --tw-saturate: ;
+            --tw-sepia: ;
+            --tw-drop-shadow: ;
+            --tw-backdrop-blur: ;
+            --tw-backdrop-brightness: ;
+            --tw-backdrop-contrast: ;
+            --tw-backdrop-grayscale: ;
+            --tw-backdrop-hue-rotate: ;
+            --tw-backdrop-invert: ;
+            --tw-backdrop-opacity: ;
+            --tw-backdrop-saturate: ;
+            --tw-backdrop-sepia: ;
+            --tw-contain-size: ;
+            --tw-contain-layout: ;
+            --tw-contain-paint: ;
+            --tw-contain-style:
+        }
+        /* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */
+        
+        *,
+         ::after,
+         ::before {
+            box-sizing: border-box;
+            border-width: 0;
+            border-style: solid;
+            border-color: #e5e7eb
+        }
+        
+         ::after,
+         ::before {
+            --tw-content: ''
+        }
+        
+         :host,
+        html {
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
+            -moz-tab-size: 4;
+            tab-size: 4;
+            font-family: Inter, system-ui, sans-serif;
+            font-feature-settings: normal;
+            font-variation-settings: normal;
+            -webkit-tap-highlight-color: transparent
+        }
+        
+        body {
+            margin: 0;
+            line-height: inherit
+        }
+        
+        hr {
+            height: 0;
+            color: inherit;
+            border-top-width: 1px
+        }
+        
+        abbr:where([title]) {
+            -webkit-text-decoration: underline dotted;
+            text-decoration: underline dotted
+        }
+        
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-size: inherit;
+            font-weight: inherit
+        }
+        
+        a {
+            color: inherit;
+            text-decoration: inherit
+        }
+        
+        b,
+        strong {
+            font-weight: bolder
+        }
+        
+        code,
+        kbd,
+        pre,
+        samp {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-feature-settings: normal;
+            font-variation-settings: normal;
+            font-size: 1em
+        }
+        
+        small {
+            font-size: 80%
+        }
+        
+        sub,
+        sup {
+            font-size: 75%;
+            line-height: 0;
+            position: relative;
+            vertical-align: baseline
+        }
+        
+        sub {
+            bottom: -.25em
+        }
+        
+        sup {
+            top: -.5em
+        }
+        
+        table {
+            text-indent: 0;
+            border-color: inherit;
+            border-collapse: collapse
+        }
+        
+        button,
+        input,
+        optgroup,
+        select,
+        textarea {
+            font-family: inherit;
+            font-feature-settings: inherit;
+            font-variation-settings: inherit;
+            font-size: 100%;
+            font-weight: inherit;
+            line-height: inherit;
+            letter-spacing: inherit;
+            color: inherit;
+            margin: 0;
+            padding: 0
+        }
+        
+        button,
+        select {
+            text-transform: none
+        }
+        
+        button,
+        input:where([type=button]),
+        input:where([type=reset]),
+        input:where([type=submit]) {
+            -webkit-appearance: button;
+            background-color: transparent;
+            background-image: none
+        }
+        
+         :-moz-focusring {
+            outline: auto
+        }
+        
+         :-moz-ui-invalid {
+            box-shadow: none
+        }
+        
+        progress {
+            vertical-align: baseline
+        }
+        
+         ::-webkit-inner-spin-button,
+         ::-webkit-outer-spin-button {
+            height: auto
+        }
+        
+        [type=search] {
+            -webkit-appearance: textfield;
+            outline-offset: -2px
+        }
+        
+         ::-webkit-search-decoration {
+            -webkit-appearance: none
+        }
+        
+         ::-webkit-file-upload-button {
+            -webkit-appearance: button;
+            font: inherit
+        }
+        
+        summary {
+            display: list-item
+        }
+        
+        blockquote,
+        dd,
+        dl,
+        figure,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        hr,
+        p,
+        pre {
+            margin: 0
+        }
+        
+        fieldset {
+            margin: 0;
+            padding: 0
+        }
+        
+        legend {
+            padding: 0
+        }
+        
+        menu,
+        ol,
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0
+        }
+        
+        dialog {
+            padding: 0
+        }
+        
+        textarea {
+            resize: vertical
+        }
+        
+        input::placeholder,
+        textarea::placeholder {
+            opacity: 1;
+            color: #9ca3af
+        }
+        
+        [role=button],
+        button {
+            cursor: pointer
+        }
+        
+         :disabled {
+            cursor: default
+        }
+        
+        audio,
+        canvas,
+        embed,
+        iframe,
+        img,
+        object,
+        svg,
+        video {
+            display: block;
+            vertical-align: middle
+        }
+        
+        img,
+        video {
+            max-width: 100%;
+            height: auto
+        }
+        
+        [hidden]:where(:not([hidden=until-found])) {
+            display: none
+        }
+        
+        .fixed {
+            position: fixed
+        }
+        
+        .absolute {
+            position: absolute
+        }
+        
+        .relative {
+            position: relative
+        }
+        
+        .sticky {
+            position: sticky
+        }
+        
+        .inset-0 {
+            inset: 0px
+        }
+        
+        .top-0 {
+            top: 0px
+        }
+        
+        .z-40 {
+            z-index: 40
+        }
+        
+        .z-50 {
+            z-index: 50
+        }
+        
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto
+        }
+        
+        .ml-2 {
+            margin-left: 0.5rem
+        }
+        
+        .mt-1 {
+            margin-top: 0.25rem
+        }
+        
+        .mt-2 {
+            margin-top: 0.5rem
+        }
+        
+        .mt-3 {
+            margin-top: 0.75rem
+        }
+        
+        .mt-4 {
+            margin-top: 1rem
+        }
+        
+        .block {
+            display: block
+        }
+        
+        .flex {
+            display: flex
+        }
+        
+        .inline-flex {
+            display: inline-flex
+        }
+        
+        .grid {
+            display: grid
+        }
+        
+        .hidden {
+            display: none
+        }
+        
+        .h-full {
+            height: 100%
+        }
+        
+        .h-10 {
+            height: 2.5rem
+        }
+        
+        .h-14 {
+            height: 3.5rem
+        }
+        
+        .h-16 {
+            height: 4rem
+        }
+        
+        .h-2 {
+            height: 0.5rem
+        }
+        
+        .h-28 {
+            height: 7rem
+        }
+        
+        .h-32 {
+            height: 8rem
+        }
+        
+        .h-40 {
+            height: 10rem
+        }
+        
+        .w-10 {
+            width: 2.5rem
+        }
+        
+        .w-14 {
+            width: 3.5rem
+        }
+        
+        .w-full {
+            width: 100%
+        }
+        
+        .max-w-6xl {
+            max-width: 72rem
+        }
+        
+        .max-w-md {
+            max-width: 28rem
+        }
+        
+        .max-w-sm {
+            max-width: 24rem
+        }
+        
+        .flex-shrink-0 {
+            flex-shrink: 0
+        }
+        
+        .flex-grow {
+            flex-grow: 1
+        }
+        
+        @keyframes fadeIn {
+            0% {
+                opacity: 0
+            }
+            100% {
+                opacity: 1
+            }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards
+        }
+        
+        @keyframes glowPulse {
+            0%,
+            100% {
+                box-shadow: 0 0 12px 0px rgba(99, 102, 241, 0.2)
+            }
+            50% {
+                box-shadow: 0 0 24px 3px rgba(139, 92, 246, 0.3)
+            }
+        }
+        
+        .animate-glow-pulse {
+            animation: glowPulse 2.5s ease-in-out infinite
+        }
+        
+        @keyframes scaleIn {
+            0% {
+                transform: scale(0.95);
+                opacity: 0
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1
+            }
+        }
+        
+        .animate-scale-in {
+            animation: scaleIn 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards
+        }
+        
+        .list-disc {
+            list-style-type: disc
+        }
+        
+        .grid-cols-1 {
+            grid-template-columns: repeat(1, minmax(0, 1fr))
+        }
+        
+        .flex-col {
+            flex-direction: column
+        }
+        
+        .items-start {
+            align-items: flex-start
+        }
+        
+        .items-center {
+            align-items: center
+        }
+        
+        .items-baseline {
+            align-items: baseline
+        }
+        
+        .justify-end {
+            justify-content: flex-end
+        }
+        
+        .justify-center {
+            justify-content: center
+        }
+        
+        .justify-between {
+            justify-content: space-between
+        }
+        
+        .gap-2 {
+            gap: 0.5rem
+        }
+        
+        .gap-3 {
+            gap: 0.75rem
+        }
+        
+        .gap-4 {
+            gap: 1rem
+        }
+        
+        .gap-8 {
+            gap: 2rem
+        }
+        
+        .space-y-1> :not([hidden])~ :not([hidden]) {
+            --tw-space-y-reverse: 0;
+            margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+            margin-bottom: calc(0.25rem * var(--tw-space-y-reverse))
+        }
+        
+        .space-y-2> :not([hidden])~ :not([hidden]) {
+            --tw-space-y-reverse: 0;
+            margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+            margin-bottom: calc(0.5rem * var(--tw-space-y-reverse))
+        }
+        
+        .space-y-3> :not([hidden])~ :not([hidden]) {
+            --tw-space-y-reverse: 0;
+            margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+            margin-bottom: calc(0.75rem * var(--tw-space-y-reverse))
+        }
+        
+        .space-y-4> :not([hidden])~ :not([hidden]) {
+            --tw-space-y-reverse: 0;
+            margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+            margin-bottom: calc(1rem * var(--tw-space-y-reverse))
+        }
+        
+        .space-y-8> :not([hidden])~ :not([hidden]) {
+            --tw-space-y-reverse: 0;
+            margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
+            margin-bottom: calc(2rem * var(--tw-space-y-reverse))
+        }
+        
+        .overflow-hidden {
+            overflow: hidden
+        }
+        
+        .rounded-2xl {
+            border-radius: 1rem
+        }
+        
+        .rounded-full {
+            border-radius: 9999px
+        }
+        
+        .rounded-lg {
+            border-radius: 0.5rem
+        }
+        
+        .rounded-md {
+            border-radius: 0.375rem
+        }
+        
+        .rounded-xl {
+            border-radius: 0.75rem
+        }
+        
+        .rounded {
+            border-radius: 0.25rem
+        }
+        
+        .border {
+            border-width: 1px
+        }
+        
+        .border-b {
+            border-bottom-width: 1px
+        }
+        
+        .border-amber-200 {
+            --tw-border-opacity: 1;
+            border-color: rgb(253 230 138 / var(--tw-border-opacity, 1))
+        }
+        
+        .border-ink-100 {
+            --tw-border-opacity: 1;
+            border-color: rgb(238 242 247 / var(--tw-border-opacity, 1))
+        }
+        
+        .border-ink-200 {
+            --tw-border-opacity: 1;
+            border-color: rgb(229 234 241 / var(--tw-border-opacity, 1))
+        }
+        
+        .bg-ink-50 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1))
+        }
+        
+        .bg-accent-mint {
+            --tw-bg-opacity: 1;
+            background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1))
+        }
+        
+        .bg-accent-mint\/10 {
+            background-color: rgb(16 185 129 / 0.1)
+        }
+        
+        .bg-amber-50 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(255 251 235 / var(--tw-bg-opacity, 1))
+        }
+        
+        .bg-black\/50 {
+            background-color: rgb(0 0 0 / 0.5)
+        }
+        
+        .bg-brand-500 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(99 102 241 / var(--tw-bg-opacity, 1))
+        }
+        
+        .bg-brand-600 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(79 70 229 / var(--tw-bg-opacity, 1))
+        }
+        
+        .bg-ink-100 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(238 242 247 / var(--tw-bg-opacity, 1))
+        }
+        
+        .bg-ink-200 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(229 234 241 / var(--tw-bg-opacity, 1))
+        }
+        
+        .bg-ink-500 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(100 116 139 / var(--tw-bg-opacity, 1))
+        }
+        
+        .bg-white {
+            --tw-bg-opacity: 1;
+            background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1))
+        }
+        
+        .bg-white\/80 {
+            background-color: rgb(255 255 255 / 0.8)
+        }
+        
+        .bg-white\/90 {
+            background-color: rgb(255 255 255 / 0.9)
+        }
+        
+        .bg-gradient-to-br {
+            background-image: linear-gradient(to bottom right, var(--tw-gradient-stops))
+        }
+        
+        .bg-gradient-to-r {
+            background-image: linear-gradient(to right, var(--tw-gradient-stops))
+        }
+        
+        .from-brand-50 {
+            --tw-gradient-from: #eef2ff var(--tw-gradient-from-position);
+            --tw-gradient-to: rgb(238 242 255 / 0) var(--tw-gradient-to-position);
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to)
+        }
+        
+        .from-brand-600 {
+            --tw-gradient-from: #4f46e5 var(--tw-gradient-from-position);
+            --tw-gradient-to: rgb(79 70 229 / 0) var(--tw-gradient-to-position);
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to)
+        }
+        
+        .from-ink-800 {
+            --tw-gradient-from: #1e293b var(--tw-gradient-from-position);
+            --tw-gradient-to: rgb(30 41 59 / 0) var(--tw-gradient-to-position);
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to)
+        }
+        
+        .to-accent-iris {
+            --tw-gradient-to: #8B5CF6 var(--tw-gradient-to-position)
+        }
+        
+        .to-accent-iris\/10 {
+            --tw-gradient-to: rgb(139 92 246 / 0.1) var(--tw-gradient-to-position)
+        }
+        
+        .to-ink-900 {
+            --tw-gradient-to: #0f172a var(--tw-gradient-to-position)
+        }
+        
+        .p-2 {
+            padding: 0.5rem
+        }
+        
+        .p-3 {
+            padding: 0.75rem
+        }
+        
+        .p-4 {
+            padding: 1rem
+        }
+        
+        .p-6 {
+            padding: 1.5rem
+        }
+        
+        .px-2 {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem
+        }
+        
+        .px-3 {
+            padding-left: 0.75rem;
+            padding-right: 0.75rem
+        }
+        
+        .px-4 {
+            padding-left: 1rem;
+            padding-right: 1rem
+        }
+        
+        .py-0\.5 {
+            padding-top: 0.125rem;
+            padding-bottom: 0.125rem
+        }
+        
+        .py-1 {
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem
+        }
+        
+        .py-2 {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem
+        }
+        
+        .pl-4 {
+            padding-left: 1rem
+        }
+        
+        .text-left {
+            text-align: left
+        }
+        
+        .text-center {
+            text-align: center
+        }
+        
+        .font-sans {
+            font-family: Inter, system-ui, sans-serif
+        }
+        
+        .font-heading {
+            font-family: Poppins, sans-serif
+        }
+        
+        .text-2xl {
+            font-size: 1.5rem;
+            line-height: 2rem
+        }
+        
+        .text-5xl {
+            font-size: 3rem;
+            line-height: 1
+        }
+        
+        .text-lg {
+            font-size: 1.125rem;
+            line-height: 1.75rem
+        }
+        
+        .text-sm {
+            font-size: 0.875rem;
+            line-height: 1.25rem
+        }
+        
+        .text-xl {
+            font-size: 1.25rem;
+            line-height: 1.75rem
+        }
+        
+        .text-xs {
+            font-size: 0.75rem;
+            line-height: 1rem
+        }
+        
+        .font-bold {
+            font-weight: 700
+        }
+        
+        .font-medium {
+            font-weight: 500
+        }
+        
+        .font-normal {
+            font-weight: 400
+        }
+        
+        .font-semibold {
+            font-weight: 600
+        }
+        
+        .tracking-tight {
+            letter-spacing: -0.025em
+        }
+        
+        .text-ink-950 {
+            --tw-text-opacity: 1;
+            color: rgb(12 19 36 / var(--tw-text-opacity, 1))
+        }
+        
+        .text-accent-mint {
+            --tw-text-opacity: 1;
+            color: rgb(16 185 129 / var(--tw-text-opacity, 1))
+        }
+        
+        .text-accent-rose {
+            --tw-text-opacity: 1;
+            color: rgb(244 63 94 / var(--tw-text-opacity, 1))
+        }
+        
+        .text-brand-200 {
+            --tw-text-opacity: 1;
+            color: rgb(199 210 254 / var(--tw-text-opacity, 1))
+        }
+        
+        .text-brand-600 {
+            --tw-text-opacity: 1;
+            color: rgb(79 70 229 / var(--tw-text-opacity, 1))
+        }
+        
+        .text-brand-800 {
+            --tw-text-opacity: 1;
+            color: rgb(55 48 163 / var(--tw-text-opacity, 1))
+        }
+        
+        .text-ink-400 {
+            --tw-text-opacity: 1;
+            color: rgb(148 163 184 / var(--tw-text-opacity, 1))
+        }
+        
+        .text-ink-500 {
+            --tw-text-opacity: 1;
+            color: rgb(100 116 139 / var(--tw-text-opacity, 1))
+        }
+        
+        .text-ink-600 {
+            --tw-text-opacity: 1;
+            color: rgb(71 85 105 / var(--tw-text-opacity, 1))
+        }
+        
+        .text-ink-700 {
+            --tw-text-opacity: 1;
+            color: rgb(51 65 85 / var(--tw-text-opacity, 1))
+        }
+        
+        .text-ink-800 {
+            --tw-text-opacity: 1;
+            color: rgb(30 41 59 / var(--tw-text-opacity, 1))
+        }
+        
+        .text-ink-900 {
+            --tw-text-opacity: 1;
+            color: rgb(15 23 42 / var(--tw-text-opacity, 1))
+        }
+        
+        .text-white {
+            --tw-text-opacity: 1;
+            color: rgb(255 255 255 / var(--tw-text-opacity, 1))
+        }
+        
+        .antialiased {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale
+        }
+        
+        .shadow-lift {
+            --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+            box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+        }
+        
+        .shadow {
+            --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+            box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+        }
+        
+        .ring-1 {
+            --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+            --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+            box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)
+        }
+        
+        .ring-4 {
+            --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+            --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+            box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)
+        }
+        
+        .ring-black\/5 {
+            --tw-ring-color: rgb(0 0 0 / 0.05)
+        }
+        
+        .ring-brand-200 {
+            --tw-ring-opacity: 1;
+            --tw-ring-color: rgb(199 210 254 / var(--tw-ring-opacity, 1))
+        }
+        
+        .backdrop-blur-sm {
+            --tw-backdrop-blur: blur(4px);
+            -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+            backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)
+        }
+        
+        .backdrop-blur-xl {
+            --tw-backdrop-blur: blur(24px);
+            -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+            backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)
+        }
+        
+        .transition {
+            transition-property: color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms
+        }
+        
+        .selection\:bg-brand-500 *::selection {
+            --tw-bg-opacity: 1;
+            background-color: rgb(99 102 241 / var(--tw-bg-opacity, 1))
+        }
+        
+        .selection\:text-white *::selection {
+            --tw-text-opacity: 1;
+            color: rgb(255 255 255 / var(--tw-text-opacity, 1))
+        }
+        
+        .selection\:bg-brand-500::selection {
+            --tw-bg-opacity: 1;
+            background-color: rgb(99 102 241 / var(--tw-bg-opacity, 1))
+        }
+        
+        .selection\:text-white::selection {
+            --tw-text-opacity: 1;
+            color: rgb(255 255 255 / var(--tw-text-opacity, 1))
+        }
+        
+        .file\:mr-2::file-selector-button {
+            margin-right: 0.5rem
+        }
+        
+        .file\:rounded-md::file-selector-button {
+            border-radius: 0.375rem
+        }
+        
+        .file\:border-0::file-selector-button {
+            border-width: 0px
+        }
+        
+        .file\:bg-brand-50::file-selector-button {
+            --tw-bg-opacity: 1;
+            background-color: rgb(238 242 255 / var(--tw-bg-opacity, 1))
+        }
+        
+        .file\:bg-ink-50::file-selector-button {
+            --tw-bg-opacity: 1;
+            background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1))
+        }
+        
+        .file\:px-2::file-selector-button {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem
+        }
+        
+        .file\:py-1::file-selector-button {
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem
+        }
+        
+        .file\:text-xs::file-selector-button {
+            font-size: 0.75rem;
+            line-height: 1rem
+        }
+        
+        .file\:font-semibold::file-selector-button {
+            font-weight: 600
+        }
+        
+        .file\:text-brand-700::file-selector-button {
+            --tw-text-opacity: 1;
+            color: rgb(67 56 202 / var(--tw-text-opacity, 1))
+        }
+        
+        .file\:text-ink-700::file-selector-button {
+            --tw-text-opacity: 1;
+            color: rgb(51 65 85 / var(--tw-text-opacity, 1))
+        }
+        
+        .hover\:bg-amber-100:hover {
+            --tw-bg-opacity: 1;
+            background-color: rgb(254 243 199 / var(--tw-bg-opacity, 1))
+        }
+        
+        .hover\:bg-brand-700:hover {
+            --tw-bg-opacity: 1;
+            background-color: rgb(67 56 202 / var(--tw-bg-opacity, 1))
+        }
+        
+        .hover\:bg-ink-100:hover {
+            --tw-bg-opacity: 1;
+            background-color: rgb(238 242 247 / var(--tw-bg-opacity, 1))
+        }
+        
+        .hover\:bg-ink-200:hover {
+            --tw-bg-opacity: 1;
+            background-color: rgb(229 234 241 / var(--tw-bg-opacity, 1))
+        }
+        
+        .hover\:bg-rose-50:hover {
+            --tw-bg-opacity: 1;
+            background-color: rgb(255 241 242 / var(--tw-bg-opacity, 1))
+        }
+        
+        .hover\:text-brand-600:hover {
+            --tw-text-opacity: 1;
+            color: rgb(79 70 229 / var(--tw-text-opacity, 1))
+        }
+        
+        .hover\:text-brand-800:hover {
+            --tw-text-opacity: 1;
+            color: rgb(55 48 163 / var(--tw-text-opacity, 1))
+        }
+        
+        .hover\:text-ink-600:hover {
+            --tw-text-opacity: 1;
+            color: rgb(71 85 105 / var(--tw-text-opacity, 1))
+        }
+        
+        .hover\:underline:hover {
+            -webkit-text-decoration-line: underline;
+            text-decoration-line: underline
+        }
+        
+        .hover\:opacity-80:hover {
+            opacity: 0.8
+        }
+        
+        .hover\:file\:bg-brand-100::file-selector-button:hover {
+            --tw-bg-opacity: 1;
+            background-color: rgb(224 231 255 / var(--tw-bg-opacity, 1))
+        }
+        
+        .hover\:file\:bg-ink-100::file-selector-button:hover {
+            --tw-bg-opacity: 1;
+            background-color: rgb(238 242 247 / var(--tw-bg-opacity, 1))
+        }
+        
+        @media (min-width: 640px) {
+            .sm\:block {
+                display: block
+            }
+            .sm\:p-6 {
+                padding: 1.5rem
+            }
+            .sm\:px-6 {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .md\:grid-cols-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr))
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .lg\:col-span-2 {
+                grid-column: span 2 / span 2
+            }
+            .lg\:grid-cols-3 {
+                grid-template-columns: repeat(3, minmax(0, 1fr))
+            }
+            .lg\:p-8 {
+                padding: 2rem
+            }
+            .lg\:px-8 {
+                padding-left: 2rem;
+                padding-right: 2rem
+            }
+        }
+    </style>
+</head>
 <!-- Spinner overlay -->
 <div id="spinner" class="fixed inset-0 flex items-center justify-center bg-white z-50" style="display:flex">
-  <div class="w-12 h-12 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin"></div>
+    <div class="w-12 h-12 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin"></div>
 </div>
 
 <body class="bg-ink-50 text-ink-950 antialiased selection:bg-brand-500 selection:text-white font-sans">
-<div class ="content" style="display:none"> 
-  <header class="bg-white/80 backdrop-blur-sm border-b border-ink-100 sticky top-0 z-40">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-16">
-        <a class="font-semibold tracking-tight text-xl font-heading text-ink-900" href="/">Hi Interviews</a>
-        <div class="flex items-center gap-4">
-          <span id="greeting" class="text-sm font-medium hidden sm:block" aria-live="polite">Good evening, Monica!</span>
-          <!-- Profile button now shows uploaded profile image when available -->
-          <button id="profileBtn" class="h-10 w-10 rounded-full bg-brand-600 text-white focus-ring flex items-center justify-center ring-4 ring-brand-200 relative animate-glow-pulse overflow-hidden" aria-label="Open profile menu" fdprocessedid="xlsam">
+    <div class="content" style="display:none">
+        <header class="bg-white/80 backdrop-blur-sm border-b border-ink-100 sticky top-0 z-40">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <a class="font-semibold tracking-tight text-xl font-heading text-ink-900" href="/">Hi Interviews</a>
+                    <div class="flex items-center gap-4">
+                        <span id="greeting" class="text-sm font-medium hidden sm:block" aria-live="polite">Good evening, Monica!</span>
+                        <!-- Profile button now shows uploaded profile image when available -->
+                        <button id="profileBtn" class="h-10 w-10 rounded-full bg-brand-600 text-white focus-ring flex items-center justify-center ring-4 ring-brand-200 relative animate-glow-pulse overflow-hidden" aria-label="Open profile menu" fdprocessedid="xlsam">
             <img id="profileAvatar" class="img-circle" src="" alt="M" style="display:none">
             <span id="profileInitial" class="font-bold" style="display: block;">M</span>
           </button>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main class="flex-grow bg-pattern">
-    <div class="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
-      <div id="candidateRules" class="mb-6 p-4 rounded-xl rulesNotice bg-amber-50/60 text-ink-800 shadow-sm">
-        <div class="flex items-start gap-3">
-          <div class="flex-shrink-0 mt-1"><i class="fa-solid fa-triangle-exclamation fa-lg"></i></div>
-          <div>
-            <h3 class="font-semibold">Important — Candidate Conduct Rules</h3>
-            <p class="text-sm mt-1">To keep the platform safe and fair, the actions below are strictly prohibited. Violation may result in immediate account termination and forfeiture of any pending refunds or credits.</p>
-            <ul class="mt-2 pl-5 text-sm list-disc space-y-1">
-              <li>Contacting or soliciting mentors/trainers directly outside the platform (phone, WhatsApp, personal email) for sessions or payment.</li>
-              <li>Offering or paying mentors/trainers money outside the platform for faster scheduling or extra services.</li>
-              <li>Sharing personal contact details with mentors/trainers or requesting theirs.</li>
-              <li>Impersonating another user, providing fraudulent documents, or attempting to manipulate session records.</li>
-              <li>Harassment, abusive language, or threats toward mentors, trainers, or staff.</li>
-            </ul>
-            <p class="mt-2 text-sm font-medium">If you experience or see any attempt to bypass the platform or request off-platform contact/payments, please report immediately via Support Chat.</p>
-            <div class="mt-3 flex gap-2">
-              <button id="ackCandidateRules" class="px-3 py-1 text-sm rounded bg-amber-400 text-white hover:bg-amber-500" fdprocessedid="w4pzs">Acknowledge</button>
-              <button id="reportCandidateIssue" class="px-3 py-1 text-sm rounded border" fdprocessedid="vr24h6j">Report to Support</button>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        </header>
 
-        <!-- Left Column: Main Status & History -->
-        <div class="lg:col-span-2 space-y-8">
-          
-         <div id="subscriptionContainer">
-  <!-- Dynamic content will be injected here -->
-</div>
+        <main class="flex-grow bg-pattern">
+            <div class="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
+                <div id="candidateRules" class="mb-6 p-4 rounded-xl rulesNotice bg-amber-50/60 text-ink-800 shadow-sm">
+                    <div class="flex items-start gap-3">
+                        <div class="flex-shrink-0 mt-1"><i class="fa-solid fa-triangle-exclamation fa-lg"></i></div>
+                        <div>
+                            <h3 class="font-semibold">Important — Candidate Conduct Rules</h3>
+                            <p class="text-sm mt-1">To keep the platform safe and fair, the actions below are strictly prohibited. Violation may result in immediate account termination and forfeiture of any pending refunds or credits.</p>
+                            <ul class="mt-2 pl-5 text-sm list-disc space-y-1">
+                                <li>Contacting or soliciting mentors/trainers directly outside the platform (phone, WhatsApp, personal email) for sessions or payment.</li>
+                                <li>Offering or paying mentors/trainers money outside the platform for faster scheduling or extra services.</li>
+                                <li>Sharing personal contact details with mentors/trainers or requesting theirs.</li>
+                                <li>Impersonating another user, providing fraudulent documents, or attempting to manipulate session records.</li>
+                                <li>Harassment, abusive language, or threats toward mentors, trainers, or staff.</li>
+                            </ul>
+                            <p class="mt-2 text-sm font-medium">If you experience or see any attempt to bypass the platform or request off-platform contact/payments, please report immediately via Support Chat.</p>
+                            <div class="mt-3 flex gap-2">
+                                <button id="ackCandidateRules" class="px-3 py-1 text-sm rounded bg-amber-400 text-white hover:bg-amber-500" fdprocessedid="w4pzs">Acknowledge</button>
+                                <button id="reportCandidateIssue" class="px-3 py-1 text-sm rounded border" fdprocessedid="vr24h6j">Report to Support</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
-          <!-- Session History Widget (unchanged but cleaner) -->
-        <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lift ring-1 ring-black/5 p-6">
-          <div class="flex items-center justify-between">
-            <h2 class="text-lg font-bold text-ink-800">Session History</h2>
-            <a href="#" id="view-all-sessions" class="text-sm text-brand-600 hover:underline hidden">View all</a>
-          </div>
-          <ul id="session-history-list" class="mt-4 space-y-4"></ul>
-        </div>
+                    <!-- Left Column: Main Status & History -->
+                    <div class="lg:col-span-2 space-y-8">
+
+                        <div id="subscriptionContainer">
+                            <!-- Dynamic content will be injected here -->
+                        </div>
+
+                        <!-- Session History Widget (unchanged but cleaner) -->
+                        <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lift ring-1 ring-black/5 p-6">
+                            <div class="flex items-center justify-between">
+                                <h2 class="text-lg font-bold text-ink-800">Session History</h2>
+                                <a href="#" id="view-all-sessions" class="text-sm text-brand-600 hover:underline hidden">View all</a>
+                            </div>
+                            <ul id="session-history-list" class="mt-4 space-y-4"></ul>
+                        </div>
 
 
-          <!-- Interview Buddy Request: improved guidance + nicer file area -->
-          <div id="buddy-request" class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lift ring-1 ring-black/5 p-6">
-            <div class="flex justify-between items-start">
-              <h2 class="text-lg font-bold text-ink-800">Request an Interview Buddy</h2>
-              <div class="text-sm text-ink-500">Use Support Chat — quick &amp; traceable</div>
-            </div>
+                        <!-- Interview Buddy Request: improved guidance + nicer file area -->
+                        <div id="buddy-request" class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lift ring-1 ring-black/5 p-6">
+                            <div class="flex justify-between items-start">
+                                <h2 class="text-lg font-bold text-ink-800">Request an Interview Buddy</h2>
+                                <div class="text-sm text-ink-500">Use Support Chat — quick &amp; traceable</div>
+                            </div>
 
-            <p class="text-sm text-ink-600 mt-3">We handle Interview Buddy requests via Support Chat so our agents have a clear record. Use the button below to copy a pre-formatted message and then paste it into the chat.</p>
+                            <p class="text-sm text-ink-600 mt-3">We handle Interview Buddy requests via Support Chat so our agents have a clear record. Use the button below to copy a pre-formatted message and then paste it into the chat.</p>
 
-            <div class="mt-4 space-y-3">
-              <label class="text-sm font-medium text-ink-700">Suggested message format (editable)</label>
-              <textarea id="buddyMessageSample" class="mt-2 w-full h-28 p-3 rounded-lg border border-ink-200 bg-white text-sm focus-ring" aria-label="Sample message for support chat">Hi, I am Monica. I have an Azure DevOps interview on August 15 at 5:00 PM (1 hour), first round at Company XYZ. I have uploaded the JD and other documents. Please assign an Interview Buddy ASAP. Thanks — Monica, +91-98765 43210
+                            <div class="mt-4 space-y-3">
+                                <label class="text-sm font-medium text-ink-700">Suggested message format (editable)</label>
+                                <textarea id="buddyMessageSample" class="mt-2 w-full h-28 p-3 rounded-lg border border-ink-200 bg-white text-sm focus-ring" aria-label="Sample message for support chat">Hi, I am Monica. I have an Azure DevOps interview on August 15 at 5:00 PM (1 hour), first round at Company XYZ. I have uploaded the JD and other documents. Please assign an Interview Buddy ASAP. Thanks — Monica, +91-98765 43210
               </textarea>
 
-              <div class="flex gap-2">
-                <button id="copyToChatBtn" class="px-4 py-2 rounded-md bg-brand-600 text-white hover:bg-brand-700" fdprocessedid="taqykd">Copy formatted message</button>
-                <!--<a class="px-4 py-2 rounded-md bg-ink-100 hover:bg-ink-200" href="customer_chat.html" id="openChatBtn">Open Support Chat</a> -->
-                <button id="autoFillChatBtn" class="px-4 py-2 rounded-md bg-amber-50 hover:bg-amber-100" fdprocessedid="21t61">Auto-fill sample &amp; Quick tips</button>
-              </div>
+                                <div class="flex gap-2">
+                                    <button id="copyToChatBtn" class="px-4 py-2 rounded-md bg-brand-600 text-white hover:bg-brand-700" fdprocessedid="taqykd">Copy formatted message</button>
+                                    <!--<a class="px-4 py-2 rounded-md bg-ink-100 hover:bg-ink-200" href="customer_chat.html" id="openChatBtn">Open Support Chat</a> -->
+                                    <button id="autoFillChatBtn" class="px-4 py-2 rounded-md bg-amber-50 hover:bg-amber-100" fdprocessedid="21t61">Auto-fill sample &amp; Quick tips</button>
+                                </div>
 
-              <p id="buddyCopyStatus" class="text-sm text-ink-600 mt-2">Tip: After copying, paste into Support Chat (Ctrl/Cmd+V) and press send.</p>
+                                <p id="buddyCopyStatus" class="text-sm text-ink-600 mt-2">Tip: After copying, paste into Support Chat (Ctrl/Cmd+V) and press send.</p>
 
-              <div class="mt-2">
-                <label class="text-sm font-medium text-ink-700">Upload Job Description and supporting docs (optional)</label>
-                <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <input id="jdInput_buddy" type="file" accept=".pdf,.doc,.docx,.txt" class="w-full text-xs file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100">
-                  <input id="otherInput_buddy" type="file" multiple="" class="w-full text-xs file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-ink-50 file:text-ink-700 hover:file:bg-ink-100">
+                                <div class="mt-2">
+                                    <label class="text-sm font-medium text-ink-700">Upload Job Description and supporting docs (optional)</label>
+                                    <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        <input id="jdInput_buddy" type="file" accept=".pdf,.doc,.docx,.txt" class="w-full text-xs file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100">
+                                        <input id="otherInput_buddy" type="file" multiple="" class="w-full text-xs file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-ink-50 file:text-ink-700 hover:file:bg-ink-100">
+                                    </div>
+                                    <div id="buddyUploadedFiles" class="file-list mt-2 text-xs text-ink-600">No files selected.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column: Details & Actions -->
+                    <div class="space-y-8">
+
+                        <!-- Flippable Coin Balance Widget -->
+                        <div id="coinContainer"></div>
+
+                        <!-- Profile Details Widget: moved profile picture here -->
+                        <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lift ring-1 ring-black/5 p-6">
+                            <div class="flex justify-between items-center">
+                                <h2 class="text-lg font-bold text-ink-800">Your Details</h2>
+                                <button id="edit-profile-btn" class="text-sm font-medium text-brand-600 hover:text-brand-800" fdprocessedid="5zxjob">Edit</button>
+                            </div>
+
+                            <div id="profile-display" class="mt-4 space-y-2 text-sm">
+                                <div class="flex items-center justify-between gap-4">
+                                    <div class="flex items-center gap-4">
+                                        <div id="displayAvatarWrap" class="w-14 h-14 rounded-full bg-ink-100 flex items-center justify-center overflow-hidden">
+                                            <img id="displayAvatar" src="" alt="avatar" class="img-circle" style="display:none">
+                                            <span id="displayInitial" class="text-xl font-bold text-white bg-brand-600 inline-flex w-14 h-14 items-center justify-center rounded-full">M</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-ink-700 user-fullname">Monica Geller</div>
+                                            <!-- <div class="text-xs text-ink-500">Java / SAP / Interview prep</div> -->
+                                        </div>
+                                    </div>
+                                    <!-- <div class="text-xs text-ink-500">Member since 2024</div> -->
+                                </div>
+
+                                <div class="mt-3">
+                                    <div class="flex justify-between"><span>Email</span><span class="font-medium text-ink-700 user-email">monica.g@example.com</span></div>
+                                    <div class="flex justify-between"><span>Contact</span><span class="font-medium text-ink-700 user-mob-number">+91 98765 43210</span></div>
+                                    <!-- <div class="flex justify-between"><span>Alt. Contact</span><span class="font-medium text-ink-700 user-alt-mob-number">N/A</span></div>
+                                    <div class="flex justify-between items-center"><span>CV</span><a href="#" class="font-medium text-brand-600 hover:underline user-cv">Monica_SAP_CV.pdf</a></div> -->
+                                </div>
+                            </div>
+
+                            <!-- Profile edit area (including profile picture upload) -->
+                            <div id="profile-edit" class="hidden mt-4 space-y-3">
+                                <div>
+                                    <label class="text-xs text-ink-600">Profile photo (headshot, full face visible)</label>
+                                    <div class="mt-2 flex items-center gap-3">
+                                        <input id="avatarInput" type="file" accept="image/*" class="text-xs">
+                                        <button id="removeAvatarBtn" class="px-3 py-1 rounded-md bg-ink-100 hover:bg-ink-200 text-xs" style="display:none">Remove</button>
+                                    </div>
+                                    <div id="avatarPreviewWrap" class="mt-3"></div>
+                                </div>
+
+                                <div>
+                                    <label class="text-xs text-ink-600">Contact Number</label>
+                                    <input id="editContact" type="text" value="+91 98765 43210" class="w-full h-10 px-3 mt-1 text-sm rounded-lg border border-ink-200 bg-ink-50 focus-ring">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-ink-600">Alt. Contact</label>
+                                    <input id="editAltContact" type="text" placeholder="N/A" class="w-full h-10 px-3 mt-1 text-sm rounded-lg border border-ink-200 bg-ink-50 focus-ring">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-ink-600">Upload New CV</label>
+                                    <input id="cvUpload" type="file" class="w-full text-xs mt-1 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100">
+                                </div>
+
+                                <div class="flex justify-end gap-2">
+                                    <button id="cancelProfileEdit" class="px-3 py-2 rounded-md bg-ink-100 hover:bg-ink-200 text-sm">Cancel</button>
+                                    <button id="saveProfileBtn" class="px-3 py-2 rounded-md bg-brand-600 text-white hover:bg-brand-700 text-sm">Save</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions Widget (unchanged) -->
+                        <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lift ring-1 ring-black/5 p-6">
+                            <h2 class="text-lg font-bold text-ink-800">Support &amp; Actions</h2>
+                            <div id="actions-container" class="mt-4 space-y-2">
+                                <!--<a class="block w-full text-left text-sm font-medium text-ink-700 hover:text-brand-600 transition p-2 rounded-md hover:bg-ink-100" href="customer_chat.html">Chat with Support</a> -->
+                                <button id="callback-btn" class="w-full text-left text-sm font-medium text-ink-700 hover:text-brand-600 transition p-2 rounded-md hover:bg-ink-100" fdprocessedid="p2enu">Request a Call Back</button>
+                                <button id="complaint-btn" class="w-full text-left text-sm font-medium text-ink-700 hover:text-brand-600 transition p-2 rounded-md hover:bg-ink-100" fdprocessedid="anpac">Raise a Complaint</button>
+                                <a class="block w-full text-left text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 transition p-2 rounded-md text-center" href="store.html">Buy Interview Credits</a>
+                                <button class="w-full text-left text-sm font-medium text-accent-rose hover:opacity-80 transition p-2 rounded-md hover:bg-rose-50 logout-btn" fdprocessedid="hrj62s">Logout</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div id="buddyUploadedFiles" class="file-list mt-2 text-xs text-ink-600">No files selected.</div>
-              </div>
             </div>
-          </div>
+        </main>
+    </div>
+    <!-- Modals (complaint modal + purchase confirm modal) -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden animate-fade-in" aria-hidden="true"></div>
 
-        </div>
-
-        <!-- Right Column: Details & Actions -->
-        <div class="space-y-8">
-
-          <!-- Flippable Coin Balance Widget -->
-          <div id ="coinContainer"></div>
-         
-          <!-- Profile Details Widget: moved profile picture here -->
-          <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lift ring-1 ring-black/5 p-6">
+    <div id="complaint-modal" class="fixed inset-0 flex items-center justify-center z-50 p-4 hidden" role="dialog" aria-modal="true" aria-labelledby="complaintTitle">
+        <div class="bg-white rounded-2xl p-6 shadow-lift max-w-md w-full animate-scale-in">
             <div class="flex justify-between items-center">
-                <h2 class="text-lg font-bold text-ink-800">Your Details</h2>
-                <button id="edit-profile-btn" class="text-sm font-medium text-brand-600 hover:text-brand-800" fdprocessedid="5zxjob">Edit</button>
+                <h2 id="complaintTitle" class="text-lg font-bold text-ink-800">Raise a Complaint</h2>
+                <button class="close-modal-btn text-ink-400 hover:text-ink-600 text-2xl" aria-label="Close">×</button>
             </div>
-
-            <div id="profile-display" class="mt-4 space-y-2 text-sm">
-              <div class="flex items-center justify-between gap-4">
-                <div class="flex items-center gap-4">
-                  <div id="displayAvatarWrap" class="w-14 h-14 rounded-full bg-ink-100 flex items-center justify-center overflow-hidden">
-                    <img id="displayAvatar" src="" alt="avatar" class="img-circle" style="display:none">
-                    <span id="displayInitial" class="text-xl font-bold text-white bg-brand-600 inline-flex w-14 h-14 items-center justify-center rounded-full">M</span>
-                  </div>
-                  <div>
-                    <div class="font-medium text-ink-700 user-fullname">Monica Geller</div>
-                    <div class="text-xs text-ink-500">Java / SAP / Interview prep</div>
-                  </div>
-                </div>
-                <div class="text-xs text-ink-500">Member since 2024</div>
-              </div>
-
-              <div class="mt-3">
-                <div class="flex justify-between"><span>Email</span><span class="font-medium text-ink-700 user-email">monica.g@example.com</span></div>
-                <div class="flex justify-between"><span>Contact</span><span class="font-medium text-ink-700 user-mob-number">+91 98765 43210</span></div>
-                <div class="flex justify-between"><span>Alt. Contact</span><span class="font-medium text-ink-700 user-alt-mob-number">N/A</span></div>
-                <div class="flex justify-between items-center"><span>CV</span><a href="#" class="font-medium text-brand-600 hover:underline user-cv">Monica_SAP_CV.pdf</a></div>
-              </div>
+            <p class="text-sm text-ink-600 mt-1">Please describe your issue below. Our team will get back to you within 24 hours.</p>
+            <textarea id="complaint-text" placeholder="Describe your issue here..." class="mt-4 w-full h-32 p-2 text-sm rounded-lg border border-ink-200 bg-ink-50 focus-ring"></textarea>
+            <div class="mt-4 flex justify-end gap-3">
+                <button class="close-modal-btn bg-ink-100 text-ink-700 font-medium py-2 px-4 rounded-lg hover:bg-ink-200 transition text-sm">Cancel</button>
+                <button id="submit-complaint-btn" class="bg-brand-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-brand-700 transition text-sm">Submit</button>
             </div>
-
-            <!-- Profile edit area (including profile picture upload) -->
-            <div id="profile-edit" class="hidden mt-4 space-y-3">
-                <div>
-                  <label class="text-xs text-ink-600">Profile photo (headshot, full face visible)</label>
-                  <div class="mt-2 flex items-center gap-3">
-                    <input id="avatarInput" type="file" accept="image/*" class="text-xs">
-                    <button id="removeAvatarBtn" class="px-3 py-1 rounded-md bg-ink-100 hover:bg-ink-200 text-xs" style="display:none">Remove</button>
-                  </div>
-                  <div id="avatarPreviewWrap" class="mt-3"></div>
-                </div>
-
-                <div>
-                  <label class="text-xs text-ink-600">Contact Number</label>
-                  <input id="editContact" type="text" value="+91 98765 43210" class="w-full h-10 px-3 mt-1 text-sm rounded-lg border border-ink-200 bg-ink-50 focus-ring">
-                </div>
-                <div>
-                  <label class="text-xs text-ink-600">Alt. Contact</label>
-                  <input id="editAltContact" type="text" placeholder="N/A" class="w-full h-10 px-3 mt-1 text-sm rounded-lg border border-ink-200 bg-ink-50 focus-ring">
-                </div>
-                <div>
-                  <label class="text-xs text-ink-600">Upload New CV</label>
-                  <input id="cvUpload" type="file" class="w-full text-xs mt-1 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100">
-                </div>
-
-                <div class="flex justify-end gap-2">
-                  <button id="cancelProfileEdit" class="px-3 py-2 rounded-md bg-ink-100 hover:bg-ink-200 text-sm">Cancel</button>
-                  <button id="saveProfileBtn" class="px-3 py-2 rounded-md bg-brand-600 text-white hover:bg-brand-700 text-sm">Save</button>
-                </div>
-            </div>
-          </div>
-
-          <!-- Quick Actions Widget (unchanged) -->
-          <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lift ring-1 ring-black/5 p-6">
-            <h2 class="text-lg font-bold text-ink-800">Support &amp; Actions</h2>
-            <div id="actions-container" class="mt-4 space-y-2">
-             <!--<a class="block w-full text-left text-sm font-medium text-ink-700 hover:text-brand-600 transition p-2 rounded-md hover:bg-ink-100" href="customer_chat.html">Chat with Support</a> --> 
-              <button id="callback-btn" class="w-full text-left text-sm font-medium text-ink-700 hover:text-brand-600 transition p-2 rounded-md hover:bg-ink-100" fdprocessedid="p2enu">Request a Call Back</button>
-              <button id="complaint-btn" class="w-full text-left text-sm font-medium text-ink-700 hover:text-brand-600 transition p-2 rounded-md hover:bg-ink-100" fdprocessedid="anpac">Raise a Complaint</button>
-              <a class="block w-full text-left text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 transition p-2 rounded-md text-center" href="payment.html">Buy Interview Credits</a>
-              <button class="w-full text-left text-sm font-medium text-accent-rose hover:opacity-80 transition p-2 rounded-md hover:bg-rose-50 logout-btn" fdprocessedid="hrj62s">Logout</button>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </main>
-</div>
-  <!-- Modals (complaint modal + purchase confirm modal) -->
-  <div id="modal-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden animate-fade-in" aria-hidden="true"></div>
 
-  <div id="complaint-modal" class="fixed inset-0 flex items-center justify-center z-50 p-4 hidden" role="dialog" aria-modal="true" aria-labelledby="complaintTitle">
-    <div class="bg-white rounded-2xl p-6 shadow-lift max-w-md w-full animate-scale-in">
-      <div class="flex justify-between items-center">
-        <h2 id="complaintTitle" class="text-lg font-bold text-ink-800">Raise a Complaint</h2>
-        <button class="close-modal-btn text-ink-400 hover:text-ink-600 text-2xl" aria-label="Close">×</button>
-      </div>
-      <p class="text-sm text-ink-600 mt-1">Please describe your issue below. Our team will get back to you within 24 hours.</p>
-      <textarea id="complaint-text" placeholder="Describe your issue here..." class="mt-4 w-full h-32 p-2 text-sm rounded-lg border border-ink-200 bg-ink-50 focus-ring"></textarea>
-      <div class="mt-4 flex justify-end gap-3">
-        <button class="close-modal-btn bg-ink-100 text-ink-700 font-medium py-2 px-4 rounded-lg hover:bg-ink-200 transition text-sm">Cancel</button>
-        <button id="submit-complaint-btn" class="bg-brand-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-brand-700 transition text-sm">Submit</button>
-      </div>
+    <!-- Purchase confirm modal for better UX before redirecting -->
+    <div id="purchase-modal" class="fixed inset-0 flex items-center justify-center z-50 p-4 hidden" role="dialog" aria-modal="true" aria-labelledby="purchaseTitle">
+        <div class="bg-white rounded-2xl p-6 shadow-lift max-w-sm w-full animate-scale-in">
+            <div class="flex justify-between items-center">
+                <h2 id="purchaseTitle" class="text-lg font-bold text-ink-800">Buy / Upgrade Package</h2>
+                <button id="closePurchaseModal" class="text-ink-400 hover:text-ink-600 text-2xl" aria-label="Close">×</button>
+            </div>
+            <p class="text-sm text-ink-600 mt-2">You will be redirected to the store page to choose a plan.</p>
+            <div class="mt-4 flex gap-2 justify-end">
+                <button id="cancelPurchaseBtn" class="px-3 py-2 rounded-md bg-ink-100 hover:bg-ink-200 text-sm">Cancel</button>
+                <button id="confirmPurchaseBtn" class="px-3 py-2 rounded-md bg-brand-600 text-white hover:bg-brand-700 text-sm">Proceed to Store</button>
+            </div>
+        </div>
     </div>
-  </div>
+     <script src="scripts/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
 
-  <!-- Purchase confirm modal for better UX before redirecting -->
-  <div id="purchase-modal" class="fixed inset-0 flex items-center justify-center z-50 p-4 hidden" role="dialog" aria-modal="true" aria-labelledby="purchaseTitle">
-    <div class="bg-white rounded-2xl p-6 shadow-lift max-w-sm w-full animate-scale-in">
-      <div class="flex justify-between items-center">
-        <h2 id="purchaseTitle" class="text-lg font-bold text-ink-800">Buy / Upgrade Package</h2>
-        <button id="closePurchaseModal" class="text-ink-400 hover:text-ink-600 text-2xl" aria-label="Close">×</button>
-      </div>
-      <p class="text-sm text-ink-600 mt-2">You will be redirected to the payment page to complete your purchase. Choose a secure payment method there.</p>
-      <div class="mt-4 flex gap-2 justify-end">
-        <button id="cancelPurchaseBtn" class="px-3 py-2 rounded-md bg-ink-100 hover:bg-ink-200 text-sm">Cancel</button>
-        <button id="confirmPurchaseBtn" class="px-3 py-2 rounded-md bg-brand-600 text-white hover:bg-brand-700 text-sm">Proceed to Payment</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', async function(){
-       const qs = sel => document.querySelector(sel);
-      const qsa = sel => document.querySelectorAll(sel);
-
-         
-      // greeting (keeps existing behavior but accessible)
-      
-   
-
-      
-      // profile edit toggles and avatar logic (camelCase variable names per preference)
-      const editProfileBtn = qs('#edit-profile-btn');
-      const profileDisplay = qs('#profile-display');
-      const profileEdit = qs('#profile-edit');
-      const avatarInput = qs('#avatarInput');
-      const avatarPreviewWrap = qs('#avatarPreviewWrap');
-      const displayAvatar = qs('#displayAvatar');
-      const displayInitial = qs('#displayInitial');
-      const profileInitial = qs('#profileInitial');
-      const removeAvatarBtn = qs('#removeAvatarBtn');
-      let avatarUrl = null;
-
-      editProfileBtn.addEventListener('click', () => {
-        const editing = profileEdit.classList.contains('hidden');
-        profileEdit.classList.toggle('hidden', !editing);
-        profileDisplay.classList.toggle('hidden', editing);
-        editProfileBtn.textContent = editing ? '' : 'Edit';
-        
-
-      });
-
-      avatarInput.addEventListener('change', (e) => {
-        const f = e.target.files && e.target.files[0];
-        if (!f) return;
-        if (avatarUrl) URL.revokeObjectURL(avatarUrl);
-        avatarUrl = URL.createObjectURL(f);
-        avatarPreviewWrap.innerHTML = `<img src="${avatarUrl}" class="img-circle" alt="avatar preview">`;
-        displayAvatar.src = avatarUrl;
-        displayAvatar.style.display = 'block';
-        qs("#profileAvatar").style.display = 'block';
-        qs("#profileAvatar").src = avatarUrl;
-        displayInitial.style.display = 'none';
-        profileInitial.style.display = 'none';
-        removeAvatarBtn.style.display = 'inline-flex';
-      });
-
-      removeAvatarBtn.addEventListener('click', () => {
-        if (avatarUrl) URL.revokeObjectURL(avatarUrl);
-        avatarUrl = null;
-        avatarPreviewWrap.innerHTML = '';
-        displayAvatar.src = '';
-        qs("#profileAvatar").style.display = 'none';
-        qs("#profileAvatar").src = '';
-        displayAvatar.style.display = 'none';
-        displayInitial.style.display = 'block';
-        profileInitial.style.display = 'block';
-        avatarInput.value = '';
-        removeAvatarBtn.style.display = 'none';
-      });
-
-      qs('#cancelProfileEdit').addEventListener('click', () => {
-        profileEdit.classList.add('hidden');
-        profileDisplay.classList.remove('hidden');
-        editProfileBtn.textContent = 'Edit';
-      });
-
-      qs('#saveProfileBtn').addEventListener('click', async function(){
-        // in demo mode, just close and show saved UI
-          let accessToken = localStorage.getItem('accessToken');
-         const cvInput = qs("#cvUpload")
-         const formData = new FormData();
-          if (avatarInput.files[0]) {
-            formData.append("profile_photo", avatarInput.files[0]);
-          }
-          else{
-            formData.append("profile_photo",'')
-          }
-
-           if (cvInput.files[0]) {   
-            formData.append('cv', cvInput.files[0]);
-           }
-          formData.append("mobile_number", qs("#editContact").value);
-          formData.append("alt_mobile_number", qs("#editAltContact").value);
-
-         
-         
-      
-          try {
-            const res = await fetch("https://hiinterview-backend-1.onrender.com/api/update/user-profile/", {
-
-              headers: { 
-                'Authorization': `Bearer ${accessToken}`
-            },
-              method: "PUT",
-              body: formData
+           checkWebsiteStatus().then(active => {
+                 if (!active) return; 
             });
+                    const qs = sel => document.querySelector(sel);
+                    const qsa = sel => document.querySelectorAll(sel);
 
-              if (res.status === 401) {
-                  accessToken = await refreshAccessToken();
-                  if (!accessToken) return; 
-                  refreshToken = localStorage.getItem('refreshToken');
-                  response = await fetch('https://hiinterview-backend-1.onrender.com/api/update/user-profile/', {
-                      headers: { 
-                      'Authorization': `Bearer ${accessToken}`
-                  },
-                    method: "PUT",
-                    body: formData
-                  });
-              }
+                    // profile edit toggles and avatar logic (camelCase variable names per preference)
+                    const editProfileBtn = qs('#edit-profile-btn');
+                    const profileDisplay = qs('#profile-display');
+                    const profileEdit = qs('#profile-edit');
+                    const avatarInput = qs('#avatarInput');
+                    const avatarPreviewWrap = qs('#avatarPreviewWrap');
+                    const displayAvatar = qs('#displayAvatar');
+                    const displayInitial = qs('#displayInitial');
+                    const profileInitial = qs('#profileInitial');
+                    const removeAvatarBtn = qs('#removeAvatarBtn');
+                    let avatarUrl = null;
 
-            if (!res.ok) throw new Error("Failed to save profile");
-            const data = await res.json();
-
-            if (data.profile_photo_url) {
-              const url = 'https://hiinterview-backend-1.onrender.com'
-            displayAvatar.src = `${url}${data.profile_photo_url}`;
-              qs("#profileAvatar").src = `${url}${data.profile_photo_url}`;
-              displayAvatar.style.display = "block";
-              displayInitial.style.display = "none";
-              profileInitial.style.display = "none";
-            }
-            const userCvLink = document.querySelector(".user-cv");
-            if (data.cv) {
-                const fileName = data.cv.split("/").pop();
-                userCvLink.textContent = fileName; 
-                  let url ="https://hiinterview-backend-1.onrender.com"   
-                userCvLink.href = `${url}${data.cv_url}`;        
-                userCvLink.target = "_blank";   
-                                 
-            } else {
-                userCvLink.textContent = "N/A";
-                userCvLink.removeAttribute("href");
-                userCvLink.removeAttribute("target");
-            }
-
-            document.querySelector(".user-mob-number").textContent = data.mobile_number || "N/A";
-            document.querySelector(".user-alt-mob-number").textContent = data.alt_mobile_number || "N/A";
-            
-
-            profileEdit.classList.add("hidden");
-            profileDisplay.classList.remove("hidden");
-            editProfileBtn.textContent = "Edit";
-
-            const savedToast = document.createElement("div");
-            savedToast.className = "fixed bottom-6 right-6 bg-brand-600 text-white px-4 py-2 rounded shadow";
-            savedToast.textContent = "Profile saved.";
-            document.body.appendChild(savedToast);
-            setTimeout(() => savedToast.remove(), 2400);
-
-          } catch (err) {
-            console.error(err);
-          }
-      });
-
-      // complaint modal
-      const modalBackdrop = qs('#modal-backdrop');
-      const complaintModal = qs('#complaint-modal');
-      function openModal(m){ modalBackdrop.classList.remove('hidden'); m.classList.remove('hidden'); m.setAttribute('aria-hidden','false'); }
-      function closeModal(){ modalBackdrop.classList.add('hidden'); complaintModal.classList.add('hidden'); complaintModal.setAttribute('aria-hidden','true'); }
-      qs('#complaint-btn').addEventListener('click', ()=>openModal(complaintModal));
-      modalBackdrop.addEventListener('click', closeModal);
-      qsa('.close-modal-btn').forEach(btn => btn.addEventListener('click', closeModal));
-      qs('#submit-complaint-btn').addEventListener('click', ()=>{ 
-        // friendly UX: show small confirmation
-        const submitted = document.createElement('div');
-        submitted.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-accent-mint text-white px-4 py-2 rounded shadow';
-        submitted.textContent = 'Complaint submitted. We will review it shortly.';
-        document.body.appendChild(submitted);
-        setTimeout(()=> submitted.remove(), 3200);
-        closeModal();
-      });
-
-      // callback
-      const callbackBtn = qs('#callback-btn');
-      const actionsContainer = qs('#actions-container');
-      callbackBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        callbackBtn.disabled = true;
-        callbackBtn.innerText = 'Request Sent!';
-        const feedback = document.createElement('p');
-        feedback.className = 'text-xs text-accent-mint p-2 text-center';
-        feedback.textContent = 'Our team will call you back within 4 business hours.';
-        actionsContainer.appendChild(feedback);
-        setTimeout(()=>{ feedback.remove(); callbackBtn.disabled=false; callbackBtn.innerText='Request a Call Back'; },5000);
-      });
-
-      // ---------------- Buddy request simplified logic ----------------
-      const copyBtn = qs('#copyToChatBtn');
-      const openChatBtn = qs('#openChatBtn');
-      const autoFillBtn = qs('#autoFillChatBtn');
-      const buddyMessageSample = qs('#buddyMessageSample');
-      const buddyUploadedFiles = qs('#buddyUploadedFiles');
-      const jdInputBuddy = qs('#jdInput_buddy');
-      const otherInputBuddy = qs('#otherInput_buddy');
-      const buddyCopyStatus = qs('#buddyCopyStatus');
-
-      // update file list
-      function updateBuddyFilesList(){
-        const parts = [];
-        if (jdInputBuddy.files && jdInputBuddy.files[0]) {
-          parts.push(`<div><strong>JD:</strong> ${jdInputBuddy.files[0].name}</div>`);
-        }
-        if (otherInputBuddy.files && otherInputBuddy.files.length>0) {
-          const names = Array.from(otherInputBuddy.files).map(f=>f.name).join(', ');
-          parts.push(`<div><strong>Other:</strong> ${names}</div>`);
-        }
-        buddyUploadedFiles.innerHTML = parts.join('') || '<div class="text-xs text-ink-500">No files selected.</div>';
-      }
-      jdInputBuddy.addEventListener('change', updateBuddyFilesList);
-      otherInputBuddy.addEventListener('change', updateBuddyFilesList);
-
-      // copy to clipboard
-      copyBtn.addEventListener('click', async () => {
-        const text = buddyMessageSample.value.trim();
-        if (!text) return;
-        try {
-          await navigator.clipboard.writeText(text);
-          buddyCopyStatus.textContent = 'Message copied. Paste it into Support Chat (Ctrl/Cmd+V).';
-          setTimeout(()=> buddyCopyStatus.textContent = 'Tip: After copying, paste into Support Chat (Ctrl/Cmd+V) and press send.', 4000);
-        } catch (err) {
-          buddyCopyStatus.textContent = 'Copy failed — please select the message and press Ctrl/Cmd+C.';
-        }
-      });
-
-      // auto fill sample to clipboard + show quick tips
-      autoFillBtn.addEventListener('click', async () => {
-        const text = buddyMessageSample.value.trim();
-        try {
-          await navigator.clipboard.writeText(text);
-          buddyCopyStatus.textContent = 'Copied sample message. Open Support Chat and paste it.';
-          // show a tiny quick tips popup (simple)
-          const tips = document.createElement('div');
-          tips.className = 'mt-2 p-2 text-sm text-ink-700 bg-white rounded shadow';
-          tips.innerHTML = '<strong>Quick tips:</strong><ul class="list-disc pl-4"><li>Attach JD & files using the chat file-picker</li><li>Mention timezone for exact scheduling</li></ul>';
-          autoFillBtn.after(tips);
-          setTimeout(()=> tips.remove(), 6000);
-        } catch (err) {
-          buddyCopyStatus.textContent = 'Copy failed — please select the message and press Ctrl/Cmd+C.';
-        }
-      });
-
-      // Open chat button already links to customer_chat.html — nothing else needed
-
-      // ---------------- profile avatar header initial state ----------------
-      qs('#profileAvatar').style.display = 'none';
-      qs('#profileInitial').style.display = 'block';
-
-      // ---------------- other small housekeeping ----------------
-      // profile avatar in header mirrors displayAvatar after saving (handled on Save)
-      // prevent form submissions causing reload if any forms present
-      document.querySelectorAll('form').forEach(f => f.addEventListener('submit', e => e.preventDefault()));
+                    editProfileBtn.addEventListener('click', () => {
+                        const editing = profileEdit.classList.contains('hidden');
+                        profileEdit.classList.toggle('hidden', !editing);
+                        profileDisplay.classList.toggle('hidden', editing);
+                        editProfileBtn.textContent = editing ? '' : 'Edit';
 
 
-      let accessToken = localStorage.getItem('accessToken')  ;
-          let refreshToken = localStorage.getItem('refreshToken');
+                    });
 
-          let spinner = document.getElementById("spinner");
-          let content = document.querySelector('.content');
-        
-          if (!refreshToken) {
-              clearTokensAndRedirect();
-              return;
-          }
+                    avatarInput.addEventListener('change', (e) => {
+                        const f = e.target.files && e.target.files[0];
+                        if (!f) return;
+                        if (avatarUrl) URL.revokeObjectURL(avatarUrl);
+                        avatarUrl = URL.createObjectURL(f);
+                        avatarPreviewWrap.innerHTML = `<img src="${avatarUrl}" class="img-circle" alt="avatar preview">`;
+                        displayAvatar.src = avatarUrl;
+                        displayAvatar.style.display = 'block';
+                        qs("#profileAvatar").style.display = 'block';
+                        qs("#profileAvatar").src = avatarUrl;
+                        displayInitial.style.display = 'none';
+                        profileInitial.style.display = 'none';
+                        removeAvatarBtn.style.display = 'inline-flex';
+                    });
 
-          try {
-              let response = await fetch('https://hiinterview-backend-1.onrender.com/api/userprofile/', {
-                  method: 'GET',
-                  headers: { 
-                      'Content-Type': 'application/json',
-                      'Authorization': `Bearer ${accessToken}`
-                  },
-                
-              });
+                    removeAvatarBtn.addEventListener('click', () => {
+                        if (avatarUrl) URL.revokeObjectURL(avatarUrl);
+                        avatarUrl = null;
+                        avatarPreviewWrap.innerHTML = '';
+                        displayAvatar.src = '';
+                        qs("#profileAvatar").style.display = 'none';
+                        qs("#profileAvatar").src = '';
+                        displayAvatar.style.display = 'none';
+                        displayInitial.style.display = 'block';
+                        profileInitial.style.display = 'block';
+                        avatarInput.value = '';
+                        removeAvatarBtn.style.display = 'none';
+                    });
 
-              if (response.status === 401) {
-                  accessToken = await refreshAccessToken();
-                  if (!accessToken) return; 
-                  refreshToken = localStorage.getItem('refreshToken');
-                  response = await fetch('https://hiinterview-backend-1.onrender.com/api/userprofile/', {
-                      method: 'GET',
-                      headers: { 
-                          'Content-Type': 'application/json',
-                          'Authorization': `Bearer ${accessToken}`
-                      },
-                      
-                  });
-              }
+                    qs('#cancelProfileEdit').addEventListener('click', () => {
+                        profileEdit.classList.add('hidden');
+                        profileDisplay.classList.remove('hidden');
+                        editProfileBtn.textContent = 'Edit';
+                    });
 
-              if (response.status === 403) {
-                        spinner.style.display = "none"; 
-                        window.location.href = "404.html";
+                    qs('#saveProfileBtn').addEventListener('click', async function() {
+                        // in demo mode, just close and show saved UI
+                        let accessToken = localStorage.getItem('accessToken');
+                        const cvInput = qs("#cvUpload")
+                        const formData = new FormData();
+                        if (avatarInput.files[0]) {
+                            formData.append("profile_photo", avatarInput.files[0]);
+                        } else {
+                            formData.append("profile_photo", '')
                         }
-                        else{
-                        content.style.display = "block"; 
-                        spinner.style.display = "none"; 
+
+                        if (cvInput.files[0]) {
+                            formData.append('cv', cvInput.files[0]);
+                        }
+                        formData.append("mobile_number", qs("#editContact").value);
+                        formData.append("alt_mobile_number", qs("#editAltContact").value);
+
+
+
+
+                        try {
+                            const res = await fetch("https://hiinterview-backend-1.onrender.com/api/update/user-profile/", {
+
+                                headers: {
+                                    'Authorization': `Bearer ${accessToken}`
+                                },
+                                method: "PUT",
+                                body: formData
+                            });
+
+                            if (res.status === 401) {
+                                accessToken = await refreshAccessToken();
+                                if (!accessToken) return;
+                                refreshToken = localStorage.getItem('refreshToken');
+                                response = await fetch('https://hiinterview-backend-1.onrender.com/api/update/user-profile/', {
+                                    headers: {
+                                        'Authorization': `Bearer ${accessToken}`
+                                    },
+                                    method: "PUT",
+                                    body: formData
+                                });
+                            }
+
+                            if (!res.ok) throw new Error("Failed to save profile");
+                            const data = await res.json();
+
+                            if (data.profile_photo_url) {
+                                const url = 'https://hiinterview-backend-1.onrender.com'
+                                displayAvatar.src = `${url}${data.profile_photo_url}`;
+                                qs("#profileAvatar").src = `${url}${data.profile_photo_url}`;
+                                displayAvatar.style.display = "block";
+                                displayInitial.style.display = "none";
+                                profileInitial.style.display = "none";
+                            }
+                            // const userCvLink = document.querySelector(".user-cv");
+                            // if (data.cv) {
+                            //     const fileName = data.cv.split("/").pop();
+                            //     userCvLink.textContent = fileName;
+                            //     let url = "https://hiinterview-backend-1.onrender.com"
+                            //     userCvLink.href = `${url}${data.cv_url}`;
+                            //     userCvLink.target = "_blank";
+
+                            // } else {
+                            //     userCvLink.textContent = "N/A";
+                            //     userCvLink.removeAttribute("href");
+                            //     userCvLink.removeAttribute("target");
+                            // }
+
+                            document.querySelector(".user-mob-number").textContent = data.mobile_number || "N/A";
+                            //document.querySelector(".user-alt-mob-number").textContent = data.alt_mobile_number || "N/A";
+
+
+                            profileEdit.classList.add("hidden");
+                            profileDisplay.classList.remove("hidden");
+                            editProfileBtn.textContent = "Edit";
+
+                            const savedToast = document.createElement("div");
+                            savedToast.className = "fixed bottom-6 right-6 bg-brand-600 text-white px-4 py-2 rounded shadow";
+                            savedToast.textContent = "Profile saved.";
+                            document.body.appendChild(savedToast);
+                            setTimeout(() => savedToast.remove(), 2400);
+
+                        } catch (err) {
+                            console.error(err);
+                        }
+                    });
+
+                    // complaint modal
+                    const modalBackdrop = qs('#modal-backdrop');
+                    const complaintModal = qs('#complaint-modal');
+
+                    function openModal(m) {
+                        modalBackdrop.classList.remove('hidden');
+                        m.classList.remove('hidden');
+                        m.setAttribute('aria-hidden', 'false');
+                    }
+
+                    function closeModal() {
+                        modalBackdrop.classList.add('hidden');
+                        complaintModal.classList.add('hidden');
+                        complaintModal.setAttribute('aria-hidden', 'true');
+                    }
+                    qs('#complaint-btn').addEventListener('click', () => openModal(complaintModal));
+                    modalBackdrop.addEventListener('click', closeModal);
+                    qsa('.close-modal-btn').forEach(btn => btn.addEventListener('click', closeModal));
+                    qs('#submit-complaint-btn').addEventListener('click', () => {
+                        // friendly UX: show small confirmation
+                        const submitted = document.createElement('div');
+                        submitted.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-accent-mint text-white px-4 py-2 rounded shadow';
+                        submitted.textContent = 'Complaint submitted. We will review it shortly.';
+                        document.body.appendChild(submitted);
+                        setTimeout(() => submitted.remove(), 3200);
+                        closeModal();
+                    });
+
+                    // callback
+                    const callbackBtn = qs('#callback-btn');
+                    const actionsContainer = qs('#actions-container');
+                    callbackBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        callbackBtn.disabled = true;
+                        callbackBtn.innerText = 'Request Sent!';
+                        const feedback = document.createElement('p');
+                        feedback.className = 'text-xs text-accent-mint p-2 text-center';
+                        feedback.textContent = 'Our team will call you back within 4 business hours.';
+                        actionsContainer.appendChild(feedback);
+                        setTimeout(() => {
+                            feedback.remove();
+                            callbackBtn.disabled = false;
+                            callbackBtn.innerText = 'Request a Call Back';
+                        }, 5000);
+                    });
+
+                    // ---------------- Buddy request simplified logic ----------------
+                    const copyBtn = qs('#copyToChatBtn');
+                    const openChatBtn = qs('#openChatBtn');
+                    const autoFillBtn = qs('#autoFillChatBtn');
+                    const buddyMessageSample = qs('#buddyMessageSample');
+                    const buddyUploadedFiles = qs('#buddyUploadedFiles');
+                    const jdInputBuddy = qs('#jdInput_buddy');
+                    const otherInputBuddy = qs('#otherInput_buddy');
+                    const buddyCopyStatus = qs('#buddyCopyStatus');
+
+                    // update file list
+                    function updateBuddyFilesList() {
+                        const parts = [];
+                        if (jdInputBuddy.files && jdInputBuddy.files[0]) {
+                            parts.push(`<div><strong>JD:</strong> ${jdInputBuddy.files[0].name}</div>`);
+                        }
+                        if (otherInputBuddy.files && otherInputBuddy.files.length > 0) {
+                            const names = Array.from(otherInputBuddy.files).map(f => f.name).join(', ');
+                            parts.push(`<div><strong>Other:</strong> ${names}</div>`);
+                        }
+                        buddyUploadedFiles.innerHTML = parts.join('') || '<div class="text-xs text-ink-500">No files selected.</div>';
+                    }
+                    jdInputBuddy.addEventListener('change', updateBuddyFilesList);
+                    otherInputBuddy.addEventListener('change', updateBuddyFilesList);
+
+                    // copy to clipboard
+                    copyBtn.addEventListener('click', async() => {
+                        const text = buddyMessageSample.value.trim();
+                        if (!text) return;
+                        try {
+                            await navigator.clipboard.writeText(text);
+                            buddyCopyStatus.textContent = 'Message copied. Paste it into Support Chat (Ctrl/Cmd+V).';
+                            setTimeout(() => buddyCopyStatus.textContent = 'Tip: After copying, paste into Support Chat (Ctrl/Cmd+V) and press send.', 4000);
+                        } catch (err) {
+                            buddyCopyStatus.textContent = 'Copy failed — please select the message and press Ctrl/Cmd+C.';
+                        }
+                    });
+
+                    // auto fill sample to clipboard + show quick tips
+                    autoFillBtn.addEventListener('click', async() => {
+                        const text = buddyMessageSample.value.trim();
+                        try {
+                            await navigator.clipboard.writeText(text);
+                            buddyCopyStatus.textContent = 'Copied sample message. Open Support Chat and paste it.';
+                            // show a tiny quick tips popup (simple)
+                            const tips = document.createElement('div');
+                            tips.className = 'mt-2 p-2 text-sm text-ink-700 bg-white rounded shadow';
+                            tips.innerHTML = '<strong>Quick tips:</strong><ul class="list-disc pl-4"><li>Attach JD & files using the chat file-picker</li><li>Mention timezone for exact scheduling</li></ul>';
+                            autoFillBtn.after(tips);
+                            setTimeout(() => tips.remove(), 6000);
+                        } catch (err) {
+                            buddyCopyStatus.textContent = 'Copy failed — please select the message and press Ctrl/Cmd+C.';
+                        }
+                    });
+
+                    // Open chat button already links to customer_chat.html — nothing else needed
+
+                    // ---------------- profile avatar header initial state ----------------
+                    qs('#profileAvatar').style.display = 'none';
+                    qs('#profileInitial').style.display = 'block';
+
+                    // ---------------- other small housekeeping ----------------
+                    // profile avatar in header mirrors displayAvatar after saving (handled on Save)
+                    // prevent form submissions causing reload if any forms present
+                    document.querySelectorAll('form').forEach(f => f.addEventListener('submit', e => e.preventDefault()));
+
+
+                    let accessToken = localStorage.getItem('accessToken');
+                    let refreshToken = localStorage.getItem('refreshToken');
+
+                    let spinner = document.getElementById("spinner");
+                    let content = document.querySelector('.content');
+
+                    if (!refreshToken) {
+                        clearTokensAndRedirect();
+                        return;
+                    }
+
+                    try {
+                        let response = await fetch('https://hiinterview-backend-1.onrender.com/api/userprofile/', {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${accessToken}`
+                            },
+
+                        });
+
+                        if (response.status === 401) {
+                            accessToken = await refreshAccessToken();
+                            if (!accessToken) return;
+                            refreshToken = localStorage.getItem('refreshToken');
+                            response = await fetch('https://hiinterview-backend-1.onrender.com/api/userprofile/', {
+                                method: 'GET',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${accessToken}`
+                                },
+
+                            });
+                        }
+
+                        if (response.status === 403) {
+                            spinner.style.display = "none";
+                            window.location.href = "404.html";
+                        } else {
+                            content.style.display = "block";
+                            spinner.style.display = "none";
 
                         }
-                
-              if (response.ok) {
-                  const data = await response.json();  
-                  console.log("data:", data);
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            console.log("data:", data);
+
+                            
 
 
-                    const container = document.getElementById("subscriptionContainer");
-                    const coinContainer = document.getElementById("coinContainer");
+                            const container = document.getElementById("subscriptionContainer");
+                            const coinContainer = document.getElementById("coinContainer");
 
-            if (!data.paid_customer) {
-              // Paid customer = false → Show message + Buy/Upgrade
-              container.innerHTML = `
+                            if (!data.paid_customer) {
+                                container.innerHTML = `
                 <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lift ring-1 ring-black/5 p-6">
                   <h2 class="text-lg font-bold text-ink-800">Your Active Package</h2>
                   <p class="text-sm text-ink-500 mt-2">You don’t have any active plan. Please purchase a plan.</p>
-                  <a href="payment.html" id="buyPackageBtn" class="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-brand-600 text-white hover:bg-brand-700 mt-4">
+                  <a href="store.html" id="buyPackageBtn" class="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-brand-600 text-white hover:bg-brand-700 mt-4">
                     <i class="fa-solid fa-cart-shopping"></i>
                     <span>Buy / Upgrade</span>
                   </a>
                 </div>
               `;
-              
-            } else if(data.paid_customer && data.subscription) {
-              // Paid customer = true → Show active package with details
-              container.innerHTML = `
+
+                   } else if (data.paid_customer && data.subscription) {
+
+                    container.innerHTML = '';
+                    coinContainer.innerHTML = '';
+
+
+                    data.subscription.forEach((subscription)=>{
+
+
+                                       container.innerHTML+= `
                 <!-- Active Package Widget (improved UX & CTA) -->
                 <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-lift ring-1 ring-black/5 p-6">
                   <div class="flex items-start justify-between gap-4">
@@ -613,36 +1890,36 @@
 
                   <div class="mt-4 bg-gradient-to-r from-brand-50 to-accent-iris/10 rounded-xl p-4">
                     <div class="flex items-center justify-between">
-                      <p class="text-sm font-semibold text-brand-800">${data.subscription.subscription_name}</p>
+                      <p class="text-sm font-semibold text-brand-800">${subscription.subscription_name}</p>
                     </div>
                     <div class="mt-3 space-y-3">
                       <div>
                         <div class="flex justify-between text-sm font-medium text-ink-700">
                           <span>One-to-One Training</span>
-                          <span>${data.subscription.weeks_completed} of 4 weeks completed</span>
+                          <span>${subscription.weeks_completed} of 4 weeks completed</span>
                         </div>
                         <div class="w-full bg-ink-200 rounded-full h-2 mt-1" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${data.one_to_one_progress}">
-                          <div class="bg-brand-500 h-2 rounded-full" style="width: ${data.subscription.one_to_one_progress}%"></div>
+                          <div class="bg-brand-500 h-2 rounded-full" style="width: ${subscription.one_to_one_progress}%"></div>
                         </div>
                       </div>
                       <div>
                         <p class="text-sm font-medium text-ink-700">Interview Buddy Slots: 
-                          <span class="font-bold text-brand-600">${data.subscription.interview_buddy_slots_remaining} Remaining</span>
+                          <span class="font-bold text-brand-600">${subscription.interview_buddy_slots_remaining} Remaining</span>
                         </p>
                       </div>
                     </div>
                   </div>
 
-                    ${data.subscription.one_to_one_progress && data.subscription.weeks_completed && data.subscription.interview_buddy_coins_remaining === 0 ? `
+                    ${subscription.one_to_one_progress && subscription.weeks_completed && subscription.interview_buddy_coins_remaining === 0 ? `
                     <div class="mt-4 text-xs text-ink-500 bg-amber-50 border border-amber-200 rounded-lg p-3">
                       <strong>Please Note:</strong> your profile is getting updated, please log in back after 60 minutes.
                     </div>` : ` <div class="mt-4 text-xs text-ink-500 bg-amber-50 border border-amber-200 rounded-lg p-3">
                     <strong>Please Note:</strong> Your Profile is getting updated, please log in back after 60 minutes.
                   </div>`}
-                  </div>
+                  </div><br>
                 `;
 
-              coinContainer.innerHTML = `
+              coinContainer.innerHTML += `
     <div id="coin-card" class="card-flip-container h-40">
       <div class="card-flipper w-full h-full relative">
         <!-- Front -->
@@ -651,7 +1928,7 @@
             <div>
               <p class="text-sm font-medium text-brand-200">Interview Buddy Coins</p>
               <div class="flex items-baseline gap-2 mt-1">
-                <p class="text-5xl font-bold">${data.subscription.interview_buddy_coins_remaining || 0}</p>
+                <p class="text-5xl font-bold">${subscription.interview_buddy_coins_remaining || 0}</p>
               </div>
             </div>
             <div class="text-xs text-brand-200 flex items-center gap-2">
@@ -672,8 +1949,11 @@
           </button>
         </div>
       </div>
-    </div>
+    </div><br>
   `;
+
+                    })
+               
             }
             
 
@@ -774,8 +2054,8 @@
 
             
                   document.querySelector(".user-mob-number").textContent = data.mobile_number
-                  document.querySelector(".user-alt-mob-number").textContent = data.alt_mobile_number ||"N/A"
-                  const userCvLink = document.querySelector(".user-cv");
+                  /*document.querySelector(".user-alt-mob-number").textContent = data.alt_mobile_number ||"N/A"
+                 const userCvLink = document.querySelector(".user-cv");
                   if (data.cv) {
                       const fileName = data.cv.split("/").pop();
                       userCvLink.textContent = fileName; 
@@ -787,7 +2067,7 @@
                       userCvLink.textContent = "N/A";
                       userCvLink.removeAttribute("href");
                       userCvLink.removeAttribute("target");
-                  }
+                  }*/
 
                   const hour = new Date().getHours();
                   let g = 'Welcome';
@@ -881,14 +2161,14 @@
       cancelPurchaseBtn.addEventListener('click', closePurchaseFlow);
 
       confirmPurchaseBtn.addEventListener('click', () => {
-        // friendly microcopy and redirect to payment.html
+        // friendly microcopy and redirect to store.html
         const redirectToast = document.createElement('div');
         redirectToast.className = 'fixed bottom-6 right-6 bg-brand-600 text-white px-4 py-2 rounded shadow';
-        redirectToast.textContent = 'Redirecting to payment...';
+        redirectToast.textContent = 'Redirecting to store...';
         document.body.appendChild(redirectToast);
         setTimeout(()=> redirectToast.remove(), 1600);
         // proceed to payment (same page)
-        window.location.href = 'payment.html';
+        window.location.href = 'store.html';
       });
 
       // small improvement: plan details quick info
@@ -967,12 +2247,7 @@
         }
 
             });
-
- 
-    
-
-
-  </script>
+    </script>
 </body>
 
 </html>

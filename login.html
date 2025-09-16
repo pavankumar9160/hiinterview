@@ -108,9 +108,14 @@
         </div>
     </div>
 
+     <script src="scripts/script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+
+             checkWebsiteStatus().then(active => {
+                 if (!active) return; 
+            });
 
 
       const accessToken = localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken");

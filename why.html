@@ -176,7 +176,15 @@
             </div>
         </div>
     </footer>
+    <script src="scripts/script.js"></script>
+        
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            checkWebsiteStatus().then(active => {
+                if (!active) return;
+            });
+        });
         document.getElementById('year').textContent = new Date().getFullYear();
     </script>
 </body>

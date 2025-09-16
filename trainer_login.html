@@ -170,7 +170,7 @@
       </div>
     </div>
   </div>
-
+   <script src="scripts/script.js"></script>
   <script>
     // minimal tone helper using WebAudio; no external files
     function playTone(freq, duration = 120, type = 'sine', vol = 0.12) {
@@ -192,6 +192,10 @@
 
     document.addEventListener('DOMContentLoaded', () => {
 
+
+       checkWebsiteStatus().then(active => {
+                 if (!active) return; 
+            });
       const accessToken = localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken");
       const role = localStorage.getItem("role") || sessionStorage.getItem("role");
       const spinner = document.getElementById("spinner");

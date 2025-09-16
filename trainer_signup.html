@@ -330,7 +330,7 @@
             </div>
         </div>
     </div>
-
+     <script src="scripts/script.js"></script>
     <script>
         // Use WebAudio for small tones so no external audio is required.
         function playTone(freq, duration = 140, type = 'sine', vol = 0.12) {
@@ -353,6 +353,10 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+
+             checkWebsiteStatus().then(active => {
+                 if (!active) return; 
+            });
 
 
       const accessToken = localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken");

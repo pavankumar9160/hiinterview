@@ -1,603 +1,754 @@
 <!doctype html>
 <html lang="en" class="scroll-smooth h-full">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Hi Interviews — One-to-One Mentorship & Interview Day Buddy</title>
-    <meta name="description" content="Premium one-to-one mentorship with real engineers and an Interview Day Buddy. Land your dream job in tech with our expert-led programs." />
-    <link rel="canonical" href="https://www.hi-interviews.com/" />
-    
-    <!-- Favicon -->
-    <link rel="icon" href="favicon.ico" sizes="any">
-    <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title>Hi Interviews — One-to-One Mentorship & Interview Day Buddy</title>
+ <meta name="description" content="Premium one-to-one mentorship with real engineers and an Interview Day Buddy. Land your dream job in tech with our expert-led programs." />
+ <link rel="canonical" href="https://www.hi-interviews.com/" />
+ <link rel="icon" href="favicon.ico" sizes="any">
+ <link rel="icon" href="favicon.svg" type="image/svg+xml">
+ <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.hi-interviews.com/">
-    <meta property="og:title" content="Hi Interviews — One-to-One Mentorship & Interview Day Buddy">
-    <meta property="og:description" content="Premium one-to-one mentorship with real engineers and an Interview Day Buddy. Land your dream job in tech with our expert-led programs.">
-    <meta property="og:image" content="https://www.hi-interviews.com/social-share-image.jpg">
+ <!-- Open Graph / Twitter (unchanged) -->
+ <meta property="og:type" content="website">
+ <meta property="og:url" content="https://www.hi-interviews.com/">
+ <meta property="og:title" content="Hi Interviews — One-to-One Mentorship & Interview Day Buddy">
+ <meta property="og:description" content="Premium one-to-one mentorship with real engineers and an Interview Day Buddy. Land your dream job in tech with our expert-led programs.">
+ <meta property="og:image" content="https://www.hi-interviews.com/social-share-image.jpg">
+ <meta property="twitter:card" content="summary_large_image">
+ <meta property="twitter:url" content="https://www.hi-interviews.com/">
+ <meta property="twitter:title" content="Hi Interviews — One-to-One Mentorship & Interview Day Buddy">
+ <meta property="twitter:description" content="Premium one-to-one mentorship with real engineers and an Interview Day Buddy. Land your dream job in tech with our expert-led programs.">
+ <meta property="twitter:image" content="https://www.hi-interviews.com/social-share-image.jpg">
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://www.hi-interviews.com/">
-    <meta property="twitter:title" content="Hi Interviews — One-to-One Mentorship & Interview Day Buddy">
-    <meta property="twitter:description" content="Premium one-to-one mentorship with real engineers and an Interview Day Buddy. Land your dream job in tech with our expert-led programs.">
-    <meta property="twitter:image" content="https://www.hi-interviews.com/social-share-image.jpg">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+ <script src="https://cdn.tailwindcss.com"></script>
+ <script>
+ tailwind.config = {
+ darkMode: 'media',
+ theme: {
+ extend: {
+ colors: {
+ ink: { 50: '#f8fafc', 100: '#eef2f7', 200: '#e5eaf1', 300: '#cfd8e3', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a', 950: '#0c1324' },
+ brand: { 50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81' },
+ 'accent-iris': '#8B5CF6',
+ 'accent-mint': '#10B981',
+ 'accent-sky': '#38BDF8',
+ 'accent-amber': '#FBBF24',
+ 'accent-peach': '#FDA4AF',
+ 'accent-rose': '#F43F5E',
+ },
+ boxShadow: { soft: '0 10px 30px rgba(2,6,23,.08)', card: '0 6px 18px rgba(2,6,23,.06)', lift: '0 16px 40px rgba(2,6,23,.12)' },
+ fontFamily: { sans: ["Inter", "system-ui", "-apple-system", "Segoe UI", "Helvetica", "Arial", "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"], heading: ["Poppins", "sans-serif"] },
+ keyframes: {
+ 'fade-in-up': {
+ '0%': { opacity: '0', transform: 'translateY(20px)' },
+ '100%': { opacity: '1', transform: 'translateY(0)' },
+ },
+ 'glow-pulse': {
+ '0%, 100%': { boxShadow: '0 0 20px rgba(251, 191, 36, 0.4), 0 0 40px rgba(251, 191, 36, 0.3)' },
+ '50%': { boxShadow: '0 0 30px rgba(251, 191, 36, 0.6), 0 0 60px rgba(251, 191, 36, 0.5)' }
+ }
+ },
+ animation: {
+ 'fade-in-up': 'fade-in-up 0.6s ease-out forwards',
+ 'glow-pulse': 'glow-pulse 3s ease-in-out infinite',
+ },
+ }
+ }
+ }
+ </script>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'media',
-            theme: {
-                extend: {
-                    colors: {
-                        ink: { 50: '#f8fafc', 100: '#eef2f7', 200: '#e5eaf1', 300: '#cfd8e3', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a', 950: '#0c1324' },
-                        brand: { 50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81' },
-                        'accent-iris': '#8B5CF6',
-                        'accent-mint': '#10B981',
-                        'accent-sky': '#38BDF8',
-                        'accent-amber': '#FBBF24',
-                        'accent-peach': '#FDA4AF',
-                        'accent-rose': '#F43F5E',
-                    },
-                    boxShadow: { soft: '0 10px 30px rgba(2,6,23,.08)', card: '0 6px 18px rgba(2,6,23,.06)', lift: '0 16px 40px rgba(2,6,23,.12)' },
-                    fontFamily: { sans: ["Inter", "system-ui", "-apple-system", "Segoe UI", "Helvetica", "Arial", "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"], heading: ["Poppins", "sans-serif"] },
-                    keyframes: {
-                        'fade-in-up': {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        },
-                    },
-                    animation: {
-                        'fade-in-up': 'fade-in-up 0.6s ease-out forwards',
-                    },
-                }
-            }
-        }
-    </script>
-    <style>
-        .focus-ring:focus-visible { outline: 2px solid rgba(79, 70, 229,.35); outline-offset: 3px }
-        .container { max-width: 1200px }
-        .card-hover-effect{transition:transform .25s ease, box-shadow .25s ease, background-color .25s ease, border-color .25s ease}
-        .card-hover-effect:hover { transform: translateY(-0.5rem); box-shadow: 0 16px 40px rgba(2,6,23,.12); }
-        .bg-pattern { background-image: radial-gradient(circle at top right, rgba(79, 70, 229,0.05) 0%, transparent 40%), radial-gradient(circle at bottom left, rgba(79, 70, 229,0.05) 0%, transparent 50%); }
-        details summary::-webkit-details-marker { display: none; }
-        .chevron-icon { transition: transform 0.2s ease-in-out; }
-        details[open] summary .chevron-icon { transform: rotate(180deg); }
-        .animate-fade-in-up {
-            animation-delay: var(--animation-delay, 0s);
-            opacity: 0;
-        }
-        details .faq-content {
-            transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out;
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-        }
-        details[open] .faq-content {
-            max-height: 200px;
-            opacity: 1;
-        }
-    </style>
+ <style>
+ .focus-ring:focus-visible { outline: 2px solid rgba(79, 70, 229,.35); outline-offset: 3px }
+ .container { max-width: 1200px }
+ .card-hover-effect{transition:transform .25s ease, box-shadow .25s ease}
+ .card-hover-effect:hover { transform: translateY(-0.5rem); box-shadow: 0 16px 40px rgba(2,6,23,.12); }
+ .bg-pattern { background-image: radial-gradient(circle at top right, rgba(79, 70, 229,0.05) 0%, transparent 40%), radial-gradient(circle at bottom left, rgba(79, 70, 229,0.05) 0%, transparent 50%); }
+ details summary::-webkit-details-marker { display: none; }
+ .chevron-icon { transition: transform 0.2s ease-in-out; }
+ details[open] summary .chevron-icon { transform: rotate(180deg); }
+ .animate-fade-in-up { animation-delay: var(--animation-delay, 0s); opacity: 0; }
+ .glossy-card { position: relative; overflow: hidden; }
+ .glossy-card::after {
+ content: '';
+ position: absolute;
+ top: -50%;
+ left: -50%;
+ width: 200%;
+ height: 200%;
+ background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.3), transparent 30%),
+ radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.2), transparent 40%);
+ transition: transform 0.6s ease;
+ transform: rotate(20deg);
+ }
+ .glass-card {
+ background-color: rgba(255, 255, 255, 0.6);
+ backdrop-filter: blur(20px);
+ -webkit-backdrop-filter: blur(20px);
+ border: 1px solid rgba(255, 255, 255, 0.3);
+ }
+ .email-panel { border-radius: 12px; background: linear-gradient(180deg,#ffffff,#fbfbff); box-shadow: 0 10px 30px rgba(2,6,23,.06); padding: 20px; }
+ .sample-email { background: linear-gradient(90deg, rgba(244,246,255,0.9), rgba(255,255,255,0.95)); border: 1px solid #eef2ff; padding: 14px; border-radius: 10px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace; white-space: pre-wrap; color: #0f172a; }
+ .btn-copy { background: linear-gradient(90deg,#6366f1,#4f46e5); color:white; padding:8px 12px; border-radius:8px; display:inline-flex; gap:8px; align-items:center; }
+ .btn-mail { background: linear-gradient(90deg,#10B981,#34D399); color:white; padding:8px 12px; border-radius:8px; display:inline-flex; gap:8px; align-items:center; }
+
+ /* Slim promo bar */
+ .promo-bar { background: linear-gradient(90deg, rgba(99,102,241,0.06), rgba(99,102,241,0.02)); border-top: 1px solid rgba(99,102,241,0.04); border-bottom: 1px solid rgba(99,102,241,0.02); }
+ </style>
 </head>
 <body class="min-h-screen bg-white text-ink-950 antialiased selection:bg-brand-500 selection:text-white font-sans">
-    <header id="pageHeader" class="sticky top-0 z-50 border-b border-transparent bg-white/90 backdrop-blur transition-shadow duration-300">
-        <div class="mx-auto container px-5">
-            <div class="flex items-center justify-between py-4">
-                <a href="#top" class="font-semibold tracking-tight text-lg font-heading">Hi Interviews</a>
-                <nav class="hidden md:flex items-center gap-8 text-sm" aria-label="Main">
-                    <a class="hover:text-brand-600 font-medium transition" href="#why" data-spy>Why One-to-One</a>
-                    <a class="hover:text-brand-600 font-medium transition" href="why.html">Why Hi Interviews</a>
-                    <a class="hover:text-brand-600 font-medium transition" href="#tracks" data-spy>Tracks</a>
-                    <a class="hover:text-brand-600 font-medium transition" href="#packages" data-spy>Our Services</a>
-                    <a class="hover:text-brand-600 font-medium transition" href="#how" data-spy>How it works</a>
-                    <a class="hover:text-brand-600 font-medium transition" href="#faq" data-spy>FAQ</a>
-                    <a class="hover:text-brand-600 font-medium transition" href="#contact" data-spy>Contact</a>
-                    <a href="login.html" class="inline-flex items-center rounded-full border border-ink-200 px-4 py-2 font-medium text-ink-700 transition-all duration-300 hover:bg-ink-50 hover:shadow-card">
-                        Login
-                    </a>
-                </nav>
-                <button type="button" id="menuToggle" aria-label="Open menu" aria-controls="mobileNav" aria-expanded="false" class="md:hidden rounded-lg border border-ink-200 p-2 focus-ring">
-                    <i class="fa-solid fa-bars text-[1.75rem]" aria-hidden="true"></i>
-                </button>
-            </div>
-        </div>
-        <nav id="mobileNav" hidden aria-label="Mobile" class="md:hidden border-t border-ink-100 bg-white">
-            <div class="mx-auto container px-5 py-3 grid gap-2 text-sm">
-                <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="#why">Why One-to-One</a>
-                <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="#tracks">Tracks</a>
-                <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="#packages">Our Services</a>
-                <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="#how">How it works</a>
-                <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="#faq">FAQ</a>
-                <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="#contact">Contact</a>
-                <a class="rounded-full border border-transparent bg-brand-600 px-4 py-2 font-medium text-white text-center" href="login.html">Login</a>
-            </div>
-        </nav>
-    </header>
 
-    <main id="main" tabindex="-1">
-        <section id="top" class="relative isolate overflow-hidden bg-pattern">
-            <div class="mx-auto container px-5 py-24 md:py-32 grid gap-16 md:grid-cols-2 items-center">
-                <div class="animate-fade-in-up" style="--animation-delay: 0.1s;">
-                    <h1 class="text-4xl md:text-6xl font-bold tracking-tight leading-tight font-heading">
-                        Land your next job with <span class="text-brand-700">one-to-one mentorship</span> and an Interview Day Buddy.
-                    </h1>
-                    <p class="mt-5 max-w-xl text-ink-700 text-lg">
-                        Personal prep with real engineers with five-plus years of experience. On interview day, we stand by you—in-person where available or virtual anywhere. Calm, private, supportive.
-                    </p>
-                    <div class="mt-8 flex flex-wrap gap-4">
-                        <a class="inline-flex items-center rounded-full bg-gradient-to-r from-brand-600 via-accent-iris to-accent-mint px-6 py-3 font-medium text-white shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lift" href="#packages">View Our Services</a>
-                        <a class="inline-flex items-center rounded-full border border-ink-200 px-6 py-3 font-medium transition hover:bg-ink-50 hover:shadow-card" href="#contact">Request a Callback</a>
-                    </div>
-                </div>
-                <div class="relative animate-fade-in-up" style="--animation-delay: 0.3s;">
-                    <div class="rounded-2xl border border-ink-100 bg-white p-8 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lift">
-                        <div class="grid gap-6">
-                            <div class="flex items-start gap-4">
-                                <div class="grid h-12 w-12 place-items-center rounded-full bg-brand-100 text-brand-700 shrink-0 ring-8 ring-brand-50">
-                                    <i class="fa-solid fa-user-check text-2xl leading-none" aria-hidden="true"></i>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-lg">Personal Plan and Roadmap</p>
-                                    <p class="text-sm text-ink-600">Designed for your goals and pace after a short discovery call.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-4">
-                                <div class="grid h-12 w-12 place-items-center rounded-full bg-brand-100 text-brand-700 shrink-0 ring-8 ring-brand-50">
-                                    <i class="fa-solid fa-chalkboard-user text-2xl leading-none" aria-hidden="true"></i>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-lg">Daily Mock Interviews</p>
-                                    <p class="text-sm text-ink-600">Practice lowers fear and makes answers clear and simple.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-4">
-                                <div class="grid h-12 w-12 place-items-center rounded-full bg-brand-100 text-brand-700 shrink-0 ring-8 ring-brand-50">
-                                    <i class="fa-solid fa-user-group text-2xl leading-none" aria-hidden="true"></i>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-lg">Interview Day Buddy</p>
-                                    <p class="text-sm text-ink-600">Warm up before rounds, support between, and a short review.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+ <!-- Skip link -->
+ <a class="sr-only focus:not-sr-only focus:block p-2 m-2 rounded bg-brand-600 text-white" href="#main">Skip to content</a>
 
-        <!-- Other sections remain unchanged -->
-        <section id="why" class="bg-white">
-            <div class="mx-auto container px-5 py-20 md:py-28">
-                <div class="text-center mx-auto max-w-3xl">
-                    <h2 class="text-3xl font-medium tracking-tight font-heading">The Mentorship That Revolves Around You</h2>
-                    <p class="mt-2 text-ink-700">Generic group classes slow you down. We build a personal plan that gets you to your goal, faster.</p>
-                </div>
-                <div class="mt-12 grid md:grid-cols-2 gap-8 lg:gap-12 items-stretch">
-                    <div class="rounded-2xl border border-ink-200 bg-ink-50 p-8 h-full">
-                        <h3 class="text-xl font-medium text-ink-700">The Old Way: Group Batches</h3>
-                        <ul class="mt-4 space-y-3">
-                            <li class="flex items-start gap-4">
-                                <i class="fa-solid fa-circle-xmark text-accent-rose mt-1 text-xl" aria-hidden="true"></i>
-                                <div><span class="font-medium">Divided Attention:</span> You're one of many, lost in the crowd and fighting for the trainer's time.</div>
-                            </li>
-                             <li class="flex items-start gap-4">
-                                <i class="fa-solid fa-circle-xmark text-accent-rose mt-1 text-xl" aria-hidden="true"></i>
-                                <div><span class="font-medium">Fixed, Rigid Pace:</span> The whole batch moves at one speed, leaving you bored or behind.</div>
-                            </li>
-                             <li class="flex items-start gap-4">
-                                <i class="fa-solid fa-circle-xmark text-accent-rose mt-1 text-xl" aria-hidden="true"></i>
-                                <div><span class="font-medium">Generic Advice:</span> You get canned responses that don't apply to your unique background or goals.</div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="rounded-2xl border-2 border-brand-500 bg-white p-8 h-full shadow-lift relative card-hover-effect">
-                         <span class="absolute -top-3 left-6 rounded-full bg-brand-600 px-3 py-1 text-xs font-medium text-white shadow-md">OUR WAY</span>
-                        <h3 class="text-xl font-medium text-brand-800">The New Way: One-to-One Mentorship</h3>
-                         <ul class="mt-4 space-y-3">
-                            <li class="flex items-start gap-4">
-                                <i class="fa-solid fa-circle-check text-accent-mint mt-1 text-xl" aria-hidden="true"></i>
-                                <div><span class="font-medium">100% Mentor Focus:</span> Every minute of every session is dedicated entirely to you and your progress.</div>
-                            </li>
-                             <li class="flex items-start gap-4">
-                                <i class="fa-solid fa-circle-check text-accent-mint mt-1 text-xl" aria-hidden="true"></i>
-                                <div><span class="font-medium">Pace Tailored to You:</span> We speed up on your strengths and slow down on your weak spots.</div>
-                            </li>
-                             <li class="flex items-start gap-4">
-                                <i class="fa-solid fa-circle-check text-accent-mint mt-1 text-xl" aria-hidden="true"></i>
-                                <div><span class="font-medium">An Actionable, Personal Plan:</span> We build a roadmap based on your goals to fill your specific knowledge gaps.</div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
+ <header id="pageHeader" class="sticky top-0 z-50 border-b border-transparent bg-white/90 backdrop-blur transition-shadow duration-300">
+ <div class="mx-auto container px-5">
+ <div class="flex items-center justify-between py-4">
+ <!-- Logo (matches store) -->
+ <a href="#top" class="flex items-center gap-3" aria-label="Hi Interviews home">
+ <div class="h-10 w-10 rounded-lg bg-gradient-to-br from-brand-600 to-brand-800 text-white flex items-center justify-center font-bold">HI</div>
+ <div class="hidden sm:block">
+ <div class="font-semibold tracking-tight text-lg font-heading text-ink-900">Hi Interviews</div>
+ <div class="text-xs text-ink-500 -mt-0.5">Service Store</div>
+ </div>
+ </a>
 
-        <section id="tracks" class="bg-ink-50 relative overflow-hidden">
-            <div class="absolute inset-0 z-0 bg-pattern"></div>
-            <div class="mx-auto container px-5 py-20 md:py-28 relative z-10">
-                <div class="text-center mx-auto max-w-2xl">
-                    <h2 class="text-3xl font-medium tracking-tight font-heading">Tracks We Mentor</h2>
-                    <p class="mt-2 text-ink-700 max-w-xl mx-auto">We offer dedicated mentorship across a wide range of popular and emerging tech domains.</p>
-                </div>
-                <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                    <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect">
-                        <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50"><i class="fa-solid fa-code text-3xl" aria-hidden="true"></i></div>
-                        <p class="mt-4 font-medium">Full Stack Development</p><p class="mt-1 text-sm text-ink-600">JS, Python, Java, .NET</p>
-                    </div>
-                     <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect">
-                        <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50"><i class="fa-solid fa-chart-simple text-3xl" aria-hidden="true"></i></div>
-                        <p class="mt-4 font-medium">Data Science & ML</p><p class="mt-1 text-sm text-ink-600">Python, SQL, Scikit-learn</p>
-                    </div>
-                     <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect">
-                        <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50"><i class="fa-solid fa-robot text-3xl" aria-hidden="true"></i></div>
-                        <p class="mt-4 font-medium">Generative AI</p><p class="mt-1 text-sm text-ink-600">LLMs, LangChain, RAG</p>
-                    </div>
-                     <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect">
-                        <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50"><i class="fa-solid fa-cloud text-3xl" aria-hidden="true"></i></div>
-                        <p class="mt-4 font-medium">Cloud & DevOps</p><p class="mt-1 text-sm text-ink-600">Azure, AWS, GCP, Docker</p>
-                    </div>
-                     <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect">
-                        <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50"><i class="fa-solid fa-shield-halved text-3xl" aria-hidden="true"></i></div>
-                        <p class="mt-4 font-medium">Cyber Security</p><p class="mt-1 text-sm text-ink-600">Networks, Pen Testing</p>
-                    </div>
-                    <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect">
-                        <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50"><i class="fa-solid fa-cubes text-3xl" aria-hidden="true"></i></div>
-                        <p class="mt-4 font-medium">SAP</p><p class="mt-1 text-sm text-ink-600">ABAP, FICO, SD, MM</p>
-                    </div>
-                     <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect">
-                        <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50"><i class="fa-solid fa-vial-circle-check text-3xl" aria-hidden="true"></i></div>
-                        <p class="mt-4 font-medium">Software Testing</p><p class="mt-1 text-sm text-ink-600">Selenium, Cypress, API</p>
-                    </div>
-                    <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect">
-                        <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50"><i class="fa-solid fa-star text-3xl" aria-hidden="true"></i></div>
-                        <p class="mt-4 font-medium">Custom Track</p><p class="mt-1 text-sm text-ink-600">Have a different goal? Ask us!</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="packages" class="bg-white relative overflow-hidden">
-             <div class="mx-auto container px-5 py-20 md:py-28 relative z-10">
-                <div class="text-center mx-auto max-w-3xl">
-                    <h2 class="text-3xl font-medium tracking-tight font-heading">Our Services: A Strategic Investment in Your Career</h2>
-                    <p class="mt-2 text-ink-700">We offer three targeted programs, each designed for a specific stage of your interview preparation journey.</p>
-                </div>
-                 <div class="mt-12 grid gap-8 md:grid-cols-1 lg:grid-cols-3 items-stretch">
-                     
-                     <!-- Tier 1: One-to-One Training -->
-                     <article class="group flex h-full flex-col rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect">
-                         <div class="flex-grow">
-                             <h3 class="text-lg font-semibold text-brand-700">The Foundation</h3>
-                             <h4 class="text-2xl font-bold font-heading mt-1">One-to-One Training</h4>
-                             <p class="mt-2 text-4xl font-bold font-heading text-ink-800">₹49,999</p>
-                             <p class="mt-3 text-sm text-ink-600">An intensive, month-long program designed to build deep technical expertise and unshakable confidence from the ground up.</p>
-                             <ul class="mt-6 space-y-3 text-sm">
-                                 <li class="flex items-start gap-3"><i class="fa-solid fa-check text-accent-mint mt-1" aria-hidden="true"></i><span><strong class="font-medium text-ink-800">Personalized Curriculum:</strong> Tailored to your target roles and skill gaps.</span></li>
-                                 <li class="flex items-start gap-3"><i class="fa-solid fa-check text-accent-mint mt-1" aria-hidden="true"></i><span><strong class="font-medium text-ink-800">Unlimited Mock Interviews:</strong> Practice until perfect with daily sessions.</span></li>
-                                 <li class="flex items-start gap-3"><i class="fa-solid fa-check text-accent-mint mt-1" aria-hidden="true"></i><span><strong class="font-medium text-ink-800">Expert Resume & Profile Overhaul:</strong> We craft a narrative that gets you noticed.</span></li>
-                             </ul>
-                         </div>
-                         <a class="mt-8 inline-flex w-full items-center justify-center rounded-full border border-ink-200 px-4 py-2.5 font-medium transition hover:bg-ink-50 hover:shadow-card" href="#contact">Build My Foundation</a>
-                     </article>
+ <nav class="hidden md:flex items-center gap-4 text-sm" aria-label="Main">
+ <a class="hover:text-brand-600 font-medium transition px-3 py-2 rounded-md" href="why.html">Why Hi Interviews</a>
+ <a class="hover:text-brand-600 font-medium transition px-3 py-2 rounded-md" href="#tracks" data-spy>Tracks</a>
+ <!-- Our Services now links to store (core programs / alacarte sections are in store.html) -->
+ <a class="hover:text-brand-600 font-medium transition px-3 py-2 rounded-md" href="store.html#packages">Our Services</a>
+ <a class="hover:text-brand-600 font-medium transition px-3 py-2 rounded-md" href="job_support.html">Job Support</a>
+ <a class="hover:text-brand-600 font-medium transition px-3 py-2 rounded-md" href="#how" data-spy>How it works</a>
+ <a class="hover:text-brand-600 font-medium transition px-3 py-2 rounded-md" href="#faq" data-spy>FAQ</a>
+ <a class="hover:text-brand-600 font-medium transition px-3 py-2 rounded-md" href="#contact" data-spy>Contact</a>
+ </nav>
 
-                     <!-- Tier 2: Interview Day Buddy -->
-                     <article class="group flex h-full flex-col rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect">
-                         <div class="flex-grow">
-                             <h3 class="text-lg font-semibold text-brand-700">The Final Hurdle</h3>
-                             <h4 class="text-2xl font-bold font-heading mt-1">Interview Day Buddy</h4>
-                             <p class="mt-2 text-4xl font-bold font-heading text-ink-800">₹12,999</p>
-                             <p class="mt-3 text-sm text-ink-600">A high-impact, single-day service providing strategic support to ensure you perform at your peak when it matters most.</p>
-                             <ul class="mt-6 space-y-3 text-sm">
-                                 <li class="flex items-start gap-3"><i class="fa-solid fa-check text-accent-mint mt-1" aria-hidden="true"></i><span><strong class="font-medium text-ink-800">Pre-Interview Strategy Session:</strong> Final prep and confidence boost.</span></li>
-                                 <li class="flex items-start gap-3"><i class="fa-solid fa-check text-accent-mint mt-1" aria-hidden="true"></i><span><strong class="font-medium text-ink-800">Between-Round Resets:</strong> Quick debriefs to adjust your strategy on the fly.</span></li>
-                                 <li class="flex items-start gap-3"><i class="fa-solid fa-check text-accent-mint mt-1" aria-hidden="true"></i><span><strong class="font-medium text-ink-800">Post-Interview Debrief:</strong> Analyze performance and plan next steps.</span></li>
-                             </ul>
-                         </div>
-                         <a class="mt-8 inline-flex w-full items-center justify-center rounded-full border border-ink-200 px-4 py-2.5 font-medium transition hover:bg-ink-50 hover:shadow-card" href="#contact">Secure My Interview Day</a>
-                     </article>
-                     
-                     <!-- Tier 3: Combo Package -->
-                     <article class="group relative flex h-full flex-col rounded-2xl border-2 border-brand-500 bg-white p-8 shadow-lift card-hover-effect">
-                         <span class="absolute -top-3 left-6 rounded-full bg-brand-600 px-3 py-1 text-xs font-medium text-white shadow-md">ULTIMATE ADVANTAGE</span>
-                         <div class="flex-grow">
-                             <h3 class="text-lg font-semibold text-brand-700">The Bespoke Solution</h3>
-                             <h4 class="text-2xl font-bold font-heading mt-1">Customizable Combo</h4>
-                             <p class="mt-2 text-4xl font-bold font-heading text-ink-800">₹99,999</p>
-                             <p class="mt-3 text-sm text-ink-600">Our flagship, all-inclusive package offering a fully customized, on-demand mentorship and support experience tailored to your unique career goals.</p>
-                             <ul class="mt-6 space-y-3 text-sm">
-                                 <li class="flex items-start gap-3"><i class="fa-solid fa-check text-accent-mint mt-1" aria-hidden="true"></i><span><strong class="font-medium text-ink-800">Includes Everything:</strong> Full one-to-one training plus multiple Interview Buddy days.</span></li>
-                                 <li class="flex items-start gap-3"><i class="fa-solid fa-check text-accent-mint mt-1" aria-hidden="true"></i><span><strong class="font-medium text-ink-800">On-Demand Customization:</strong> We adapt the program in real-time based on your needs and interview schedule.</span></li>
-                                 <li class="flex items-start gap-3"><i class="fa-solid fa-check text-accent-mint mt-1" aria-hidden="true"></i><span><strong class="font-medium text-ink-800">Priority Support:</strong> Direct access to your mentor for guidance whenever you need it.</span></li>
-                             </ul>
-                         </div>
-                         <a class="mt-8 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-brand-600 via-accent-iris to-accent-mint px-4 py-2.5 font-medium text-white shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lift" href="#contact">Design My Program</a>
-                     </article>
-                 </div>
-             </div>
-        </section>
+ <div class="flex items-center gap-3">
+ <!-- Shop icon added (links to store) -->
+ <a href="store.html" title="Shop" class="hidden sm:inline-flex items-center justify-center h-9 w-9 rounded-full bg-white border border-ink-100 shadow-sm focus-ring" aria-label="Open store">
+ <i class="fa-solid fa-shopping-cart text-ink-700"></i>
+ </a>
 
-        <section id="how" class="bg-ink-50 relative overflow-hidden">
-              <div class="absolute inset-0 z-0 bg-pattern"></div>
-            <div class="mx-auto container px-5 py-20 md:py-28 relative z-10">
-                <h2 class="text-3xl font-medium tracking-tight font-heading text-center">How It Works</h2>
-                <div class="mt-12 relative">
-                    <div class="hidden md:block absolute top-8 left-0 w-full h-0.5 bg-brand-200 -z-10"></div>
-                    <div class="relative grid gap-10 md:grid-cols-4">
-                        <div class="text-center">
-                             <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 border-4 border-white relative z-10 ring-8 ring-brand-50">
-                                 <i class="fa-solid fa-bullseye text-3xl leading-none" aria-hidden="true"></i>
-                            </div>
-                            <h3 class="mt-4 font-medium text-lg">1. Choose Your Service</h3>
-                            <p class="mt-1 text-sm text-ink-700">Select the program that best fits your immediate career goals.</p>
-                        </div>
-                        <div class="text-center">
-                             <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 border-4 border-white relative z-10 ring-8 ring-brand-50">
-                                 <i class="fa-solid fa-users-gear text-3xl leading-none" aria-hidden="true"></i>
-                            </div>
-                            <h3 class="mt-4 font-medium text-lg">2. Train One-to-One</h3>
-                            <p class="mt-1 text-sm text-ink-700">Join daily mock interviews and concept clarity sessions with your mentor.</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 border-4 border-white relative z-10 ring-8 ring-brand-50">
-                                 <i class="fa-solid fa-hands-holding-child text-3xl leading-none" aria-hidden="true"></i>
-                            </div>
-                            <h3 class="mt-4 font-medium text-lg">3. Interview with a Buddy</h3>
-                            <p class="mt-1 text-sm text-ink-700">Stay calm and focused with warm-ups, resets, and debriefs on the big day.</p>
-                        </div>
-                        <div class="text-center">
-                             <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 border-4 border-white relative z-10 ring-8 ring-brand-50">
-                                 <i class="fa-solid fa-trophy text-3xl leading-none" aria-hidden="true"></i>
-                            </div>
-                            <h3 class="mt-4 font-medium text-lg">4. Succeed & Grow</h3>
-                            <p class="mt-1 text-sm text-ink-700">Use feedback from real interviews to improve your approach and land the offer.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+ <a href="login.html" class="inline-flex items-center rounded-full border border-ink-200 px-4 py-2 font-medium text-ink-700 transition-all duration-300 hover:bg-ink-50 hover:shadow-card">
+ Login
+ </a>
 
-        <section id="faq" class="bg-white relative overflow-hidden">
-            <div class="mx-auto container px-5 py-20 md:py-28 relative z-10">
-                <div class="text-center mx-auto max-w-3xl">
-                    <h2 class="text-3xl font-medium tracking-tight font-heading">Frequently Asked Questions</h2>
-                    <p class="mt-2 text-ink-700">Your questions, answered. Here’s some more information about our process and policies.</p>
-                </div>
-                <div class="mt-12 max-w-3xl mx-auto rounded-2xl border border-ink-100 bg-white shadow-card divide-y divide-ink-100">
-                    <details class="group">
-                        <summary class="flex items-center justify-between p-6 cursor-pointer font-medium text-lg list-none transition-colors group-hover:bg-ink-50 rounded-t-2xl">
-                            <span>Do you guarantee a job?</span>
-                            <i class="fa-solid fa-chevron-down chevron-icon" aria-hidden="true"></i>
-                        </summary>
-                        <div class="faq-content px-6 pb-4">
-                           <p class="mt-2 text-ink-700">No. Our goal is to raise your skill and confidence so that you perform your best. Job offers depend on company requirements, market conditions, and your performance on the day.</p>
-                        </div>
-                    </details>
-                    <details class="group">
-                        <summary class="flex items-center justify-between p-6 cursor-pointer font-medium text-lg list-none transition-colors group-hover:bg-ink-50">
-                            <span>What do you do during interviews?</span>
-                            <i class="fa-solid fa-chevron-down chevron-icon" aria-hidden="true"></i>
-                        </summary>
-                         <div class="faq-content px-6 pb-4">
-                            <p class="mt-3 text-ink-700">
-    We guide you where it matters most—before the first round, between stages, and after it’s done. Our mentors help you stay calm, focused, and confident, so you walk into every interview prepared and in control.
+ <button type="button" id="menuToggle" aria-label="Open menu" aria-controls="mobileNav" aria-expanded="false" class="md:hidden rounded-lg border border-ink-200 p-2 focus-ring">
+ <i class="fa-solid fa-bars text-[1.25rem]" aria-hidden="true"></i>
+ </button>
+ </div>
+ </div>
+ </div>
+
+ <!-- Slim promo bar -->
+ <div class="promo-bar">
+ <div class="mx-auto container px-5 py-2 flex items-center justify-between text-sm">
+ <div class="flex items-center gap-3">
+ <span class="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700"><i class="fa-solid fa-gift" aria-hidden="true"></i> Limited offer</span>
+ <div>
+ <strong class="mr-2">Flat ₹2,000 off</strong>
+ <span class="text-ink-600">Use code <kbd class="px-2 py-0.5 rounded bg-ink-100 text-sm">SEPT2000</kbd> on Core Programs.</span>
+ </div>
+ </div>
+ <div>
+ <a href="store.html" class="text-sm font-medium text-brand-700 hover:underline">Apply in store →</a>
+ </div>
+ </div>
+ </div>
+
+ <nav id="mobileNav" hidden aria-label="Mobile" class="md:hidden border-t border-ink-100 bg-white">
+ <div class="mx-auto container px-5 py-3 grid gap-2 text-sm">
+ <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="why.html">Why Hi Interviews</a>
+ <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="#tracks">Tracks</a>
+ <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="store.html#packages">Our Services</a>
+ <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="job_support.html">Job Support</a>
+ <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="#how">How it works</a>
+ <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="#faq">FAQ</a>
+ <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="#contact">Contact</a>
+ <a class="rounded-full border border-transparent bg-brand-600 px-4 py-2 font-medium text-white text-center" href="login.html">Login</a>
+ </div>
+ </nav>
+ </header>
+
+ <main id="main" tabindex="-1">
+ <section id="top" class="relative isolate overflow-hidden bg-pattern">
+ <div class="mx-auto container px-5 py-24 md:py-32 grid gap-16 md:grid-cols-2 items-center">
+ <div class="animate-fade-in-up" style="--animation-delay: 0.1s;">
+ <h1 class="text-4xl md:text-6xl font-bold tracking-tight leading-tight font-heading">
+ Land your next job with <span class="text-brand-700">one-to-one mentorship</span> and an Interview Day Buddy.
+ </h1>
+ <p class="mt-5 max-w-xl text-ink-700 text-lg">
+ Personal prep with real engineers with five-plus years of experience. On interview day, we stand by you—in-person where available or virtual anywhere. Calm, private, supportive.
+ </p>
+ <div class="mt-8 flex flex-wrap gap-4">
+ <!-- primary CTA links to store and anchors to packages -->
+ <a class="inline-flex items-center rounded-full bg-gradient-to-r from-brand-600 via-accent-iris to-accent-mint px-6 py-3 font-medium text-white shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lift" href="store.html#packages">View Our Services</a>
+ <a class="inline-flex items-center rounded-full border border-ink-200 px-6 py-3 font-medium transition hover:bg-ink-50 hover:shadow-card" href="#contact">Request a Callback</a>
+ </div>
+
+ <div class="mt-6 flex flex-wrap gap-4 items-center text-sm text-ink-600">
+ <div class="flex items-center gap-2"><i class="fa-solid fa-star text-amber-500"></i><span>4.9/5 from 1,200+ learners</span></div>
+ <div class="flex items-center gap-2"><i class="fa-solid fa-user-check text-brand-600"></i><span>Mentors with 5+ years experience</span></div>
+ </div>
+ </div>
+
+ <div class="relative animate-fade-in-up" style="--animation-delay: 0.3s;">
+ <div class="rounded-2xl border border-ink-100 bg-white p-8 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lift">
+ <div class="grid gap-6">
+ <div class="flex items-start gap-4"><div class="grid h-12 w-12 place-items-center rounded-full bg-brand-100 text-brand-700 shrink-0 ring-8 ring-brand-50"><i class="fa-solid fa-user-check text-2xl leading-none" aria-hidden="true"></i></div><div><p class="font-medium text-lg">Personal Plan and Roadmap</p><p class="text-sm text-ink-600">Designed for your goals and pace after a short discovery call.</p></div></div>
+ <div class="flex items-start gap-4"><div class="grid h-12 w-12 place-items-center rounded-full bg-brand-100 text-brand-700 shrink-0 ring-8 ring-brand-50"><i class="fa-solid fa-chalkboard-user text-2xl leading-none" aria-hidden="true"></i></div><div><p class="font-medium text-lg">Daily Mock Interviews</p><p class="text-sm text-ink-600">Practice lowers fear and makes answers clear and simple.</p></div></div>
+ <div class="flex items-start gap-4"><div class="grid h-12 w-12 place-items-center rounded-full bg-brand-100 text-brand-700 shrink-0 ring-8 ring-brand-50"><i class="fa-solid fa-user-group text-2xl leading-none" aria-hidden="true"></i></div><div><p class="font-medium text-lg">Interview Day Buddy</p><p class="text-sm text-ink-600">Warm up before rounds, support between, and a short review.</p></div></div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- WHY -->
+ <section id="why" class="bg-white">
+ <div class="mx-auto container px-5 py-20 md:py-28">
+ <div class="text-center mx-auto max-w-3xl">
+ <h2 class="text-3xl font-medium tracking-tight font-heading">The Mentorship That Revolves Around You</h2>
+ <p class="mt-2 text-ink-700">Generic group classes slow you down. We build a personal plan that gets you to your goal, faster.</p>
+ </div>
+ <div class="mt-12 grid md:grid-cols-2 gap-8 lg:gap-12 items-stretch">
+ <div class="rounded-2xl border border-ink-200 bg-ink-50 p-8 h-full">
+ <h3 class="text-xl font-medium text-ink-700">The Old Way: Group Batches</h3>
+ <ul class="mt-4 space-y-3">
+ <li class="flex items-start gap-4"><i class="fa-solid fa-circle-xmark text-accent-rose mt-1 text-xl" aria-hidden="true"></i><div><span class="font-medium">Divided Attention:</span> You're one of many, lost in the crowd and fighting for the trainer's time.</div></li>
+ <li class="flex items-start gap-4"><i class="fa-solid fa-circle-xmark text-accent-rose mt-1 text-xl" aria-hidden="true"></i><div><span class="font-medium">Fixed, Rigid Pace:</span> The whole batch moves at one speed, leaving you bored or behind.</div></li>
+ <li class="flex items-start gap-4"><i class="fa-solid fa-circle-xmark text-accent-rose mt-1 text-xl" aria-hidden="true"></i><div><span class="font-medium">Generic Advice:</span> You get canned responses that don't apply to your unique background or goals.</div></li>
+ </ul>
+ </div>
+ <div class="rounded-2xl border-2 border-brand-500 bg-white p-8 h-full shadow-lift relative card-hover-effect">
+ <span class="absolute -top-3 left-6 rounded-full bg-brand-600 px-3 py-1 text-xs font-medium text-white shadow-md">OUR WAY</span>
+ <h3 class="text-xl font-medium text-brand-800">The New Way: One-to-One Mentorship</h3>
+ <ul class="mt-4 space-y-3">
+ <li class="flex items-start gap-4"><i class="fa-solid fa-circle-check text-accent-mint mt-1 text-xl" aria-hidden="true"></i><div><span class="font-medium">100% Mentor Focus:</span> Every minute of every session is dedicated entirely to you and your progress.</div></li>
+ <li class="flex items-start gap-4"><i class="fa-solid fa-circle-check text-accent-mint mt-1 text-xl" aria-hidden="true"></i><div><span class="font-medium">Pace Tailored to You:</span> We speed up on your strengths and slow down on your weak spots.</div></li>
+ <li class="flex items-start gap-4"><i class="fa-solid fa-circle-check text-accent-mint mt-1 text-xl" aria-hidden="true"></i><div><span class="font-medium">An Actionable, Personal Plan:</span> We build a roadmap based on your goals to fill your specific knowledge gaps.</div></li>
+ </ul>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- TRACKS now matches store domains (React icon fixed, AI/ML added) -->
+<section id="tracks" class="bg-ink-50/70">
+ <div class="mx-auto container px-5 py-20 md:py-28">
+ <div class="text-center mx-auto max-w-2xl reveal">
+ <h2 class="text-3xl font-bold tracking-tight font-heading">Tracks We Mentor</h2>
+ <p class="mt-2 text-ink-700 text-lg">We offer dedicated mentorship across the specific domains we teach in the store.</p>
+ </div>
+ 
+ <div class="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+ <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect reveal">
+ <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50">
+ <i class="fa-solid fa-laptop-code text-3xl" aria-hidden="true"></i>
+ </div>
+ <p class="mt-4 font-medium text-lg">Full Stack Python</p>
+ <p class="mt-1 text-sm text-ink-600">Backend, APIs, Frameworks</p>
+ </div>
+ 
+ <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect reveal" style="transition-delay: 100ms;">
+ <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50">
+ <i class="fa-solid fa-code text-3xl" aria-hidden="true"></i>
+ </div>
+ <p class="mt-4 font-medium text-lg">Full Stack Java</p>
+ <p class="mt-1 text-sm text-ink-600">Spring, REST, Microservices</p>
+ </div>
+ 
+ <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect reveal" style="transition-delay: 200ms;">
+ <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50">
+ <i class="fa-solid fa-code-branch text-3xl" aria-hidden="true"></i>
+ </div>
+ <p class="mt-4 font-medium text-lg">Full Stack JS</p>
+ <p class="mt-1 text-sm text-ink-600">Node, React, Frontend & Backend</p>
+ </div>
+ 
+ <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect reveal">
+ <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50">
+ <i class="fa-solid fa-cubes text-3xl" aria-hidden="true"></i>
+ </div>
+ <p class="mt-4 font-medium text-lg">SAP Abap</p>
+ <p class="mt-1 text-sm text-ink-600">Enterprise SAP development</p>
+ </div>
+ 
+ <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect reveal" style="transition-delay: 100ms;">
+ <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50">
+ <i class="fa-solid fa-cloud text-3xl" aria-hidden="true"></i>
+ </div>
+ <p class="mt-4 font-medium text-lg">AWS</p>
+ <p class="mt-1 text-sm text-ink-600">Cloud fundamentals & infra</p>
+ </div>
+ 
+ <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect reveal" style="transition-delay: 200ms;">
+ <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50">
+ <i class="fa-solid fa-eye-low-vision text-3xl" aria-hidden="true"></i>
+ </div>
+ <p class="mt-4 font-medium text-lg">Accessibility Testing</p>
+ <p class="mt-1 text-sm text-ink-600">WCAG, A11y testing</p>
+ </div>
+ 
+ <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect reveal">
+ <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50">
+ <i class="fa-solid fa-database text-3xl" aria-hidden="true"></i>
+ </div>
+ <p class="mt-4 font-medium text-lg">Database (MySQL, PL/SQL)</p>
+ <p class="mt-1 text-sm text-ink-600">Schema design & queries</p>
+ </div>
+ 
+ <!-- fixed React icon: use Font Awesome brand icon -->
+ <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect reveal" style="transition-delay: 100ms;">
+ <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50">
+ <i class="fa-brands fa-react text-4xl" aria-hidden="true" title="React"></i>
+ </div>
+ <p class="mt-4 font-medium text-lg">Front End Dev (React JS)</p>
+ <p class="mt-1 text-sm text-ink-600">Modern UI & React patterns</p>
+ </div>
+ 
+ <div class="h-full text-center rounded-2xl border border-ink-100 bg-white p-8 shadow-card card-hover-effect reveal" style="transition-delay: 200ms;">
+ <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 ring-8 ring-brand-50">
+ <i class="fa-solid fa-mobile-screen-button text-3xl" aria-hidden="true"></i>
+ </div>
+ <p class="mt-4 font-medium text-lg">Mobile App Dev (React Native)</p>
+ <p class="mt-1 text-sm text-ink-600">Cross-platform mobile apps</p>
+ </div>
+ 
+ <!-- AI & ML - coming soon -->
+ <div class="h-full text-center rounded-2xl border border-dashed border-ink-300 bg-ink-100 p-8 relative overflow-hidden reveal" style="transition-delay: 300ms;">
+ <span class="absolute top-3 right-3 rounded-full bg-sky-200 px-3 py-1 text-xs font-bold text-sky-800 shadow-sm">COMING SOON</span>
+ <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-ink-200 text-ink-500 ring-8 ring-ink-100/50">
+ <i class="fa-solid fa-brain text-3xl" aria-hidden="true"></i>
+ </div>
+ <p class="mt-4 font-medium text-lg text-ink-600">AI & Machine Learning</p>
+ <p class="mt-1 text-sm text-ink-500">Data Science, LLMs, PyTorch — launching soon</p>
+ </div>
+ </div>
+ </div>
+ </section>
+ 
+
+ <!-- PACKAGES: tiers now match store base packages (ks, js, ps) -->
+ <section id="packages" class="relative overflow-hidden bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100">
+ <div class="mx-auto container px-5 py-20 md:py-28 relative z-10">
+ <div class="text-center mx-auto max-w-3xl">
+ <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-ink-900">A Tier for Every Ambition</h2>
+ <p class="mt-4 text-lg text-ink-600">We've crafted core packages aligned with our store — pick the exact plan and continue to checkout.</p>
+ </div>
+ <div class="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4 items-center">
+ <!-- Knowledge Series (ks) -> Bronze -->
+ <article class="h-full glass-card rounded-2xl p-8 text-ink-800 card-hover-effect">
+ <div class="relative z-10 flex-grow flex flex-col">
+ <div class="text-center">
+ <h3 class="text-2xl font-bold text-amber-700">BRONZE</h3>
+ <p class="mt-1 text-sm font-semibold text-amber-900">Knowledge Series</p>
+ </div>
+ <p class="mt-6 text-5xl font-extrabold font-heading text-center text-ink-900">₹59,999</p>
+ <p class="mt-4 text-sm text-ink-600">Comprehensive one-to-one training from scratch — personalized syllabus & projects.</p>
+ <ul class="mt-8 space-y-3 text-sm flex-grow">
+ <li class="flex items-start gap-3"><i class="fa-solid fa-check text-amber-600 mt-1"></i><span>1-on-1 Daily Classes</span></li>
+ <li class="flex items-start gap-3"><i class="fa-solid fa-check text-amber-600 mt-1"></i><span>Project-Based Learning</span></li>
+ <li class="flex items-start gap-3"><i class="fa-solid fa-check text-amber-600 mt-1"></i><span>Resume Building</span></li>
+ </ul>
+ <!-- link to specific service card in store (service-ks) -->
+ <a class="mt-8 block w-full text-center rounded-full bg-amber-500/20 border border-amber-500/30 px-4 py-3 font-semibold text-amber-800 transition hover:bg-amber-500/40" href="store.html#service-ks">Secure Knowledge Series</a>
+ </div>
+ </article>
+
+ <!-- Job Series (js) -> Silver -->
+ <article class="h-full glass-card rounded-2xl p-8 text-ink-800 card-hover-effect">
+ <div class="relative z-10 flex-grow flex flex-col">
+ <div class="text-center">
+ <h3 class="text-2xl font-bold text-gray-700">SILVER</h3>
+ <p class="mt-1 text-sm font-semibold text-gray-800">Job Series</p>
+ </div>
+ <p class="mt-6 text-5xl font-extrabold font-heading text-center text-ink-900">₹59,999</p>
+ <p class="mt-4 text-sm text-ink-600">Intensive interview prep with mocks and domain brush-up to crack interviews.</p>
+ <ul class="mt-8 space-y-3 text-sm flex-grow">
+ <li class="flex items-start gap-3"><i class="fa-solid fa-check text-gray-600 mt-1"></i><span>Mock Interviews</span></li>
+ <li class="flex items-start gap-3"><i class="fa-solid fa-check text-gray-600 mt-1"></i><span>Domain Concept Brush-Up</span></li>
+ <li class="flex items-start gap-3"><i class="fa-solid fa-check text-gray-600 mt-1"></i><span>Resume Review</span></li>
+ </ul>
+ <a class="mt-8 block w-full text-center rounded-full bg-gray-500/20 border border-gray-500/30 px-4 py-3 font-semibold text-gray-800 transition hover:bg-gray-500/30" href="store.html#service-js">Build My Interview Skills</a>
+ </div>
+ </article>
+
+ <!-- Premium Series (ps) -> Gold -->
+ <article class="h-full glass-card rounded-2xl p-8 text-ink-800 ring-2 ring-yellow-500 shadow-lift card-hover-effect md:scale-105">
+ <div class="absolute -top-4 left-1/2 -translate-x-1/2"><span class="rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 px-4 py-1.5 text-xs font-bold text-ink-900 shadow-md">MOST POPULAR</span></div>
+ <div class="relative z-10 flex-grow flex flex-col">
+ <div class="text-center">
+ <h3 class="text-2xl font-bold text-yellow-600">GOLD</h3>
+ <p class="mt-1 text-sm font-semibold text-yellow-800">Premium Series</p>
+ </div>
+ <p class="mt-6 text-5xl font-extrabold font-heading text-center text-ink-900">₹1,29,998</p>
+ <p class="mt-4 text-sm text-ink-600">The ultimate all-in-one package — training, job prep and interview day support.</p>
+ <ul class="mt-8 space-y-3 text-sm flex-grow">
+ <li class="flex items-start gap-3"><i class="fa-solid fa-check text-yellow-600 mt-1"></i><span>Includes Knowledge + Job Series</span></li>
+ <li class="flex items-start gap-3"><i class="fa-solid fa-check text-yellow-600 mt-1"></i><span>Multiple Interview Buddy Days</span></li>
+ <li class="flex items-start gap-3"><i class="fa-solid fa-check text-yellow-600 mt-1"></i><span>Priority Support</span></li>
+ </ul>
+ <a class="mt-8 block w-full text-center rounded-full bg-yellow-400/90 px-4 py-3 font-bold text-yellow-900 transition hover:bg-yellow-400" href="store.html#service-ps">Design My Premium Program</a>
+ </div>
+ </article>
+
+ <!-- Diamond (coming soon) -->
+ <article class="h-full glass-card rounded-2xl p-8 text-ink-800 card-hover-effect relative">
+ <div class="absolute -top-4 left-1/2 -translate-x-1/2"><span class="rounded-full bg-sky-200 px-4 py-1.5 text-xs font-bold text-sky-800 shadow-md">COMING SOON</span></div>
+ <div class="relative z-10 flex-grow flex flex-col">
+ <div class="text-center">
+ <h3 class="text-2xl font-bold text-sky-500">DIAMOND</h3>
+ <p class="mt-1 text-sm font-semibold text-sky-700">The Elite Partnership</p>
+ </div>
+ <p class="mt-6 text-5xl font-extrabold font-heading text-center text-ink-900">₹1,99,999</p>
+ <p class="mt-4 text-sm text-ink-600">The ultimate career acceleration program for those who demand the absolute best.</p>
+ <ul class="mt-8 space-y-3 text-sm flex-grow">
+ <li class="flex items-start gap-3"><i class="fa-solid fa-check text-sky-500 mt-1"></i><span>45-Day Intensive Training</span></li>
+ <li class="flex items-start gap-3"><i class="fa-solid fa-check text-sky-500 mt-1"></i><span>Unlimited Interview Buddy Days</span></li>
+ <li class="flex items-start gap-3"><i class="fa-solid fa-check text-sky-500 mt-1"></i><span>1 Month FREE Job Support</span></li>
+ </ul>
+ <a class="mt-8 block w-full text-center rounded-full bg-sky-500/20 border border-sky-500/30 px-4 py-3 font-semibold text-sky-800 transition hover:bg-sky-500/30" href="#contact">Become Elite</a>
+ </div>
+ </article>
+ </div>
+ </div>
+ </section>
+
+ <!-- HOW -->
+ <section id="how" class="bg-ink-50 relative overflow-hidden">
+ <div class="absolute inset-0 z-0 bg-pattern"></div>
+ <div class="mx-auto container px-5 py-20 md:py-28 relative z-10">
+ <h2 class="text-3xl font-medium tracking-tight font-heading text-center">How It Works</h2>
+ <div class="mt-12 relative">
+ <div class="hidden md:block absolute top-8 left-0 w-full h-0.5 bg-brand-200 -z-10"></div>
+ <div class="relative grid gap-10 md:grid-cols-4">
+ <div class="text-center">
+ <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 border-4 border-white relative z-10 ring-8 ring-brand-50">
+ <i class="fa-solid fa-bullseye text-3xl leading-none" aria-hidden="true"></i>
+ </div>
+ <h3 class="mt-4 font-medium text-lg">1. Choose Your Service</h3>
+ <p class="mt-1 text-sm text-ink-700">Select the program that best fits your immediate career goals.</p>
+ </div>
+ <div class="text-center">
+ <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 border-4 border-white relative z-10 ring-8 ring-brand-50">
+ <i class="fa-solid fa-users-gear text-3xl leading-none" aria-hidden="true"></i>
+ </div>
+ <h3 class="mt-4 font-medium text-lg">2. Train One-to-One</h3>
+ <p class="mt-1 text-sm text-ink-700">Join daily mock interviews and concept clarity sessions with your mentor.</p>
+ </div>
+ <div class="text-center">
+ <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 border-4 border-white relative z-10 ring-8 ring-brand-50">
+ <i class="fa-solid fa-hands-holding-child text-3xl leading-none" aria-hidden="true"></i>
+ </div>
+ <h3 class="mt-4 font-medium text-lg">3. Interview with a Buddy</h3>
+ <p class="mt-1 text-sm text-ink-700">Stay calm and focused with warm-ups, resets, and debriefs on the big day.</p>
+ </div>
+ <div class="text-center">
+ <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-brand-100 text-brand-700 border-4 border-white relative z-10 ring-8 ring-brand-50">
+ <i class="fa-solid fa-trophy text-3xl leading-none" aria-hidden="true"></i>
+ </div>
+ <h3 class="mt-4 font-medium text-lg">4. Succeed & Grow</h3>
+ <p class="mt-1 text-sm text-ink-700">Use feedback from real interviews to improve your approach and land the offer.</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- FAQ -->
+ <section id="faq" class="bg-white relative overflow-hidden">
+ <div class="mx-auto container px-5 py-20 md:py-28 relative z-10">
+ <div class="text-center mx-auto max-w-3xl">
+ <h2 class="text-3xl font-medium tracking-tight font-heading">Frequently Asked Questions</h2>
+ <p class="mt-2 text-ink-700">Your questions, answered. Here’s some more information about our process and policies.</p>
+ </div>
+ <div class="mt-12 max-w-3xl mx-auto rounded-2xl border border-ink-100 bg-white shadow-card divide-y divide-ink-100">
+ <details class="group">
+ <summary class="flex items-center justify-between p-6 cursor-pointer font-medium text-lg list-none transition-colors group-hover:bg-ink-50 rounded-t-2xl">
+ <span>Do you guarantee a job?</span>
+ <i class="fa-solid fa-chevron-down chevron-icon" aria-hidden="true"></i>
+ </summary>
+ <div class="faq-content px-6 pb-4">
+ <p class="mt-2 text-ink-700">No. Our goal is to raise your skill and confidence so that you perform your best. Job offers depend on company requirements, market conditions, and your performance on the day.</p>
+ </div>
+ </details>
+ <details class="group">
+ <summary class="flex items-center justify-between p-6 cursor-pointer font-medium text-lg list-none transition-colors group-hover:bg-ink-50">
+ <span>What do you do during interviews?</span>
+ <i class="fa-solid fa-chevron-down chevron-icon" aria-hidden="true"></i>
+ </summary>
+ <div class="faq-content px-6 pb-4">
+ <p class="mt-3 text-ink-700">
+ We guide you where it matters most—before the first round, between stages, and after it’s done. Our mentors help you stay calm, focused, and confident, so you walk into every interview prepared and in control.
 </p>
-                        </div>
-                    </details>
-                    <details class="group">
-                        <summary class="flex items-center justify-between p-6 cursor-pointer font-medium text-lg list-none transition-colors group-hover:bg-ink-50">
-                           <span>How long does prep take?</span>
-                            <i class="fa-solid fa-chevron-down chevron-icon" aria-hidden="true"></i>
-                        </summary>
-                        <div class="faq-content px-6 pb-4">
-                           <p class="mt-2 text-ink-700">Our standard training package is for 30 days. Most learners feel confident and ready within this timeframe, but the "Ultimate Advantage" package is fully flexible to your timeline.</p>
-                        </div>
-                    </details>
-                    <details class="group">
-                        <summary class="flex items-center justify-between p-6 cursor-pointer font-medium text-lg list-none transition-colors group-hover:bg-ink-50 rounded-b-2xl">
-                            <span>Who are the mentors?</span>
-                            <i class="fa-solid fa-chevron-down chevron-icon" aria-hidden="true"></i>
-                        </summary>
-                        <div class="faq-content px-6 pb-4">
-                           <p class="mt-2 text-ink-700">Our mentors are experienced engineers and professionals currently working in the industry. Each has over five years of experience and has conducted real interviews for their companies.</p>
-                        </div>
-                    </details>
-                </div>
-            </div>
-        </section>
+ </div>
+ </details>
+ <details class="group">
+ <summary class="flex items-center justify-between p-6 cursor-pointer font-medium text-lg list-none transition-colors group-hover:bg-ink-50">
+ <span>How long does prep take?</span>
+ <i class="fa-solid fa-chevron-down chevron-icon" aria-hidden="true"></i>
+ </summary>
+ <div class="faq-content px-6 pb-4">
+ <p class="mt-2 text-ink-700">Our standard training package is for 30 days. Most learners feel confident and ready within this timeframe, but the "Ultimate Advantage" package is fully flexible to your timeline.</p>
+ </div>
+ </details>
+ <details class="group">
+ <summary class="flex items-center justify-between p-6 cursor-pointer font-medium text-lg list-none transition-colors group-hover:bg-ink-50 rounded-b-2xl">
+ <span>Who are the mentors?</span>
+ <i class="fa-solid fa-chevron-down chevron-icon" aria-hidden="true"></i>
+ </summary>
+ <div class="faq-content px-6 pb-4">
+ <p class="mt-2 text-ink-700">Our mentors are experienced engineers and professionals currently working in the industry. Each has over five years of experience and has conducted real interviews for their companies.</p>
+ </div>
+ </details>
+ </div>
+ </div>
+ </section>
 
-        <section id="contact" class="bg-ink-50 relative overflow-hidden">
-            <div class="mx-auto container px-5 py-20 md:py-28 relative z-10">
-                <div class="grid md:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <h2 class="text-3xl font-medium tracking-tight font-heading">Your Next Chapter Starts Here</h2>
-                        <p class="mt-3 text-ink-700 max-w-lg">Taking the first step is the hardest part. We make it easy. Fill out the form or ping us on WhatsApp, and we'll schedule a free discovery call to build your personalized prep plan. No commitment, just a conversation.</p>
-                        <div class="mt-6 border-t border-ink-200 pt-6">
-                            <h3 class="font-medium">What to expect next:</h3>
-                            <ul class="mt-4 space-y-3 text-sm">
-                                <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-brand-600" aria-hidden="true"></i> A free 15-minute discovery call</li>
-                                <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-brand-600" aria-hidden="true"></i> A personalized plan proposal</li>
-                                <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-brand-600" aria-hidden="true"></i> Your first session scheduled</li>
-                            </ul>
-                        </div>
-                         <div class="mt-6 flex flex-wrap gap-4">
-                            <a href="https://wa.me/919000000000" target="_blank" class="inline-flex items-center gap-2 rounded-full border border-accent-mint bg-accent-mint/10 px-5 py-2.5 font-medium text-accent-mint transition hover:bg-accent-mint/20 hover:shadow-card">
-                                <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
-                                <span>Chat on WhatsApp</span>
-                            </a>
-                             <a href="mailto:hello@hiinterviews.com" class="inline-flex items-center gap-2 rounded-full border border-ink-200 bg-white px-5 py-2.5 font-medium transition hover:bg-ink-50 hover:shadow-card">
-                                <i class="fa-solid fa-envelope" aria-hidden="true"></i>
-                                <span>Email Us</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="rounded-2xl bg-white p-8 shadow-lift border border-ink-100">
-                        <form id="contactForm" class="grid gap-5" aria-describedby="contactHelp">
-                            <h3 class="text-xl font-medium">Tell us about yourself</h3>
-                            <div class="grid gap-5 md:grid-cols-2">
-                                <label class="grid gap-1"><span class="text-sm font-medium text-ink-700">Full name</span><input class="focus-ring rounded-lg border border-ink-200 px-4 py-2.5 bg-ink-50 transition focus:border-brand-500 focus:bg-white" id="fullName" autocomplete="name" required/></label>
-                                <label class="grid gap-1"><span class="text-sm font-medium text-ink-700">Email</span><input class="focus-ring rounded-lg border border-ink-200 px-4 py-2.5 bg-ink-50 transition focus:border-brand-500 focus:bg-white" type="email" id="emailAddress" autocomplete="email" required/></label>
-                            </div>
-                            <label class="grid gap-1"><span class="text-sm font-medium text-ink-700">Interest</span>
-                                <select class="focus-ring rounded-lg border border-ink-200 px-4 py-2.5 bg-ink-50 transition focus:border-brand-500 focus:bg-white" id="interest">
-                                    <option>Customizable Combo (₹99,999)</option>
-                                    <option>One-to-One Training (₹49,999)</option>
-                                    <option>Interview Day Buddy (₹12,999)</option>
-                                </select>
-                            </label>
-                            <label class="grid gap-1"><span class="text-sm font-medium text-ink-700">Message</span><textarea class="focus-ring min-h-[120px] rounded-lg border border-ink-200 px-4 py-2.5 bg-ink-50 transition focus:border-brand-500 focus:bg-white" id="message" rows="4" placeholder="Share your role, stack and timeline"></textarea></label>
-                            <div>
-                                <button type="submit" id="submitButton" class="w-full inline-flex items-center justify-center rounded-full bg-gradient-to-r from-brand-600 via-accent-iris to-accent-mint px-5 py-2.5 font-medium text-white shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lift">Send Message</button>
-                            </div>
-                            <div id="formFeedback" aria-live="polite"></div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+ <!-- CONTACT -->
+ <section id="contact" class="bg-ink-50 relative overflow-hidden">
+ <div class="mx-auto container px-5 py-20 md:py-28 relative z-10">
+ <div class="grid md:grid-cols-2 gap-12 items-center">
+ <div>
+ <h2 class="text-3xl font-medium tracking-tight font-heading">Your Next Chapter Starts Here</h2>
+ <p class="mt-3 text-ink-700 max-w-lg">Taking the first step is the hardest part. We make it easy. For now, please reach out via email — it's the most reliable way for us to help you quickly.</p>
+ <div class="mt-6 border-t border-ink-200 pt-6">
+ <h3 class="font-medium">What to expect next:</h3>
+ <ul class="mt-4 space-y-3 text-sm">
+ <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-brand-600" aria-hidden="true"></i> A free 15-minute discovery call scheduled by email</li>
+ <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-brand-600" aria-hidden="true"></i> A personalized plan proposal</li>
+ <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-brand-600" aria-hidden="true"></i> Your first session scheduled</li>
+ </ul>
+ </div>
 
-    <footer class="bg-ink-900 text-ink-300">
-        <div class="mx-auto container px-5 py-16">
-            <div class="grid gap-12 md:grid-cols-4">
-                <div class="md:col-span-1">
-                    <a href="#top" class="font-heading font-semibold tracking-tight text-xl text-white">Hi Interviews</a>
-                    <p class="mt-2 text-sm">Your Personal Interview Coach.</p>
-                </div>
-                <div class="md:col-span-3 grid grid-cols-2 md:grid-cols-3 gap-8">
-                    <div>
-                        <h4 class="font-medium text-white">Quick Links</h4>
-                        <ul class="mt-4 space-y-2 text-sm">
-                            <li><a href="#why" class="hover:text-white transition">Why One-to-One</a></li>
-                            <li><a href="#tracks" class="hover:text-white transition">Tracks</a></li>
-                            <li><a href="#packages" class="hover:text-white transition">Our Services</a></li>
-                            <li><a href="#faq" class="hover:text-white transition">FAQ</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-medium text-white">Services</h4>
-                        <ul class="mt-4 space-y-2 text-sm">
-                              <li><a href="#packages" class="hover:text-white transition">One-to-One Training</a></li>
-                              <li><a href="#packages" class="hover:text-white transition">Interview Day Buddy</a></li>
-                              <li><a href="#packages" class="hover:text-white transition">Customizable Combo</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-medium text-white">Connect</h4>
-                        <ul class="mt-4 space-y-2 text-sm">
-                              <li><a href="mailto:hello@hiinterviews.com" class="hover:text-white transition">hello@hiinterviews.com</a></li>
-                              <li><a href="tel:+919000000000" class="hover:text-white transition">+91 90000 00000</a></li>
-                        </ul>
-                        <div class="mt-4 flex space-x-4">
-                           <a href="#" class="h-8 w-8 grid place-items-center rounded-full bg-ink-800 hover:bg-brand-600 text-white transition" aria-label="LinkedIn Profile"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
-                           <a href="#" class="h-8 w-8 grid place-items-center rounded-full bg-ink-800 hover:bg-brand-600 text-white transition" aria-label="X/Twitter Profile"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
-                           <a href="#" class="h-8 w-8 grid place-items-center rounded-full bg-ink-800 hover:bg-brand-600 text-white transition" aria-label="GitHub Profile"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-12 pt-8 border-t border-ink-700 flex flex-col md:flex-row justify-between items-center text-sm">
-                <p class="text-ink-400">© <span id="year">2025</span> Hi Interviews. Crafted with <i class="fa-solid fa-heart text-accent-rose" aria-hidden="true"></i> in Hyderabad.</p>
-                <div class="mt-4 md:mt-0 space-x-4">
-                    <a href="privacy_policy.html" class="hover:text-white transition">Privacy Policy</a>
-                    <a href="t&c.html" class="hover:text-white transition">Terms of Service</a>
-                    <a href="admin_map.html" class="hover:text-white transition">Admin Map</a>
-                    <a href="why.html" class="hover:text-white transition">Why us</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+ <div class="mt-6 flex gap-4 items-start">
+ <a id="mailtoButton" href="mailto:hello@hiinterviews.com" class="inline-flex items-center gap-2 rounded-full border border-ink-200 bg-white px-5 py-2.5 font-medium transition hover:bg-ink-50 hover:shadow-card">
+ <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+ <span>Email Us</span>
+ </a>
+ </div>
+ </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const qs = (s, c = document) => c.querySelector(s);
-            const qsa = (s, c = document) => Array.from(c.querySelectorAll(s));
+ <div class="rounded-2xl bg-white p-8 shadow-lift border border-ink-100">
+ <!-- Email-only contact panel -->
+ <div class="email-panel">
+ <div class="flex items-start justify-between gap-4">
+ <div>
+ <h3 class="text-xl font-semibold">Contact via Email</h3>
+ <p class="mt-1 text-sm text-ink-600">Please email us at <strong>hello@hiinterviews.com</strong>. We respond to email requests within 24 hours and will schedule a discovery call once we review your message.</p>
+ </div>
+ <div class="text-right">
+ <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-amber-50 text-amber-700 border border-amber-100">Email Preferred</span>
+ </div>
+ </div>
 
-            const yearEl = qs('#year');
-            if (yearEl) {
-              yearEl.textContent = new Date().getFullYear();
-            }
+ <div class="mt-4">
+ <label class="text-sm font-medium text-ink-700">Sample email (copy & send)</label>
+ <div id="sampleEmail" class="sample-email mt-3">
+Subject: Help with second-round coding interview — Monica (Java Spring Boot)
 
-            const pageHeader = qs('#pageHeader');
-            function handleHeaderScroll() {
-                if (window.scrollY > 10) {
-                    pageHeader.classList.add('shadow-sm', 'border-ink-100/80');
-                } else {
-                    pageHeader.classList.remove('shadow-sm', 'border-ink-100/80');
-                }
-            }
-            window.addEventListener('scroll', handleHeaderScroll, { passive: true });
-            handleHeaderScroll();
+Hi Hi Interviews team,
 
-            const menuToggle = qs('#menuToggle');
-            const mobileNav = qs('#mobileNav');
-            function toggleMenu() {
-                const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
-                menuToggle.setAttribute('aria-expanded', String(!expanded));
-                mobileNav.hidden = expanded;
-                document.body.style.overflow = expanded ? '' : 'hidden';
-            }
-            menuToggle?.addEventListener('click', toggleMenu);
-            qsa('#mobileNav a').forEach(a => a.addEventListener('click', () => {
-                if (menuToggle.getAttribute('aria-expanded') === 'true') {
-                     toggleMenu();
-                }
-            }));
+My name is Monica. I’m a Java Spring Boot developer and I recently cleared the first-round screening for a role that moves to a coding round in the second stage.
 
-            const spyLinks = qsa('a[data-spy]');
-            const sections = spyLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-            if (sections.length > 0) {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const id = '#' + entry.target.id;
-                            spyLinks.forEach(l => l.classList.toggle('text-brand-600', l.getAttribute('href') === id));
-                        }
-                    });
-                }, { rootMargin: '-45% 0px -50% 0px', threshold: 0.01 });
-                sections.forEach(s => observer.observe(s));
-            }
+I’m looking for guidance on:
+• Strategy for timed coding rounds (how to approach problems under pressure)
+• Common pitfalls for Spring/Java candidates in coding interviews
+• Mock interview sessions + interview day support to manage nerves
 
-            const contactForm = qs('#contactForm');
-            const formFeedback = qs('#formFeedback');
-            const submitButton = qs('#submitButton');
+A little background:
+• Current role: Java Spring Boot developer (3 years)
+• Tech: Spring Boot, REST, MySQL, Docker
+• Concern: I get nervous during timed coding rounds and often run out of time despite knowing the concepts.
 
-            contactForm?.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const fullName = qs('#fullName').value.trim();
-                
-                submitButton.disabled = true;
-                submitButton.textContent = 'Sending...';
-                submitButton.classList.add('opacity-70', 'cursor-not-allowed');
+Could you recommend which package would suit me best and next steps to get started? I’m available for a short discovery call most weekdays after 6 PM IST.
 
-                setTimeout(() => {
-                    const successMessage = `
-                        <div role="status" class="mt-2 rounded-lg border border-green-300 bg-green-50 p-4 text-sm text-green-800">
-                            Thanks ${fullName || 'there'}! We've received your message and will get back to you within 24 hours.
-                        </div>
-                    `;
-                    formFeedback.innerHTML = successMessage;
-                    contactForm.reset();
+Thanks,
+Monica
+Monica R.
++91-XXXXXXXXXX
+ </div>
 
-                    submitButton.disabled = false;
-                    submitButton.textContent = 'Send Message';
-                    submitButton.classList.remove('opacity-70', 'cursor-not-allowed');
+ <div class="mt-4 flex gap-3">
+ <button id="copySampleBtn" class="btn-copy" title="Copy sample to clipboard">
+ <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:white">
+ <path stroke-linecap="round" stroke-linejoin="round" d="M8 16h8M8 12h8M8 8h8M4 20h16v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2z" />
+ </svg>
+ <span>Copy sample</span>
+ </button>
 
-                    setTimeout(() => {
-                        formFeedback.innerHTML = '';
-                    }, 6000);
-                }, 1000);
+ <a id="openMailBtn" class="btn-mail" href="mailto:hello@hiinterviews.com?subject=Help%20with%20second-round%20coding%20interview%20%E2%80%94%20Monica&body=Hi%20Hi%20Interviews%20team%2C%0A%0AMy%20name%20is%20Monica.%20I%E2%80%99m%20a%20Java%20Spring%20Boot%20developer%20and%20I%20recently%20cleared%20the%20first-round%20screening%20for%20a%20role%20that%20moves%20to%20a%20coding%20round%20in%20the%20second%20stage.%0A%0AI%27m%20looking%20for%20guidance%20on%3A%0A%E2%80%A2%20Strategy%20for%20timed%20coding%20rounds%20%28how%20to%20approach%20problems%20under%20pressure%29%0A%E2%80%A2%20Common%20pitfalls%20for%20Spring%2FJava%20candidates%20in%20coding%20interviews%0A%E2%80%A2%20Mock%20interview%20sessions%20%2B%20interview%20day%20support%20to%20manage%20nerves%0A%0AA%20little%20background%3A%0A%E2%80%A2%20Current%20role%3A%20Java%20Spring%20Boot%20developer%20%283%20years%29%0A%E2%80%A2%20Tech%3A%20Spring%20Boot%2C%20REST%2C%20MySQL%2C%20Docker%0A%E2%80%A2%20Concern%3A%20I%20get%20nervous%20during%20timed%20coding%20rounds%20and%20often%20run%20out%20of%20time%20despite%20knowing%20the%20concepts.%0A%0ACould%20you%20recommend%20which%20package%20would%20suit%20me%20best%20and%20next%20steps%20to%20get%20started%3F%20I%27m%20available%20for%20a%20short%20discovery%20call%20most%20weekdays%20after%206%20PM%20IST.%0A%0AThanks%2C%0AMonica%0AMonica%20R.%0A%2B91%E2%80%91XXXXXXXXXX">
+ <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:white">
+ <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+ </svg>
+ <span>Open in Mail</span>
+ </a>
+ </div>
+
+ <p id="emailFeedback" class="text-sm text-ink-600 mt-3">Tip: Paste the sample into your email client and tweak details (name, times) before sending.</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </section>
+ </main>
+
+ <footer class="bg-ink-900 text-ink-300">
+ <div class="mx-auto container px-5 py-16">
+ <div class="grid gap-12 md:grid-cols-4">
+ <div class="md:col-span-1">
+ <a href="#top" class="font-heading font-semibold tracking-tight text-xl text-white flex items-center gap-3">
+ <div class="h-8 w-8 rounded-md bg-gradient-to-br from-brand-600 to-brand-800 text-white flex items-center justify-center font-bold">HI</div>
+ Hi Interviews
+ </a>
+ <p class="mt-2 text-sm">Your Personal Interview Coach.</p>
+ </div>
+ <div class="md:col-span-3 grid grid-cols-2 md:grid-cols-3 gap-8">
+ <div>
+ <h4 class="font-medium text-white">Quick Links</h4>
+ <ul class="mt-4 space-y-2 text-sm">
+ <li><a href="why.html" class="hover:text-white transition">Why Hi Interviews</a></li>
+ <li><a href="#tracks" class="hover:text-white transition">Tracks</a></li>
+ <li><a href="store.html#packages" class="hover:text-white transition">Our Services</a></li>
+ <li><a href="job_support.html" class="hover:text-white transition">Job Support</a></li>
+ <li><a href="#faq" class="hover:text-white transition">FAQ</a></li>
+ </ul>
+ </div>
+ <div>
+ <h4 class="font-medium text-white">Services</h4>
+ <ul class="mt-4 space-y-2 text-sm">
+ <li><a href="store.html#service-ks" class="hover:text-white transition">Knowledge Series</a></li>
+ <li><a href="store.html#service-js" class="hover:text-white transition">Job Series</a></li>
+ <li><a href="store.html#service-ps" class="hover:text-white transition">Premium Series</a></li>
+ </ul>
+ </div>
+ <div>
+ <h4 class="font-medium text-white">Connect</h4>
+ <ul class="mt-4 space-y-2 text-sm">
+ <li><a href="mailto:hello@hiinterviews.com" class="hover:text-white transition">hello@hiinterviews.com</a></li>
+ </ul>
+ <div class="mt-4 flex space-x-4">
+ <!-- intentionally commented for investor demo -->
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="mt-12 pt-8 border-t border-ink-700 flex flex-col md:flex-row justify-between items-center text-sm">
+ <p class="text-ink-400">© <span id="year">2025</span> Hi Interviews. Crafted with <i class="fa-solid fa-heart text-accent-rose" aria-hidden="true"></i> in Hyderabad.</p>
+ <div class="mt-4 md:mt-0 space-x-4">
+ <a href="privacy_policy.html" class="hover:text-white transition">Privacy Policy</a>
+ <a href="t&c.html" class="hover:text-white transition">Terms of Service</a>
+ <a href="" class="hover:text-white transition"></a>
+ </div>
+ </div>
+ </div>
+ </footer>
+ <script src="scripts/script.js"></script>
+ <script>
+ document.addEventListener('DOMContentLoaded', () => {
+
+     checkWebsiteStatus().then(active => {
+                 if (!active) return; 
             });
-        });
-    </script>
+
+ const qs = (s, c = document) => c.querySelector(s);
+ const qsa = (s, c = document) => Array.from(c.querySelectorAll(s));
+
+ const yearEl = qs('#year');
+ if (yearEl) {
+ yearEl.textContent = new Date().getFullYear();
+ }
+
+ const pageHeader = qs('#pageHeader');
+ function handleHeaderScroll() {
+ if (window.scrollY > 12) {
+ pageHeader.classList.add('shadow-sm', 'border-ink-100/80');
+ } else {
+ pageHeader.classList.remove('shadow-sm', 'border-ink-100/80');
+ }
+ }
+ window.addEventListener('scroll', handleHeaderScroll, { passive: true });
+ handleHeaderScroll();
+
+ const menuToggle = qs('#menuToggle');
+ const mobileNav = qs('#mobileNav');
+ function toggleMenu() {
+ const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
+ menuToggle.setAttribute('aria-expanded', String(!expanded));
+ mobileNav.hidden = expanded;
+ document.body.style.overflow = expanded ? '' : 'hidden';
+ }
+ menuToggle?.addEventListener('click', toggleMenu);
+ qsa('#mobileNav a').forEach(a => a.addEventListener('click', () => {
+ if (menuToggle.getAttribute('aria-expanded') === 'true') {
+ toggleMenu();
+ }
+ }));
+
+ const spyLinks = qsa('a[data-spy]');
+ const sections = spyLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+ if (sections.length > 0) {
+ const observer = new IntersectionObserver((entries) => {
+ entries.forEach(entry => {
+ if (entry.isIntersecting) {
+ const id = '#' + entry.target.id;
+ spyLinks.forEach(l => {
+ l.classList.remove('text-brand-600', 'font-semibold');
+ if (l.getAttribute('href') === id) {
+ l.classList.add('text-brand-600', 'font-semibold');
+ }
+ });
+ }
+ });
+ }, { rootMargin: '-40% 0px -60% 0px' });
+ sections.forEach(s => observer.observe(s));
+ }
+
+ // Accordion logic for FAQ
+ const accordions = document.querySelectorAll('#faq details');
+ accordions.forEach(el => {
+ const content = el.querySelector('.faq-content');
+ if (el.open) {
+ content.style.maxHeight = `${content.scrollHeight}px`;
+ } else {
+ content.style.maxHeight = '0px';
+ }
+ el.addEventListener('toggle', () => {
+ if (el.open) {
+ content.style.maxHeight = `${content.scrollHeight}px`;
+ } else {
+ content.style.maxHeight = '0px';
+ }
+ });
+ });
+
+ // Copy sample email
+ const copyBtn = qs('#copySampleBtn');
+ const sampleEl = qs('#sampleEmail');
+ const feedbackEl = qs('#emailFeedback');
+ copyBtn?.addEventListener('click', async () => {
+ const text = sampleEl?.innerText || '';
+ try {
+ await navigator.clipboard.writeText(text);
+ feedbackEl.textContent = 'Sample copied to clipboard — paste into your mail client and send.';
+ setTimeout(() => feedbackEl.textContent = 'Tip: Paste the sample into your email client and tweak details (name, times) before sending.' , 4000);
+ } catch (err) {
+ feedbackEl.textContent = 'Copy failed — please select the sample and press Ctrl/Cmd+C to copy.';
+ }
+ });
+
+ // nothing more required for mailto button
+ });
+ </script>
 </body>
 </html>
-

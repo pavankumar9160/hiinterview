@@ -164,9 +164,13 @@
     <div id="profile-modal" class="fixed inset-0 flex items-center justify-center z-50 p-4 hidden"></div>
     <div id="students-modal" class="fixed inset-0 flex items-center justify-center z-50 p-4 hidden"></div>
     <div id="chat-modal" class="fixed inset-0 flex items-center justify-center z-50 p-4 hidden"></div>
-
+     <script src="scripts/script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async function(){
+
+             checkWebsiteStatus().then(active => {
+                 if (!active) return; 
+            });
             const qs = (s) => document.querySelector(s);
             const qsa = (s) => document.querySelectorAll(s);
 
