@@ -3,6 +3,10 @@ async function checkWebsiteStatus() {
         const res = await fetch("https://hiinterview-backend-1.onrender.com/api/website-status/");
         const data = await res.json();
         if (!data.is_active) {
+
+            localStorage.clear();
+            sessionStorage.clear();
+
             document.body.innerHTML = `
             <div class="flex items-center justify-center h-screen">
                 <div class="bg-white/70 backdrop-blur-xl rounded-2xl shadow-lift ring-1 ring-black/5 p-6 max-w-md text-center">

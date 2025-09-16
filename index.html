@@ -137,7 +137,7 @@
  <i class="fa-solid fa-shopping-cart text-ink-700"></i>
  </a>
 
- <a href="login.html" class="inline-flex items-center rounded-full border border-ink-200 px-4 py-2 font-medium text-ink-700 transition-all duration-300 hover:bg-ink-50 hover:shadow-card">
+ <a href="login.html" class="inline-flex items-center rounded-full border border-ink-200 px-4 py-2 font-medium text-ink-700 transition-all duration-300 hover:bg-ink-50 hover:shadow-card login-link">
  Login
  </a>
 
@@ -660,6 +660,12 @@ Monica R.
      checkWebsiteStatus().then(active => {
                  if (!active) return; 
             });
+
+            let refreshToken = localStorage.getItem('refreshToken') || sessionStorage.getItem('refreshToken')
+
+            if(refreshToken){
+                document.querySelector(".login-link").style.display ="none";
+            }
 
  const qs = (s, c = document) => c.querySelector(s);
  const qsa = (s, c = document) => Array.from(c.querySelectorAll(s));
