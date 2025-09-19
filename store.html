@@ -662,7 +662,7 @@
 
 
                                  try {
-                        let response = await fetch('https://hiinterview-backend-1.onrender.com/api/userprofile/', {
+                        let response = await fetch('https://hiinterview.onrender.com/api/userprofile/', {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -675,7 +675,7 @@
                             accessToken = await refreshAccessToken();
                             if (!accessToken) return;
                             refreshToken = localStorage.getItem('refreshToken');
-                            response = await fetch('https://hiinterview-backend-1.onrender.com/api/userprofile/', {
+                            response = await fetch('https://hiinterview.onrender.com/api/userprofile/', {
                                 method: 'GET',
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -699,7 +699,7 @@
                             console.log("data:", data);
                          
                             if (data.profile_photo_url) {
-                                const url = 'https://hiinterview-backend-1.onrender.com'
+                                const url = 'https://hiinterview.onrender.com'
                                 
                             profileInitial.style.display = "none";
                             qs("#profileAvatar").src = `${url}${data.profile_photo_url}`;
@@ -734,7 +734,7 @@
           if (!refreshToken) return null;
 
           try {
-              const response = await fetch("https://hiinterview-backend-1.onrender.com/api/token/refresh/", {
+              const response = await fetch("https://hiinterview.onrender.com/api/token/refresh/", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({ refresh: refreshToken })

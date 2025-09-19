@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin: Master Data — Hi Interviews</title>
+    <meta name="robots" content="noindex, nofollow">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ink: { 50: '#f8fafc', 100: '#eef2f7', 200: '#e5eaf1', 300: '#cfd8e3', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a', 950: '#0c1324' },
+                        brand: { 50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81' },
+                        'accent-iris': '#8B5CF6', 'accent-mint': '#10B981', 'accent-rose': '#F43F5E', 'accent-amber': '#FBBF24',
+                    },
+                    fontFamily: { sans: ["Inter", "system-ui", "sans-serif"], heading: ["Poppins", "sans-serif"] },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'scale-in': 'scaleIn 0.3s cubic-bezier(0.25,1,0.5,1) forwards',
+                    },
+                    keyframes: {
+                        fadeIn: { '0%': { opacity: 0 }, '100%': { opacity: 1 } },
+                        scaleIn: { '0%': { transform: 'scale(0.95)', opacity: '0' }, '100%': { transform: 'scale(1)', opacity: '1' } },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .focus-ring:focus-visible { outline: 2px solid rgba(79, 70, 229,.35); outline-offset: 3px }
+        .bg-pattern { background-image: radial-gradient(circle at top, rgba(79,70,229,0.08) 0%, transparent 30%), radial-gradient(circle at bottom, rgba(139,92,246,0.08) 0%, transparent 40%); }
+        .bg-glass { background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        .toggle-switch-bg { transition: background-color .2s ease-in-out; }
+        .toggle-switch-dot { transition: transform .2s ease-in-out; }
+        input.toggle-checkbox:checked ~ .toggle-switch-bg { background-color: #10B981; }
+        input.toggle-checkbox:checked ~ .toggle-switch-bg .toggle-switch-dot { transform: translateX(100%); }
+    </style>
+</head>
+
+<body class="text-ink-950 antialiased font-sans bg-pattern">
+    <header class="bg-white/80 backdrop-blur-sm border-b border-ink-100 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+            <div>
+                <h1 class="font-semibold tracking-tight text-xl font-heading text-ink-900">Hi Interviews <span class="text-brand-600 font-normal">| Admin Panel</span></h1>
+            </div>
+             <div>
+                <a href="admin_masterdata.html" class="text-sm font-medium text-brand-700 hover:underline">Admin MasterData →</a>
+            </div>
+             </div>
+
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+            <h1 class="text-3xl font-bold text-ink-800">Ticket Management</h1>
+            
+            <div class="mt-4 bg-brand-50 border-l-4 border-brand-500 p-4 rounded-r-lg">
+                <div class="flex">
+                    <div class="flex-shrink-0"><i class="fa-solid fa-circle-info text-brand-600"></i></div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-semibold text-brand-800">Admin Ticket Management Features</h3>
+                        <ul class="mt-2 text-sm text-brand-700 list-disc list-inside space-y-1">
+                           <!-- <li>Click on a user's name or avatar to navigate to their respective profile page.</li>-->
+                            <li>Update the status of each ticket raised by the user. <strong class="text-rose-700">Note: Respond to the user's ticket through Email.</strong></li>
+                           <!-- <li>Click the "Chat" button to send a direct message to a user's chat inbox.</li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+<div class="mt-5">
+<div class="bg-white/80 backdrop-blur-xl py-4 px-6 rounded-2xl shadow-md ring-1 ring-black/5 overflow-hidden">
+
+  <div class="mt-3 flex flex-wrap items-end justify-end gap-3">
+    <input 
+      type="text" 
+      id="ticketSearch" 
+      placeholder="Search by Ticket ID..." 
+      class="border rounded-lg px-3 py-2 text-sm w-64 focus:ring-2 focus:ring-brand-500"
+    />
+
+    <select 
+      id="statusFilter" 
+      class="border rounded-lg px-3 py-2 text-sm w-48 focus:ring-2 focus:ring-brand-500"
+    >
+      <option value="all">All Status</option>
+      <option value="open">Open</option>
+      <option value="pending">Pending</option>
+      <option value="resolved">Resolved</option>
+      <option value="closed">Closed</option>
+    </select>
+  </div>
+
+    <div class="overflow-x-auto mt-5 max-h-[400px] overflow-y-auto">
+        <table class="w-full text-sm min-w-[600px]">
+        <thead class="bg-ink-50">
+        <tr class="mt-6">
+          <th class="text-left font-semibold">Ticket ID</th>
+          <th class="text-left font-semibold">Subject</th>
+          <th class="text-left font-semibold">Message</th>
+          <th class="text-left font-semibold">Ticket Status</th>
+          <th class="text-left font-semibold">Created</th>
+          <th class="text-left font-semibold">Action</th>
+        </tr>
+      </thead>
+      <tbody id="ticketsTbody" class="divide-y"></tbody>
+    </table>
+  </div>
+</div>  
+</div>
+
+</main>
+
+<!-- Backdrop -->
+<div id="ticketModal-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden animate-fade-in"></div>
+
+<!-- Modal -->
+<div id="ticketModal" class="fixed inset-0 flex items-center justify-center z-50 p-4 hidden">
+  <div class="bg-white rounded-2xl shadow-lift w-full max-w-4xl max-h-[80vh] overflow-y-auto animate-scale-in">
+    <!-- Header -->
+    <div class="flex justify-between items-center p-6 border-b">
+      <h2 class="text-lg font-bold text-ink-800">Ticket Details</h2>
+      <button id="close-ticketModal-btn" class="text-ink-400 hover:text-ink-600 text-2xl">&times;</button>
+    </div>
+
+    <!-- Body -->
+    <div id="ticketModalBody" class="p-6 text-sm text-ink-700 space-y-4">
+    </div>
+
+    <!-- Footer -->
+    <div class="flex justify-end gap-3 p-6 border-t">
+      <button class="close-ticketModal-btn-action bg-ink-100 text-ink-700 font-medium py-2 px-4 rounded-lg hover:bg-ink-200 transition text-sm">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+ <script src="scripts/script.js"></script>
+ <script>
+document.addEventListener('DOMContentLoaded',()=> {
+
+           checkWebsiteStatus().then(active => {
+                 if (!active) return; 
+            });
+ function escapeHtml(text){ if(!text) return ''; return (text+'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]); }
+ const currencyFormatter = new Intl.NumberFormat('en-IN');
+ function formatRupees(n){ return '₹' + Math.round(n).toLocaleString('en-IN'); }
+    let appState =[];
+
+
+
+    
+
+let accessToken = localStorage.getItem('accessToken');
+let refreshToken = localStorage.getItem('refreshToken');
+
+
+
+if (!refreshToken) {
+    clearTokensAndRedirect();
+    return;
+}
+
+// --- Load Tickets ---
+async function loadTickets() {
+  try {
+    const response = await fetch('https://hiinterview.onrender.com/api/tickets/', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+            if (response.status === 401) {
+                accessToken = await refreshAccessToken();
+                if (!accessToken) return;
+                refreshToken = localStorage.getItem('refreshToken');
+                response = await fetch('https://hiinterview.onrender.com/api/tickets/', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+
+                });
+            }
+
+            if (response.status === 403) {
+                //spinner.style.display = "none";
+                window.location.href = "404.html";
+            } else {
+                //content.style.display = "block";
+                //spinner.style.display = "none";
+
+            }
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log("data",data)
+                appState = data;
+                    renderTickets();
+
+                
+            }
+            else {
+                  console.error('failed to fetch user data');
+              }
+    } catch (err) {
+        console.error("Profile load error:", err);
+    }
+}
+
+
+async function refreshAccessToken() {
+        const refreshToken = localStorage.getItem("refreshToken");
+        if (!refreshToken) return null;
+
+        try {
+            const response = await fetch("https://hiinterview.onrender.com/api/token/refresh/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ refresh: refreshToken })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem("accessToken", data.access);
+                localStorage.setItem("refreshToken", data.refresh);
+
+                return data.access;
+            } else {
+                clearTokensAndRedirect();
+                return null;
+            }
+        } catch (err) {
+            console.error(err);
+            return null;
+        }
+    }
+
+function clearTokensAndRedirect() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('role')
+    window.location.href = "login.html";
+}
+
+
+const ticketsTbody = document.getElementById('ticketsTbody');
+const ticketSearch = document.getElementById('ticketSearch');
+const statusFilter = document.getElementById('statusFilter');
+
+
+ticketSearch.addEventListener('input', renderTickets);
+statusFilter.addEventListener('change', renderTickets);
+
+function renderTickets() {
+  let filteredTickets = [...appState]; 
+
+
+  const filterStatus = statusFilter.value;
+  if (filterStatus !== 'all') {
+    filteredTickets = filteredTickets.filter(
+      t => t.status.toLowerCase() === filterStatus
+    );
+  }
+
+  const searchQuery = ticketSearch.value.trim().toLowerCase();
+  if (searchQuery) {
+    filteredTickets = filteredTickets.filter(
+      t => String(t.ticket_id).toLowerCase().includes(searchQuery)
+    );
+  }
+
+
+
+   if(filteredTickets.length==0){
+            
+        ticketsTbody.innerHTML =`
+
+            <tr>
+                <td colspan="5" class="text-center py-4 text-gray-500">
+                No Tickets Found
+                </td>
+            </tr>
+            `
+            return;
+            
+    }
+
+        ticketsTbody.innerHTML = filteredTickets.map(t => {
+        return `
+        <tr class="ticketRow" data-ticketid="${t.ticket_id}" tabindex="0">
+        <td class="py-2 pr-4">${escapeHtml(t.ticket_id)}</td>
+        <td class="py-2 pr-4">${escapeHtml(t.subject)}</td>
+        <td class="py-2 pr-4">${escapeHtml(t.message)}</td>
+
+        <td class="py-2 pr-4">
+        ${
+          t.status.toLowerCase() === 'open'
+            ? `<select  name="dropdown-status" class="status-dropdown border rounded p-1 text-md" data-ticketid="${t.ticket_id}">
+                 <option value="Open" ${t.status === 'Open' ? 'selected' : ''}>Open</option>
+                 <option value="Closed" ${t.status === 'Closed' ? 'selected' : ''}>Closed</option>
+                 <option value="Pending" ${t.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                 <option value="Resolved" ${t.status === 'Resolved' ? 'selected' : ''}>Resolved</option>
+               </select>`
+            : escapeHtml(t.status)
+
+        }    
+        </td>     
+        <td class="py-2 pr-4">${new Date(t.created_at).toLocaleString()}</td>
+        <td class="py-2 pr-4">
+            <button class="btn btn-sm btn-primary view-ticket" data-ticketid="${t.ticket_id}">
+                View Details
+            </button>
+            </td>
+        </tr>
+        `;
+        }).join('');
+
+
+
+
+
+        document.querySelectorAll('.view-ticket').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const ticketId = e.target.dataset.ticketid;
+                console.log("cliked",ticketId)
+                const ticket = appState.find(t => t.ticket_id == ticketId);
+
+                if (ticket) {
+                showTicketModal(ticket);
+                }
+            });
+        });
+
+ }
+
+ // initially load tickets
+ loadTickets();
+
+
+
+
+
+ function showTicketModal(ticket) {
+  const modalBackdrop = document.getElementById('ticketModal-backdrop');
+  const modal = document.getElementById('ticketModal');
+  const modalBody = document.getElementById('ticketModalBody');
+
+  modalBody.innerHTML = `
+   
+    <hr class="my-3">
+    <h6 class="text-lg font-semibold">User Details</h6>
+    <p><strong>Name:</strong> ${escapeHtml(ticket.created_by?.fullname || 'N/A')}</p>
+    <p><strong>Email:</strong> ${escapeHtml(ticket.created_by?.email || 'N/A')}</p>
+    <p><strong>Mobile:</strong> ${escapeHtml(ticket.created_by?.mobile_number || 'N/A')}</p>
+    <p><strong>Payment Status:</strong> ${escapeHtml(ticket.created_by?.paid_customer || 'N/A')}</p>
+
+
+    <hr class="my-3">
+    <h6 class="text-lg font-semibold">Subscription Details</h6>
+     <p><strong>Order ID:</strong> ${escapeHtml(ticket.related_OrderId.id|| 'N/A')}</p>
+    <p><strong>Plan:</strong> ${escapeHtml(ticket.related_OrderId.subscription_name || 'N/A')} - ${escapeHtml(ticket.related_OrderId.subscription_domain || 'N/A')}</p>
+    <p><strong>Amount :</strong> ${formatRupees(ticket.related_OrderId.subscription_price)}</p>
+    <p><strong>Status:</strong> ${escapeHtml(ticket.related_OrderId.status || 'N/A')}</p>
+
+        <hr class="my-4">
+
+    <h6 class="text-lg font-semibold">Response</h6>
+    <p class="text-sm text-gray-600 mb-2">Respond directly to the user via email.</p>
+    <button id="respondEmailBtn"
+      class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md shadow-sm text-sm font-medium">
+      Respond via Email
+    </button>
+
+  `;
+
+  const respondBtn = document.getElementById("respondEmailBtn");
+  if (respondBtn && ticket.created_by?.email) {
+        respondBtn.addEventListener("click", () => {
+        const subject = `Response to Ticket #${ticket.ticket_id}`;
+        const body = `Hello ${ticket.created_by?.fullname || 'User'},\n\nRegarding your ticket:${ticket.subject}\n\nMessage:${ticket.message}\n\nBest regards,\nSupport Team`;
+
+        window.location.href = `mailto:${ticket.created_by?.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    });
+  }
+
+  // open modal
+  modalBackdrop.classList.remove('hidden');
+  modal.classList.remove('hidden');
+}
+
+function closeTicketModal() {
+  const modalBackdrop = document.getElementById('ticketModal-backdrop');
+  const modal = document.getElementById('ticketModal');
+  modalBackdrop.classList.add('hidden');
+  modal.classList.add('hidden');
+}
+
+// close on backdrop, x button, or action button
+['ticketModal-backdrop', 'close-ticketModal-btn'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('click', closeTicketModal);
+});
+document.querySelectorAll('.close-ticketModal-btn-action').forEach(el =>
+  el.addEventListener('click', closeTicketModal)
+);
+
+
+ticketsTbody.addEventListener('change', async (e) => {
+  if (!e.target.classList.contains('status-dropdown')) return;
+
+  const ticketId = e.target.dataset.ticketid;
+  const newStatus = e.target.value;
+
+  try {
+    let response = await fetch(`https://hiinterview.onrender.com/api/update-ticket-status/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+      body: JSON.stringify({ status: newStatus, ticketId: ticketId })
+    });
+
+    if (response.status === 401) {
+      accessToken = await refreshAccessToken();
+      if (!accessToken) return;
+      response = await fetch(`https://hiinterview.onrender.com/api/update-ticket-status/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        body: JSON.stringify({ status: newStatus, ticketId: ticketId })
+      });
+    }
+
+    if (response.status === 403) {
+      window.location.href = "404.html";
+      return;
+    }
+
+    if (response.ok) {
+      console.log(`Ticket #${ticketId} status updated to ${newStatus}`);
+      const ticket = appState.find(t => t.ticket_id == ticketId);
+      if (ticket) ticket.status = newStatus;
+
+      if (newStatus.toLowerCase() !== 'open') {
+        const selectEl = e.target;
+        selectEl.parentElement.innerHTML = escapeHtml(newStatus);
+      }
+
+    } else {
+      console.error('Failed to update ticket status');
+    }
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+});
+
+</script>
+ </body>
+</html>
