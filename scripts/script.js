@@ -1,6 +1,6 @@
 async function checkWebsiteStatus() {
     try {
-        const res = await fetch("https://hiinterview.onrender.com/api/website-status/");
+        const res = await fetch("https://hiinterview-backend-1.onrender.com/api/website-status/");
         const data = await res.json();
         if (!data.is_active) {
 

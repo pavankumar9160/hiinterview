@@ -517,7 +517,7 @@ if (!refreshToken) {
 // --- Load Profile ---
 async function loadProfile() {
   try {
-    const response = await fetch('https://hiinterview.onrender.com/api/userprofile/', {
+    const response = await fetch('https://hiinterview-backend-1.onrender.com/api/userprofile/', {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
 
@@ -525,7 +525,7 @@ async function loadProfile() {
                 accessToken = await refreshAccessToken();
                 if (!accessToken) return;
                 refreshToken = localStorage.getItem('refreshToken');
-                response = await fetch('https://hiinterview.onrender.com/api/userprofile/', {
+                response = await fetch('https://hiinterview-backend-1.onrender.com/api/userprofile/', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -565,7 +565,7 @@ async function loadProfile() {
 
                 // Profile photo
                 if (data.profile_photo_url) {
-                const url = 'https://hiinterview.onrender.com';
+                const url = 'https://hiinterview-backend-1.onrender.com';
                 displayAvatar.src = `${url}${data.profile_photo_url}`;
                 displayAvatar.classList.remove("hidden");
                 displayInitial.classList.add("hidden");
@@ -583,7 +583,7 @@ async function loadProfile() {
                 // CV
                 if (data.cv) {
                 const fileName = data.cv.split("/").pop();
-                const url = 'https://hiinterview.onrender.com';
+                const url = 'https://hiinterview-backend-1.onrender.com';
                 const cv_url = `${url}${data.cv_url}`;
                 cvPreview.textContent = fileName || "CV available";
                 downloadCvBtn.classList.remove("hidden");
@@ -610,7 +610,7 @@ async function refreshAccessToken() {
         if (!refreshToken) return null;
 
         try {
-            const response = await fetch("https://hiinterview.onrender.com/api/token/refresh/", {
+            const response = await fetch("https://hiinterview-backend-1.onrender.com/api/token/refresh/", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ refresh: refreshToken })
@@ -707,7 +707,7 @@ saveProfileBtn.addEventListener("click", async function () {
   if (inputCv.files[0]) formData.append("cv", inputCv.files[0]);
 
   try {
-    const response = await fetch("https://hiinterview.onrender.com/api/update/user-profile/", {
+    const response = await fetch("https://hiinterview-backend-1.onrender.com/api/update/user-profile/", {
       method: "PUT",
       headers: { Authorization: `Bearer ${accessToken}` },
       body: formData,
@@ -717,7 +717,7 @@ saveProfileBtn.addEventListener("click", async function () {
         accessToken = await refreshAccessToken();
         if (!accessToken) return;
         refreshToken = localStorage.getItem('refreshToken');
-        response = await fetch('https://hiinterview.onrender.com/api/update/user-profile/', {
+        response = await fetch('https://hiinterview-backend-1.onrender.com/api/update/user-profile/', {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             },
@@ -942,7 +942,7 @@ ticketsTbody.innerHTML =`
 
 
         try {
-            const res = await fetch("https://hiinterview.onrender.com/api/tickets/create/", {
+            const res = await fetch("https://hiinterview-backend-1.onrender.com/api/tickets/create/", {
 
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
@@ -955,7 +955,7 @@ ticketsTbody.innerHTML =`
                 accessToken = await refreshAccessToken();
                 if (!accessToken) return;
                 refreshToken = localStorage.getItem('refreshToken');
-                response = await fetch('https://hiinterview.onrender.com/api/tickets/create/', {
+                response = await fetch('https://hiinterview-backend-1.onrender.com/api/tickets/create/', {
                     headers: {
                         'Authorization': `Bearer ${accessToken}`
                     },
@@ -1011,7 +1011,7 @@ ticketsTbody.innerHTML =`
             }
 
             try {
-                let response = await fetch('https://hiinterview.onrender.com/api/logout/', {
+                let response = await fetch('https://hiinterview-backend-1.onrender.com/api/logout/', {
                     method: 'POST',
                     headers: { 
                         'Content-Type': 'application/json',
@@ -1024,7 +1024,7 @@ ticketsTbody.innerHTML =`
                     accessToken = await refreshAccessToken();
                     if (!accessToken) return; 
                     refreshToken = localStorage.getItem('refreshToken');
-                    response = await fetch('https://hiinterview.onrender.com/api/logout/', {
+                    response = await fetch('https://hiinterview-backend-1.onrender.com/api/logout/', {
                         method: 'POST',
                         headers: { 
                             'Content-Type': 'application/json',
