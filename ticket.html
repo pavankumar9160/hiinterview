@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="en">
+<head>
+ <meta charset="utf-8"/>
+ <meta name="viewport" content="width=device-width,initial-scale=1"/>
+ <title>Hi Interviews — Support • Tickets (Working)</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+ <script src="https://cdn.tailwindcss.com"></script>
+ <style>
+ :root{ --muted:#6b7280; --brand1:#4f46e5; --brand2:#6366f1; --bg:#f8fafc; --success:#10b981; }
+ html,body{height:100%}
+ body{font-family:Inter,system-ui,-apple-system; background:var(--bg); margin:0; color:#0f172a}
+ .appWrap{max-width:100%;margin:12px auto;height:calc(100vh - 24px);display:grid;grid-template-columns:40% 1fr;gap:12px;padding:10px;box-sizing:border-box}
+ .panel{background:#fff;border-radius:10px;box-shadow:0 8px 30px rgba(2,6,23,0.06);overflow:hidden;border:1px solid rgba(15,23,42,0.04);display:flex;flex-direction:column;min-height:0}
+ .leftHeader{display:flex;align-items:center;gap:8px;padding:12px;border-bottom:1px solid rgba(15,23,42,0.04)}
+ .brandTitle{font-weight:800}
+ .newTicketBtn{margin-left:auto;background:linear-gradient(90deg,var(--brand1),var(--brand2));color:white;padding:8px 12px;border-radius:8px;border:none;font-weight:700;cursor:pointer}
+ .leftControls{display:flex;gap:8px;padding:10px;border-bottom:1px solid rgba(15,23,42,0.04)}
+ .searchInput{flex:1;padding:8px 10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);background:#fafbfd}
+ .filterRow{display:flex;gap:8px;padding:8px;border-bottom:1px solid rgba(15,23,42,0.04)}
+ .select{padding:7px;border-radius:8px;border:1px solid rgba(15,23,42,0.06);background:white}
+ .ticketList{overflow:auto;flex:1;padding:8px}
+ .ticketItem{display:flex;gap:10px;padding:10px;border-radius:10px;align-items:flex-start;cursor:pointer;transition:transform .12s,box-shadow .12s}
+ .ticketItem:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(2,6,23,0.04)}
+ .ticketItem.selected{background:linear-gradient(180deg,#f8faff,#f4f6ff)}
+ .avatar{width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+ .avatar.candidate{background:linear-gradient(135deg,#6ee7b7,#10b981)}
+ .avatar.trainer{background:linear-gradient(135deg,#93c5fd,#6366f1)}
+ .avatar.staff{background:linear-gradient(135deg,#fde68a,#f97316);color:#1f2937}
+ .ticketMeta{flex:1;min-width:0}
+ .ticketTitle{display:flex;justify-content:space-between;align-items:center;gap:8px}
+ .ticketSubject{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .ticketPreview{font-size:13px;color:var(--muted);margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .statusBadge{font-size:12px;padding:5px 8px;border-radius:999px;background:#f1f5f9;color:#0f172a;font-weight:700}
+ .unreadDot{width:8px;height:8px;border-radius:999px;background:var(--brand1);display:inline-block;margin-left:6px}
+ .chatHeader{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid rgba(15,23,42,0.04)}
+ .chatHeaderLeft{display:flex;gap:10px;align-items:center}
+ .chatAvatar{width:56px;height:56px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;color:white}
+ .chatName{font-weight:800}
+ .chatSub{font-size:13px;color:var(--muted)}
+ .chatBody{flex:1;padding:18px;overflow:auto;display:flex;flex-direction:column;gap:12px;background:linear-gradient(180deg,#fbfdff,#f8fbff);min-height:0}
+ .centerEmpty{margin:auto;text-align:center;color:var(--muted)}
+ .msgRow{display:flex;max-width:76%;align-items:flex-end}
+ .msgRow.inbound{align-self:flex-start}
+ .msgRow.outbound{align-self:flex-end;flex-direction:row-reverse}
+ .bubble{padding:12px 14px;border-radius:14px;box-shadow:0 8px 20px rgba(2,6,23,0.04);font-size:15px;line-height:1.3}
+ .bubble.inbound{background:linear-gradient(180deg,#ecfdf5,#f0fdf4);border-top-left-radius:6px;color:#064e3b}
+ .bubble.outbound{background:linear-gradient(180deg,#eaf2ff,#dbeafe);border-top-right-radius:6px;color:#0f172a}
+ .msgMeta{font-size:12px;color:var(--muted);margin-top:6px;text-align:right}
+ .attachmentCard{display:inline-flex;gap:8px;align-items:center;padding:8px;border-radius:8px;background:white;border:1px solid rgba(15,23,42,0.06)}
+ .composer{display:flex;gap:8px;padding:10px;border-top:1px solid rgba(15,23,42,0.04);align-items:center}
+ .composer textarea{flex:1;min-height:56px;resize:none;padding:10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);background:white}
+ .attachBtn{background:transparent;border:1px solid rgba(15,23,42,0.06);padding:8px;border-radius:10px;cursor:pointer}
+ .sendBtn{background:linear-gradient(90deg,var(--brand1),var(--brand2));color:white;padding:10px 14px;border-radius:10px;border:none;font-weight:700;cursor:pointer}
+ .modalOverlay{position:fixed;inset:0;background:rgba(2,6,23,0.45);display:flex;align-items:center;justify-content:center;z-index:60}
+ .modalCard{width:100%;max-width:760px;background:#fff;border-radius:12px;padding:16px;box-shadow:0 20px 50px rgba(2,6,23,0.2)}
+ @media (max-width:980px){
+ .appWrap{grid-template-columns:1fr;height:100vh;padding:6px}
+ }
+ </style>
+</head>
+<body>
+ <div class="appWrap" role="application" aria-label="User support tickets">
+ <!-- LEFT -->
+ <div class="panel" aria-label="Your tickets">
+ <div class="leftHeader">
+ <div class="brandTitle">Hi Interviews — Support</div>
+ <button id="openNewBtn" class="newTicketBtn" aria-haspopup="dialog">New Ticket</button>
+ </div>
+
+ <div class="leftControls">
+ <input id="leftSearch" class="searchInput" placeholder="Search tickets or messages..." aria-label="Search tickets" />
+ <button id="clearLeftSearch" class="btnGhost" style="border:1px solid rgba(15,23,42,0.06);padding:8px;border-radius:8px">Clear</button>
+ </div>
+
+ <div class="filterRow">
+ <!-- <select id="categoryFilter" class="select" aria-label="Filter by category">
+ <option value="all">All categories</option>
+ <option value="class">Class Timing</option>
+ <option value="salary">Salary</option>
+ <option value="promotion">Promotion</option>
+ <option value="celebration">Celebration Funds</option>
+ <option value="other">Other</option>
+ </select> -->
+
+ <select id="statusFilter" class="select" aria-label="Filter by status">
+ <option value="all">All statuses</option>
+ <option value="new">New</option>
+ <option value="open">Open</option>
+ <option value="awaiting">Awaiting</option>
+ <option value="resolved">Resolved</option>
+ </select>
+ </div>
+
+ <div id="ticketList" class="ticketList" role="list" aria-label="Ticket list"></div>
+ </div>
+
+ <!-- RIGHT -->
+ <div class="panel" aria-live="polite">
+ <div class="chatHeader">
+ <div class="chatHeaderLeft">
+ <div id="chatAvatar" class="chatAvatar" style="background:linear-gradient(135deg,#dbeafe,#6366f1)">HI</div>
+ <div>
+ <div id="chatTitle" class="chatName">No ticket selected</div>
+ <div id="chatSubtitle" class="chatSub">Start a new conversation or choose an existing ticket.</div>
+ </div>
+ </div>
+ <div id="rightHeaderActions" style="display:flex;gap:8px;align-items:center">
+ <div id="ticketStatus" class="statusBadge">—</div>
+ </div>
+ </div>
+
+ <div id="chatBody" class="chatBody" role="log" aria-live="assertive">
+ <div class="centerEmpty">
+ <div style="font-weight:700;font-size:18px">Support Chat</div>
+ <div style="margin-top:8px;color:var(--muted)">Create a new ticket for a different issue. All conversations are saved locally (demo).</div>
+ </div>
+ </div>
+
+ <div id="composer" class="composer" style="display:none">
+ <!--<input id="fileInput" type="file" style="display:none" multiple/>
+  <button id="attachBtn" class="attachBtn" aria-label="Attach file">📎</button> -->
+ <textarea id="messageInput" placeholder="Type your message..." aria-label="Type your message"></textarea>
+ <button id="sendBtn" class="sendBtn">Send</button>
+ </div>
+ </div>
+ </div>
+
+ <!-- New Ticket Modal -->
+ <div id="newModal" class="modalOverlay" style="display:none" role="dialog" aria-modal="true" aria-label="Create new ticket">
+ <div class="modalCard">
+ <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+ <div style="font-weight:800">Create new ticket</div>
+ <button id="closeModal" class="btnGhost">Close</button>
+ </div>
+
+ <form id="newTicketForm" style="margin-top:12px;display:grid;gap:10px" onsubmit="return false;">
+
+
+ <div>
+ <label class="smallNote">Subject</label>
+ <input id="newSubject" type="text" class="select w-full" placeholder="Short summary (eg. Web dev timing conflict)" required />
+ </div>
+
+
+ <label class="smallNote">Description</label>
+ <textarea id="newDescription" required rows="6" class="select" placeholder="Explain your issue in detail..."></textarea>
+
+ <div style="display:flex;gap:8px;align-items:center">
+ 
+ <div style="margin-left:auto;display:flex;gap:8px">
+ <button id="createTicketBtn" type="button" class="newTicketBtn">Create</button>
+ <button id="cancelCreateBtn" type="button" class="btnGhost">Cancel</button>
+ </div>
+ </div>
+ </form>
+ </div>
+ </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+
+let demoTickets = [];
+let tickets = [];
+let selectedTicketId = null;
+let isModalOpen = false;
+
+
+
+let accessToken = localStorage.getItem('accessToken');
+let refreshToken = localStorage.getItem('refreshToken');
+
+
+
+if (!refreshToken) {
+    clearTokensAndRedirect();
+    return;
+}
+
+async function loadProfile() {
+  try {
+    const response = await fetch('https://hiinterview-backend-1.onrender.com/api/userprofile/', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+            if (response.status === 401) {
+                accessToken = await refreshAccessToken();
+                if (!accessToken) return;
+                refreshToken = localStorage.getItem('refreshToken');
+                response = await fetch('https://hiinterview-backend-1.onrender.com/api/userprofile/', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+
+                });
+            }
+
+            if (response.status === 403) {
+                spinner.style.display = "none";
+                window.location.href = "404.html";
+            } 
+            if (response.ok) {
+                const data = await response.json();
+                console.log("data",data)
+                    
+                    if(data.tickets.length > 0){
+
+                        console.log("data.tickrts",data.tickets.length)
+                        data.tickets.forEach((d) => {
+                            demoTickets.push({
+                                ticketId: d.ticketID,
+                                userType: d.role,
+                                userName: d.user_name,
+                                email: d.email,
+                                contact: d.mobile_number,
+                                category: d.category || '',          
+                                subject: d.subject || '',            
+                                priority: d.priority || 'medium',    
+                                status: d.status,          
+                                createdAt: d.created_at || '',       
+                                unread: d.unread || 0,               
+                                messages: (d.messages || []).map(m => ({
+                                    id: m.id || '',
+                                    ticket: m.ticket, 
+                                    sender:m.sender,                 
+                                    direction: (m.sender_role === d.role) ? 'outbound' : 'inbound', 
+                                    body: m.text || '',   
+                                    createdAt: m.created_at || ''  
+                                })) 
+                            });
+                        });
+                        console.log('demoTickets',demoTickets)
+                         tickets = JSON.parse(JSON.stringify(demoTickets));
+                        console.log("tickets",tickets)
+                        selectedTicketId = tickets.length ? tickets[0].ticketId : null;
+                         console.log("Selected ticket:", selectedTicketId);
+                        
+                    }
+                   
+            }
+            else {
+                  console.error('failed to fetch user data');
+              }
+    } catch (err) {
+        console.error("Profile load error:", err);
+    }
+}
+
+
+async function refreshAccessToken() {
+        const refreshToken = localStorage.getItem("refreshToken");
+        if (!refreshToken) return null;
+
+        try {
+            const response = await fetch("https://hiinterview-backend-1.onrender.com/api/token/refresh/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ refresh: refreshToken })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem("accessToken", data.access);
+                localStorage.setItem("refreshToken", data.refresh);
+
+                return data.access;
+            } else {
+                clearTokensAndRedirect();
+                return null;
+            }
+        } catch (err) {
+            console.error(err);
+            return null;
+        }
+    }
+
+function clearTokensAndRedirect() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('role')
+    window.location.href = "login.html";
+}
+
+
+
+
+
+
+
+
+
+ // DOM refs
+ const ticketListEl = document.getElementById('ticketList');
+ const leftSearchEl = document.getElementById('leftSearch');
+ const clearLeftSearch = document.getElementById('clearLeftSearch');
+ const categoryFilterEl = document.getElementById('categoryFilter');
+ const statusFilterEl = document.getElementById('statusFilter');
+ const chatTitleEl = document.getElementById('chatTitle');
+ const chatSubtitleEl = document.getElementById('chatSubtitle');
+ const chatAvatarEl = document.getElementById('chatAvatar');
+ const ticketStatusEl = document.getElementById('ticketStatus');
+ const chatBodyEl = document.getElementById('chatBody');
+ const composerEl = document.getElementById('composer');
+ const messageInputEl = document.getElementById('messageInput');
+ //const attachBtnEl = document.getElementById('attachBtn');
+ //const fileInputEl = document.getElementById('fileInput');
+ const sendBtnEl = document.getElementById('sendBtn');
+
+ // modal refs
+ const newModalEl = document.getElementById('newModal');
+ const openNewBtn = document.getElementById('openNewBtn');
+ const closeModalBtn = document.getElementById('closeModal');
+ //const newAttachBtn = document.getElementById('newAttachBtn');
+ const newAttachInput = document.getElementById('newAttachInput');
+ const newAttachLabel = document.getElementById('newAttachLabel');
+ const createTicketBtn = document.getElementById('createTicketBtn');
+ const cancelCreateBtn = document.getElementById('cancelCreateBtn');
+ //const newCategoryEl = document.getElementById('newCategory');
+ const newSubjectEl = document.getElementById('newSubject');
+ const newDescriptionEl = document.getElementById('newDescription');
+
+ // helpers
+ function formatDateShort(iso){ const d=new Date(iso); return d.toLocaleString('en-IN',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}); }
+ function formatDateLong(iso){ const d=new Date(iso); return d.toLocaleString('en-IN',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}); }
+ function escapeHtml(s=''){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+ function genAvatarColor(type){ if(type==='candidate') return 'linear-gradient(135deg,#6ee7b7,#10b981)'; if(type==='trainer') return 'linear-gradient(135deg,#93c5fd,#6366f1)'; return 'linear-gradient(135deg,#fde68a,#f97316)'; }
+
+ // render list
+ function renderTicketList(){
+ ticketListEl.innerHTML = '';
+ const q = (leftSearchEl.value || '').trim().toLowerCase();
+ //const catFilter = categoryFilterEl.value;
+ const stFilter = statusFilterEl.value;
+ console.log('statfilter',stFilter);
+
+ const filtered = tickets.filter(t => {
+ //if(catFilter !== 'all' && t.category !== catFilter) return false;
+ if(stFilter !== 'all' && t.status.toLowerCase() !== stFilter) return false;
+ if(q){
+ const hay = `${t.ticketId} ${t.subject} ${t.userName} ${t.messages.map(m=>m.body).join(' ')}`.toLowerCase();
+ if(!hay.includes(q)) return false;
+ }
+ return true;
+ }).sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
+console.log("fil",filtered);
+console.log("tick",tickets);
+ if(filtered.length === 0){
+ ticketListEl.innerHTML = `<div style="padding:14px;color:var(--muted)">No tickets found. Click "New Ticket" to create one.</div>`;
+ return;
+ }
+
+ filtered.forEach(t => {
+ const item = document.createElement('div');
+ item.className = 'ticketItem' + (selectedTicketId===t.ticketId? ' selected' : '');
+ const avatar = document.createElement('div'); avatar.className = 'avatar ' + t.userType; avatar.style.background = genAvatarColor(t.userType); avatar.textContent = (t.userName||'').split(' ').map(x=>x[0]).slice(0,2).join('');
+ const meta = document.createElement('div'); meta.className = 'ticketMeta';
+ const title = document.createElement('div'); title.className = 'ticketTitle';
+ const subj = document.createElement('div'); subj.className = 'ticketSubject'; subj.textContent = t.subject;
+ const right = document.createElement('div'); right.style.textAlign='right';
+ const time = document.createElement('div'); time.className='smallNote'; time.textContent = formatDateShort(t.createdAt);
+ const statusBadge = document.createElement('div'); statusBadge.className='statusBadge'; statusBadge.textContent = (t.status || '').charAt(0).toUpperCase() + (t.status || '').slice(1);
+ right.appendChild(time); right.appendChild(statusBadge);
+
+ title.appendChild(subj); title.appendChild(right);
+ const preview = document.createElement('div'); preview.className='ticketPreview'; preview.textContent = t.messages && t.messages.length ? t.messages[t.messages.length-1].body : '';
+ meta.appendChild(title); meta.appendChild(preview);
+
+ // unread
+ if(t.unread && t.unread > 0){
+ const unreadEl = document.createElement('div'); unreadEl.className='unreadDot'; unreadEl.title = `${t.unread} unread`;
+ right.appendChild(unreadEl);
+ }
+
+ item.appendChild(avatar); item.appendChild(meta);
+
+ item.addEventListener('click', () => {
+ selectedTicketId = t.ticketId;
+ t.unread = 0;
+ renderTicketList();
+ openTicket(t.ticketId);
+ });
+
+ ticketListEl.appendChild(item);
+ });
+ }
+
+ // open ticket detail
+ function openTicket(ticketId){
+
+ 
+ const t = tickets.find(x=>x.ticketId===ticketId);
+ if(!t) return;
+
+  if(t.status=="Resolved"){
+    composerEl.style.display = 'none';
+     chatBodyEl.innerHTML = '';
+ t.messages.forEach(m => {
+ const row = document.createElement('div'); row.className = 'msgRow ' + (m.direction === 'inbound' ? 'inbound' : 'outbound');
+ const bubble = document.createElement('div'); bubble.className = 'bubble ' + (m.direction === 'inbound' ? 'inbound' : 'outbound');
+ const attachmentHtml = m.attachments && m.attachments.length ? `<div style="margin-top:6px">${m.attachments.map(a=>`<div class="attachmentCard">${escapeHtml(a)}</div>`).join('')}</div>` : '';
+ bubble.innerHTML = `<div>${escapeHtml(m.body)}</div>${attachmentHtml}<div class="msgMeta">${formatDateLong(m.createdAt)}</div>`;
+ row.appendChild(bubble);
+ chatBodyEl.appendChild(row);
+ });
+    selectedTicketId = null;
+ }
+ else{
+     chatBodyEl.innerHTML = '';
+ t.messages.forEach(m => {
+ const row = document.createElement('div'); row.className = 'msgRow ' + (m.direction === 'inbound' ? 'inbound' : 'outbound');
+ const bubble = document.createElement('div'); bubble.className = 'bubble ' + (m.direction === 'inbound' ? 'inbound' : 'outbound');
+ const attachmentHtml = m.attachments && m.attachments.length ? `<div style="margin-top:6px">${m.attachments.map(a=>`<div class="attachmentCard">${escapeHtml(a)}</div>`).join('')}</div>` : '';
+ bubble.innerHTML = `<div>${escapeHtml(m.body)}</div>${attachmentHtml}<div class="msgMeta">${formatDateLong(m.createdAt)}</div>`;
+ row.appendChild(bubble);
+ chatBodyEl.appendChild(row);
+ });
+
+ composerEl.style.display = 'flex';
+ setTimeout(()=> chatBodyEl.scrollTop = chatBodyEl.scrollHeight, 50);
+ 
+ }
+ chatTitleEl.textContent = t.subject;
+ chatSubtitleEl.innerHTML = `<span class="smallNote">${escapeHtml(t.userName)}</span> • <span class="smallNote">${escapeHtml(t.email)}</span> • <span class="smallNote">${escapeHtml(t.contact)}</span>`;
+ chatAvatarEl.style.background = genAvatarColor(t.userType); chatAvatarEl.textContent = (t.userName||'').split(' ').map(x=>x[0]).slice(0,2).join('');
+ ticketStatusEl.textContent = (t.status || '').charAt(0).toUpperCase() + (t.status || '').slice(1);
+
+ // messages
+
+ }
+
+ // open new modal
+ function openNewModal(){
+ isModalOpen = true;
+ newModalEl.style.display = 'flex';
+ newSubjectEl.focus();
+ }
+ function closeNewModal(){
+ isModalOpen = false;
+ newModalEl.style.display = 'none';
+ // reset fields
+ //newCategoryEl.value = 'class';
+ //newPriority.value = 'medium';
+ newSubjectEl.value = '';
+ newDescriptionEl.value = '';
+ //newAttachInput.value = '';
+ //newAttachLabel.textContent = 'No files attached';
+ }
+
+ // create ticket
+ async function createTicketFromForm(){
+ //const category = newCategoryEl.value;
+ const subject = (newSubjectEl.value || '').trim();
+ const description = (newDescriptionEl.value || '').trim();
+ if(!subject || !description){ showToast('Please fill subject and description'); return; }
+
+ //const fileNames = Array.from(newAttachInput.files || []).map(f => f.name);
+
+    
+ try {
+    const response = await fetch('https://hiinterview-backend-1.onrender.com/api/tickets/create/', {
+      method: 'POST',
+      headers: { 
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type":"application/json"
+    },
+       body:JSON.stringify({subject:subject,description:description})
+    });
+
+            if (response.status === 401) {
+                accessToken = await refreshAccessToken();
+                if (!accessToken) return;
+                refreshToken = localStorage.getItem('refreshToken');
+                response = await fetch('https://hiinterview-backend-1.onrender.com/api/tickets/create/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                     body:JSON.stringify({subject:subject,description:description})
+
+                });
+            }
+
+            if (response.status === 403) {
+                spinner.style.display = "none";
+                window.location.href = "404.html";
+            } 
+            if (response.ok) {
+                const data = await response.json();
+                console.log("data",data)
+                    
+                    const newTicket = formatTicket(data) 
+                    tickets.unshift(newTicket);
+                    selectedTicketId = newTicket.ticketId;
+                    closeNewModal();
+                    renderTicketList();
+                    openTicket(selectedTicketId);
+                    showToast('Ticket created');
+                    // TODO: POST /api/tickets with FormData including attachments
+                    
+                   
+            }
+            else {
+                  console.error('failed to fetch user data');
+              }
+    } catch (err) {
+        console.error("Profile load error:", err);
+    }
+}
+
+
+
+
+function formatTicket(data) {
+  return {
+    ticketId: data.ticketID,
+    userType: data.role,
+    username: data.user_name,
+    email: data.email,
+    contact: data.mobile_number,
+    category: data.category,
+    subject: data.subject,
+    priority: data.priority || 'medium', // default if backend doesn't send
+    status: data.status,
+    createdAt: data.created_at,
+    unread: 0, 
+    messages: (data.messages || []).map(msg => ({
+      id: msg.id,
+      direction: msg.sender === data.user ? 'outbound' : 'inbound', // compare sender to ticket owner
+      body: msg.text,
+      createdAt: msg.created_at
+    }))
+  };
+}
+
+
+
+
+
+
+ // send message (reply)
+ async function sendMessage(){
+ if(!selectedTicketId){ showToast('Please select or create a ticket'); return; }
+ const text = (messageInputEl.value || '').trim();
+ if(!text){ showToast('Message is empty'); return; }
+
+ //const fileNames = Array.from(fileInputEl.files || []).map(f => f.name);
+ const t = tickets.find(x=>x.ticketId===selectedTicketId);
+
+ console.log("t",t)
+ if(!t){ showToast('Ticket not found'); return; }
+
+
+ try {
+    const response = await fetch('https://hiinterview-backend-1.onrender.com/messages/create/', {
+      method: 'POST',
+      headers: { 
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type":"application/json"
+    },
+       body:JSON.stringify({ticketID:selectedTicketId,text:text})
+    });
+
+            if (response.status === 401) {
+                accessToken = await refreshAccessToken();
+                if (!accessToken) return;
+                refreshToken = localStorage.getItem('refreshToken');
+                response = await fetch('https://hiinterview-backend-1.onrender.com/messages/create/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                   body:JSON.stringify({ticketID:selectedTicketId,text:text})
+
+                });
+            }
+
+            if (response.status === 403) {
+                spinner.style.display = "none";
+                window.location.href = "404.html";
+            } 
+            if (response.ok) {
+                const data = await response.json();
+                console.log("data creted message",data)
+
+                const msg = { id:data.id, direction:'outbound', body: data.text, createdAt: data.created_at };
+                t.messages.push(msg);
+                    
+                    messageInputEl.value = '';
+                   // fileInputEl.value = '';
+                    openTicket(selectedTicketId);
+                    renderTicketList();
+                    showToast('Message sent');
+            }
+            else {
+                  console.error('failed to fetch user data');
+              }
+    } catch (err) {
+        console.error("Profile load error:", err);
+    }
+}
+
+
+ //const msg = { id:'m' + Date.now(), direction:'outbound', body: text, attachments: fileNames, createdAt: new Date().toISOString() };
+ //t.messages.push(msg);
+ //t.status = 'open';
+ //messageInputEl.value = '';
+ //fileInputEl.value = '';
+ //openTicket(selectedTicketId);
+ //renderTicketList();
+ //showToast('Message sent');
+ // TODO: POST /api/tickets/:id/messages (FormData if files present)
+ 
+
+ // attach controls
+ //attachBtnEl.addEventListener('click', ()=> fileInputEl.click());
+ //fileInputEl.addEventListener('change', ()=> {
+ //const files = Array.from(fileInputEl.files || []);
+// showToast(`${files.length} file(s) selected`);
+// });
+
+ //newAttachBtn.addEventListener('click', ()=> newAttachInput.click());
+ //newAttachInput.addEventListener('change', ()=> {
+ //const files = Array.from(newAttachInput.files || []);
+ //newAttachLabel.textContent = files.length ? files.map(f=>f.name).join(', ') : 'No files attached';
+ //});
+
+ // events
+ openNewBtn.addEventListener('click', openNewModal);
+ closeModalBtn.addEventListener('click', closeNewModal);
+ createTicketBtn.addEventListener('click', createTicketFromForm);
+ cancelCreateBtn.addEventListener('click', closeNewModal);
+ leftSearchEl.addEventListener('input', renderTicketList);
+ clearLeftSearch.addEventListener('click', ()=> { leftSearchEl.value=''; renderTicketList(); });
+ //categoryFilterEl.addEventListener('change', renderTicketList);
+ statusFilterEl.addEventListener('change', renderTicketList);
+ sendBtnEl.addEventListener('click', sendMessage);
+
+ // Enter to send (shift+enter for newline)
+ messageInputEl.addEventListener('keydown', (e) => {
+ if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(); }
+ });
+
+ // keyboard shortcuts
+ document.addEventListener('keydown', (e) => {
+ if(e.key === 'n' && !isModalOpen) openNewModal();
+ if((e.key === 'k' || e.key === 'K')) { leftSearchEl.focus(); e.preventDefault(); }
+ });
+
+ // small toast
+ const toastEl = document.createElement('div');
+ toastEl.style.position='fixed'; toastEl.style.right='16px'; toastEl.style.bottom='16px';
+ toastEl.style.padding='8px 12px'; toastEl.style.background='rgba(2,6,23,0.88)'; toastEl.style.color='white';
+ toastEl.style.borderRadius='8px'; toastEl.style.display='none'; toastEl.style.zIndex='9999';
+ document.body.appendChild(toastEl);
+ function showToast(txt,d=1800){ toastEl.textContent = txt; toastEl.style.display='block'; setTimeout(()=> toastEl.style.display='none', d); }
+
+ // init: no ticket open by default? choose UX: we'll open last active (first ticket) for convenience
+async function init(){
+await loadProfile();
+renderTicketList();
+if(selectedTicketId) openTicket(selectedTicketId);
+ }
+ init();
+
+});
+</script>
+</body>
+</html>
