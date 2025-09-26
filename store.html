@@ -202,7 +202,9 @@
  /*********************
  * DATA (unchanged)
  *********************/
- const allServices = [
+
+
+/*const allServices = [
  { id: 'ks', type: 'core', name: 'Knowledge Series', price: 59999, description: 'Comprehensive one-to-one training from scratch, designed to make you a job-ready expert in your chosen domain.', features: ['1-on-1 Daily Classes', 'Flexible Timings (8am-10pm)', 'Project-Based Learning', 'Personalized Syllabus', 'Beginner Friendly', 'Resume Building'], applicableDomains: ['Full Stack Python', 'Full Stack Java', 'Full Stack JS', 'SAP Abap', 'AWS', 'Accessibility Testing', 'Database (MySQL, PL/SQL)', 'Front End Dev (React JS)', 'Mobile App Dev (React Native)'] },
  { id: 'js', type: 'core', name: 'Job Series', price: 59999, description: 'Intensive one-to-one interview preparation with mock interviews and concept revision to help you crack your dream job.', features: ['1-on-1 Mock Interviews', 'Domain Concept Brush-Up', 'Requires Basic Knowledge', 'Flexible Timings (8am-10pm)', '30-45 Day Program', 'Resume Building'], applicableDomains: ['Full Stack Python', 'Full Stack Java', 'Full Stack JS', 'SAP Abap', 'AWS', 'Accessibility Testing', 'Database (MySQL, PL/SQL)', 'Front End Dev (React JS)', 'Mobile App Dev (React Native)'] },
  { id: 'ps', type: 'core', name: 'Premium Series', price: 129998, originalPrice: 179998, description: 'The ultimate all-in-one package combining complete training, job preparation, and dedicated interview day support.', features: ['Includes Full Knowledge Series', 'Includes Full Job Series', '5 Interview Buddy Days', 'End-to-End Personal Mentorship', 'Flat ₹50,000 Discount'], applicableDomains: ['Full Stack Python', 'Full Stack Java', 'Full Stack JS', 'SAP Abap', 'AWS', 'Accessibility Testing', 'Database (MySQL, PL/SQL)', 'Front End Dev (React JS)', 'Mobile App Dev (React Native)'] },
@@ -218,7 +220,7 @@
  { id: 'sd5', type: 'alacarte', name: 'Support: Completion (Large)', price: 6999, description: 'We handle the completion of a large, complex task.' },
  { id: 'cg', type: 'alacarte', name: 'Career Gap Consultancy', price: 34999, description: 'A complete solution with strategy and documentation to address career gaps.' },
  { id: 'cc', type: 'alacarte', name: '1-to-1 Career Consultancy', price: 7999, description: 'A focused session with a senior consultant for any career challenge.' },
- ];
+ ]; */
 
  const promoSlides = [
  { title: 'Flat ₹2,000 Off!', subtitle: 'Use code SEPT2000 on all Core Programs.', bg: 'bg-gradient-to-br from-brand-600 to-brand-800' },
@@ -326,34 +328,43 @@
  /*********************
  * HELPERS
  *********************/
- const isCoreId = (id) => ['ks','js','ps'].includes(id.split('-')[0]);
- const getServiceTypeById = (id) => {
- const base = id.split('-')[0];
- const s = allServices.find(x => x.id === base);
- return s?.type || null;
- };
- const enforceAlacarteLock = () => {
- const hasCore = cart.some(item => isCoreId(item.id));
- if (!hasCore) {
- cart = cart.filter(item => getServiceTypeById(item.id) !== 'alacarte');
- }
- };
+let isCore = (item) => item.type === 'core';
+let isAlacarte = (item) => item.type === 'alacarte';
+const enforceAlacarteLock = () => {
+    const hasCore = cart.some(isCore);  
+    if (!hasCore) {
+        cart = cart.filter(item => !isAlacarte(item));  
+    }
+};
+
 
  /*********************
  * RENDER PRODUCTS
  *********************/
- const renderProducts = (filter = 'all', searchTerm = '') => {
- const alaCarteUnlocked = cart.some(item => isCoreId(item.id)) || pastPurchaseCheckbox.checked;
- const servicesToRender = allServices
- .filter(s => filter === 'all' || s.type === filter)
- .filter(s => {
- if (!searchTerm) return true;
- const t = searchTerm.toLowerCase();
- return (s.name + ' ' + (s.description||'') + ' ' + (s.applicableDomains||[]).join(' ')).toLowerCase().includes(t);
- });
+const renderProducts = (filter = 'all', searchTerm = '') => {
+    // Check if any core service is in the cart
+    const alaCarteUnlocked = cart.some(item => item.type === 'core') || pastPurchaseCheckbox.checked;
 
- const coreServices = servicesToRender.filter(s => s.type === 'core');
- const alaCarteServices = servicesToRender.filter(s => s.type === 'alacarte');
+    const servicesToRender = allServices
+        .filter(s => filter === 'all' || s.type === filter)
+        .filter(s => {
+            if (!searchTerm) return true;
+            const t = searchTerm.toLowerCase();
+
+            // Ensure applicableDomains is an array
+            const domains = Array.isArray(s.applicableDomains) ? s.applicableDomains : [];
+
+            return (s.name + ' ' + (s.description || '') + ' ' + domains.join(' '))
+                .toLowerCase()
+                .includes(t);
+        });
+
+    // Separate core and alacarte services
+    const coreServices = servicesToRender.filter(s => s.type === 'core');
+    const alaCarteServices = servicesToRender.filter(s => s.type === 'alacarte');
+
+    // Now you can render coreServices and alaCarteServices in the UI
+
 
  let html = '';
  if (coreServices.length > 0) {
@@ -429,7 +440,9 @@
  `).join('');
  }
 
- const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+ const subtotal = cart.reduce((sum, item) => sum + Number(item.price), 0);
+ console.log("cartitems",cart)
+ console.log("subtotal",subtotal)
  const discount = appliedCoupon ? appliedCoupon.amount : 0;
 
  if(appliedCoupon) {
@@ -474,12 +487,12 @@
  const addBtn = e.target.closest('.add-to-cart-btn');
  if (!addBtn) return;
  const serviceId = addBtn.dataset.id;
- const service = allServices.find(s => s.id === serviceId);
+ const service = allServices.find(s => s.id == serviceId);
  if (!service) return;
 
  // alacarte lock check
  if (service.type === 'alacarte') {
- const isUnlocked = cart.some(item => isCoreId(item.id)) || pastPurchaseCheckbox.checked;
+ const isUnlocked = cart.some(item =>  item.type === 'core') || pastPurchaseCheckbox.checked;
  if (!isUnlocked) {
  showToast('Add a Core Program first or mark past purchase to unlock À La Carte services.', 'error', 4000);
  return;
@@ -502,12 +515,12 @@
  }
 
  const cartItemId = domain ? `${service.id}-${domain.replace(/\s+/g, '-')}` : service.id;
- if (cart.some(item => item.id === cartItemId)) {
+ if (cart.some(item => item.id == cartItemId)) {
  showToast('This specific service is already in your cart.', 'error', 2500);
  return;
  }
 
- const cartItem = { id: cartItemId, name: service.name, price: service.price, domain: domain };
+ const cartItem = { id: cartItemId, type:service.type,name: service.name, price: service.price, domain: domain };
  cart.push(cartItem);
  showToast(`${service.name} added to cart`, 'success', 2400);
  updateCartUI();
@@ -523,12 +536,13 @@
  if (Number.isNaN(idx)) return;
  const removed = cart.splice(idx, 1)[0];
  showToast(`${removed.name} removed`, 'success', 2000);
- // cleanup alacarte if no core
- const hasCore = cart.some(i => isCoreId(i.id));
- if (!hasCore) {
- cart = cart.filter(i => getServiceTypeById(i.id) !== 'alacarte');
- }
+  const hasCore = cart.some(isCore);  
+    if (!hasCore) {
+        cart = cart.filter(item => !isAlacarte(item));  
+    }
+
  updateCartUI();
+ console.log("cartitems",cart)
  renderProducts(document.querySelector('.filter-btn.bg-brand-600')?.dataset?.filter || 'all', searchInput.value.trim());
  });
 
@@ -779,14 +793,30 @@
       })
 
 
+let allServices = [];
+async function fetchServices() {
+    try {
+        const res = await fetch('https://hiinterview-backend-1.onrender.com/api/services/');
+        if (!res.ok) throw new Error('Failed to fetch services');
+        allServices = await res.json();
+
+    } catch (error) {
+        console.error(error);
+        showToast('Failed to load services', 'error', 3000);
+    }
+}
+
 
 
  /*********************
  * INIT
  *********************/
- initSlider();
- renderProducts();
- updateCartUI();
+(async () => {
+    initSlider();
+    await fetchServices(); 
+    renderProducts();      
+    updateCartUI();
+})();
  });
  </script>
 </body>

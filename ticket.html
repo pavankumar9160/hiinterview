@@ -59,7 +59,12 @@
  }
  </style>
 </head>
-<body>
+
+<!-- Spinner overlay -->
+<div id="spinner" class="fixed inset-0 flex items-center justify-center bg-white z-50" style="display:flex">
+    <div class="w-12 h-12 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin"></div>
+</div>
+<body class="content" style="display:none">
  <div class="appWrap" role="application" aria-label="User support tickets">
  <!-- LEFT -->
  <div class="panel" aria-label="Your tickets">
@@ -167,6 +172,8 @@ let selectedTicketId = null;
 let isModalOpen = false;
 
 
+let spinner = document.getElementById("spinner");
+let content = document.querySelector('.content');
 
 let accessToken = localStorage.getItem('accessToken');
 let refreshToken = localStorage.getItem('refreshToken');
@@ -198,10 +205,15 @@ async function loadProfile() {
                 });
             }
 
-            if (response.status === 403) {
+              if (response.status === 403) {
                 spinner.style.display = "none";
                 window.location.href = "404.html";
-            } 
+            } else {
+                content.style.display = "block";
+                spinner.style.display = "none";
+
+            }
+
             if (response.ok) {
                 const data = await response.json();
                 console.log("data",data)
@@ -484,10 +496,14 @@ console.log("tick",tickets);
                 });
             }
 
-            if (response.status === 403) {
+           if (response.status === 403) {
                 spinner.style.display = "none";
                 window.location.href = "404.html";
-            } 
+            } else {
+                content.style.display = "block";
+                spinner.style.display = "none";
+
+            }
             if (response.ok) {
                 const data = await response.json();
                 console.log("data",data)
@@ -582,7 +598,11 @@ function formatTicket(data) {
             if (response.status === 403) {
                 spinner.style.display = "none";
                 window.location.href = "404.html";
-            } 
+            } else {
+                content.style.display = "block";
+                spinner.style.display = "none";
+
+            }
             if (response.ok) {
                 const data = await response.json();
                 console.log("data creted message",data)
@@ -646,10 +666,10 @@ function formatTicket(data) {
  });
 
  // keyboard shortcuts
- document.addEventListener('keydown', (e) => {
+ /*document.addEventListener('keydown', (e) => {
  if(e.key === 'n' && !isModalOpen) openNewModal();
  if((e.key === 'k' || e.key === 'K')) { leftSearchEl.focus(); e.preventDefault(); }
- });
+ }); */
 
  // small toast
  const toastEl = document.createElement('div');

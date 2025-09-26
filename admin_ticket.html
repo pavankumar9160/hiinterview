@@ -133,7 +133,11 @@
  }
  </style>
 </head>
-<body>
+<!-- Spinner overlay -->
+<div id="spinner" class="fixed inset-0 flex items-center justify-center bg-white z-50" style="display:flex">
+    <div class="w-12 h-12 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin"></div>
+</div>
+<body class= "content" style="display:none"> 
  <div class="appOuter">
  <!-- LEFT -->
  <div class="panel">
@@ -228,8 +232,10 @@ let demoTickets = [];
 let tickets = [];
 let selectedTicketId = null;
 
+let spinner = document.getElementById("spinner");
+let content = document.querySelector('.content');
 
-    let accessToken = localStorage.getItem('accessToken');
+let accessToken = localStorage.getItem('accessToken');
 let refreshToken = localStorage.getItem('refreshToken');
 
 
@@ -259,9 +265,13 @@ async function loadUserTickets() {
                 });
             }
 
-            if (response.status === 403) {
+             if (response.status === 403) {
                 spinner.style.display = "none";
                 window.location.href = "404.html";
+            } else {
+                content.style.display = "block";
+                spinner.style.display = "none";
+
             } 
             if (response.ok) {
                 const data = await response.json();
@@ -528,10 +538,14 @@ composerWrap.style.display = 'flex';
                 });
             }
 
-            if (response.status === 403) {
+           if (response.status === 403) {
                 spinner.style.display = "none";
                 window.location.href = "404.html";
-            } 
+            } else {
+                content.style.display = "block";
+                spinner.style.display = "none";
+
+            }
             if (response.ok) {
                 const data = await response.json();
                 console.log("data creted message",data)
@@ -609,10 +623,14 @@ composerWrap.style.display = 'flex';
                 });
             }
 
-            if (response.status === 403) {
+           if (response.status === 403) {
                 spinner.style.display = "none";
                 window.location.href = "404.html";
-            } 
+            } else {
+                content.style.display = "block";
+                spinner.style.display = "none";
+
+            }
             if (response.ok) {
                 const data = await response.json();
                 console.log("data creted message",data)
@@ -656,10 +674,10 @@ composerWrap.style.display = 'flex';
  function showToast(txt,d=1800){ toastEl.textContent = txt; toastEl.style.display='block'; setTimeout(()=> toastEl.style.display='none', d); }
 
  // keyboard shortcuts
- document.addEventListener('keydown', (e) => {
+/* document.addEventListener('keydown', (e) => {
  if((e.key === 'r' || e.key === 'R') && selectedTicketId){ messageInput.focus(); }
  if((e.key === 'm' || e.key === 'M') && selectedTicketId){ resolveBtn.click(); }
- });
+ });*/
 
  // init
  async function init(){
