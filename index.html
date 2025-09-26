@@ -344,62 +344,9 @@
  <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-ink-900">A Tier for Every Ambition</h2>
  <p class="mt-4 text-lg text-ink-600">We've crafted core packages aligned with our store — pick the exact plan and continue to checkout.</p>
  </div>
- <div class="mt-4 grid gap-8 md:grid-cols-2 lg:grid-cols-4 items-center">
+ <div id ="core-services-container"class="mt-4 grid gap-8 md:grid-cols-2 lg:grid-cols-4 items-center">
  <!-- Knowledge Series (ks) -> Bronze -->
- <article class="h-full glass-card rounded-2xl p-8 text-ink-800 card-hover-effect">
- <div class="relative z-10 flex-grow flex flex-col">
- <div class="text-center">
- <h3 class="text-2xl font-bold text-amber-700">BRONZE</h3>
- <p class="mt-1 text-sm font-semibold text-amber-900">Knowledge Series</p>
- </div>
- <p class="mt-6 text-5xl font-extrabold font-heading text-center text-ink-900">₹59,999</p>
- <p class="mt-4 text-sm text-ink-600">Comprehensive one-to-one training from scratch — personalized syllabus & projects.</p>
- <ul class="mt-8 space-y-3 text-sm flex-grow">
- <li class="flex items-start gap-3"><i class="fa-solid fa-check text-amber-600 mt-1"></i><span>1-on-1 Daily Classes</span></li>
- <li class="flex items-start gap-3"><i class="fa-solid fa-check text-amber-600 mt-1"></i><span>Project-Based Learning</span></li>
- <li class="flex items-start gap-3"><i class="fa-solid fa-check text-amber-600 mt-1"></i><span>Resume Building</span></li>
- </ul>
- <!-- link to specific service card in store (service-ks) -->
- <a class="mt-8 block w-full text-center rounded-full bg-amber-500/20 border border-amber-500/30 px-4 py-3 font-semibold text-amber-800 transition hover:bg-amber-500/40" href="store.html#service-ks">Secure Knowledge Series</a>
- </div>
- </article>
-
- <!-- Job Series (js) -> Silver -->
- <article class="h-full glass-card rounded-2xl p-8 text-ink-800 card-hover-effect">
- <div class="relative z-10 flex-grow flex flex-col">
- <div class="text-center">
- <h3 class="text-2xl font-bold text-gray-700">SILVER</h3>
- <p class="mt-1 text-sm font-semibold text-gray-800">Job Series</p>
- </div>
- <p class="mt-6 text-5xl font-extrabold font-heading text-center text-ink-900">₹59,999</p>
- <p class="mt-4 text-sm text-ink-600">Intensive interview prep with mocks and domain brush-up to crack interviews.</p>
- <ul class="mt-8 space-y-3 text-sm flex-grow">
- <li class="flex items-start gap-3"><i class="fa-solid fa-check text-gray-600 mt-1"></i><span>Mock Interviews</span></li>
- <li class="flex items-start gap-3"><i class="fa-solid fa-check text-gray-600 mt-1"></i><span>Domain Concept Brush-Up</span></li>
- <li class="flex items-start gap-3"><i class="fa-solid fa-check text-gray-600 mt-1"></i><span>Resume Review</span></li>
- </ul>
- <a class="mt-8 block w-full text-center rounded-full bg-gray-500/20 border border-gray-500/30 px-4 py-3 font-semibold text-gray-800 transition hover:bg-gray-500/30" href="store.html#service-js">Build My Interview Skills</a>
- </div>
- </article>
-
- <!-- Premium Series (ps) -> Gold -->
- <article class="h-full glass-card rounded-2xl p-8 text-ink-800 ring-2 ring-yellow-500 shadow-lift card-hover-effect md:scale-105">
- <div class="absolute -top-4 left-1/2 -translate-x-1/2"><span class="rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 px-4 py-1.5 text-xs font-bold text-ink-900 shadow-md">MOST POPULAR</span></div>
- <div class="relative z-10 flex-grow flex flex-col">
- <div class="text-center">
- <h3 class="text-2xl font-bold text-yellow-600">GOLD</h3>
- <p class="mt-1 text-sm font-semibold text-yellow-800">Premium Series</p>
- </div>
- <p class="mt-6 text-5xl font-extrabold font-heading text-center text-ink-900">₹1,29,998</p>
- <p class="mt-4 text-sm text-ink-600">The ultimate all-in-one package — training, job prep and interview day support.</p>
- <ul class="mt-8 space-y-3 text-sm flex-grow">
- <li class="flex items-start gap-3"><i class="fa-solid fa-check text-yellow-600 mt-1"></i><span>Includes Knowledge + Job Series</span></li>
- <li class="flex items-start gap-3"><i class="fa-solid fa-check text-yellow-600 mt-1"></i><span>Multiple Interview Buddy Days</span></li>
- <li class="flex items-start gap-3"><i class="fa-solid fa-check text-yellow-600 mt-1"></i><span>Priority Support</span></li>
- </ul>
- <a class="mt-8 block w-full text-center rounded-full bg-yellow-400/90 px-4 py-3 font-bold text-yellow-900 transition hover:bg-yellow-400" href="store.html#service-ps">Design My Premium Program</a>
- </div>
- </article>
+ 
 
  <!-- Diamond (coming soon) -->
  <article class="h-full glass-card rounded-2xl p-8 text-ink-800 card-hover-effect relative">
@@ -626,10 +573,7 @@ Monica R.
  </div>
  <div>
  <h4 class="font-medium text-white">Services</h4>
- <ul class="mt-4 space-y-2 text-sm">
- <li><a href="store.html#service-ks" class="hover:text-white transition">Knowledge Series</a></li>
- <li><a href="store.html#service-js" class="hover:text-white transition">Job Series</a></li>
- <li><a href="store.html#service-ps" class="hover:text-white transition">Premium Series</a></li>
+ <ul class="mt-4 space-y-2 text-sm" id="services-list">
  </ul>
  </div>
  <div>
@@ -666,6 +610,13 @@ Monica R.
             if(refreshToken){
                 document.querySelector(".login-link").style.display ="none";
             }
+
+const coreUIMap = [
+    { label: 'BRONZE', color: 'amber'},
+    { label: 'SILVER', color: 'gray' },
+    { label: 'GOLD', color: 'yellow', badge: 'MOST POPULAR' }
+];
+
 
  const qs = (s, c = document) => c.querySelector(s);
  const qsa = (s, c = document) => Array.from(c.querySelectorAll(s));
@@ -753,7 +704,84 @@ Monica R.
  }
  });
 
- // nothing more required for mailto button
+ let allServices = [];
+
+async function fetchServices() {
+    try {
+        const res = await fetch('https://hiinterview-backend-1.onrender.com/api/services/');
+        if (!res.ok) throw new Error('Failed to fetch services');
+        allServices = await res.json();
+        renderCoreServices();
+    } catch (error) {
+        console.error(error);
+        showToast('Failed to load services', 'error', 3000);
+    }
+}
+
+
+ function renderCoreServices() {
+    const container = document.getElementById('core-services-container');
+
+    const diamondCard = container.querySelector('.relative');
+
+    container.innerHTML = ''; 
+
+    const coreServices = allServices.filter(s => s.type === 'core').slice(0, 3); 
+
+    coreServices.forEach((service, index) => {
+        const ui = coreUIMap[index]; 
+
+        const featuresList = (service.features || []).slice(0,4)
+            .map(f => `<li class="flex items-start gap-3"><i class="fa-solid fa-check text-${ui.color}-600 mt-1"></i><span>${f}</span></li>`)
+            .join('');
+
+        container.innerHTML += `
+        <article class="h-full glass-card rounded-2xl p-8 text-ink-800 card-hover-effect ${ui.color === 'yellow' ? 'ring-2 ring-yellow-500 shadow-lift md:scale-105' : ''}">
+            ${ui.badge ? `<div class="absolute -top-4 left-1/2 -translate-x-1/2">
+                <span class="rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 px-4 py-1.5 text-xs font-bold text-ink-900 shadow-md">${ui.badge}</span>
+            </div>` : ''}
+            <div class="relative z-10 flex-grow flex flex-col">
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold text-${ui.color}-600">${ui.label}</h3>
+                    <p class="mt-1 text-sm font-semibold text-${ui.color}-800">${service.name}</p>
+                </div>
+                <p class="mt-6 text-5xl font-extrabold font-heading text-center text-ink-900">₹${Number(service.price).toLocaleString()}</p>
+                <p class="mt-4 text-sm text-ink-600">${service.description}</p>
+                <ul class="mt-8 space-y-3 text-sm flex-grow">
+                    ${featuresList}
+                </ul>
+                <a class="mt-8 block w-full text-center rounded-full bg-${ui.color}-500/20 border border-${ui.color}-500/30 px-4 py-3 font-semibold text-${ui.color}-800 transition hover:bg-${ui.color}-500/40" href="store.html">
+                    ${service.name}
+                </a>
+            </div>
+        </article>
+        `;
+    });
+
+    container.appendChild(diamondCard);
+}
+
+function renderServiceLinks() {
+    const listContainer = document.querySelector('#services-list'); 
+    
+    if (!listContainer || !allServices) return;
+
+    const coreServices = allServices.filter(s => s.type === 'core').slice(0, 3);
+
+    listContainer.innerHTML = coreServices.map(service => `
+        <li>
+            <a href="store.html" class="hover:text-white transition">${service.name}</a>
+        </li>
+    `).join('');
+}
+
+
+(async () => {
+   
+    await fetchServices(); 
+    await renderServiceLinks();
+   
+})();
  });
  </script>
 </body>
