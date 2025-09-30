@@ -90,16 +90,33 @@
  </div>
 
  <div class="flex items-center gap-3">
- <nav class="hidden sm:flex items-center gap-2">
- <button class="p-2 rounded-full focus-ring" title="Wishlist"><i class="fa-regular fa-heart text-ink-500"></i></button>
+ <nav class="flex items-center gap-2">
+ <!--<button class="p-2 rounded-full focus-ring" title="Wishlist"><i class="fa-regular fa-heart text-ink-500"></i></button> -->
  <button id="cart-btn" aria-haspopup="dialog" aria-controls="cart-sidebar" class="relative p-2 rounded-full focus-ring bg-white border border-ink-100 shadow-sm" title="Cart">
  <i class="fa-solid fa-shopping-cart text-ink-700"></i>
  <span id="cart-badge" class="absolute -top-1 -right-1 h-5 w-5 bg-rose-500 text-white text-[10px] rounded-full flex items-center justify-center hidden" aria-live="polite">0</span>
  </button>
  </nav>
- <button id="profileBtn" class="h-10 w-10 rounded-full bg-brand-600 text-white focus-ring flex items-center justify-center ring-4 ring-brand-200 relative animate-glow-pulse overflow-hidden" aria-label="Open profile menu" fdprocessedid="xlsam">
-            <img id="profileAvatar" class="img-circle" src="" alt="Guest" style="display:none">
-            <span id="profileInitial" class="font-bold" style="display: block;">Guest</span> </div>
+ <div class="relative" id="profileWrapper">
+    <button  id ="profileToggle"  aria-label="Profile" aria-expanded="false"
+      class="h-10 w-10 rounded-full bg-brand-600 text-white focus-ring flex items-center justify-center ring-4 ring-brand-200 relative animate-glow-pulse overflow-hidden profileBtn"
+>
+      <img id="profileAvatar" class="img-circle" src="" alt="Guest" style="display:none">
+      <span id="profileInitial" class="font-bold" style="display:block;">Guest</span>
+    </button>
+  
+    <div id="profileDropdown" 
+         class="hidden absolute right-0 mt-2 w-48 rounded-md border border-ink-200 bg-white shadow-lg z-50">
+      <a href="login.html" class="block px-4 py-2 text-sm hover:bg-ink-50" id="loginLink">Login / Sign Up</a>
+  
+      <div id="loggedInLinks" class="hidden">
+        <a href="profile.html" class="block px-4 py-2 text-sm hover:bg-ink-50">My Profile</a>
+        <a href="profile.html" class="block px-4 py-2 text-sm hover:bg-ink-50">Edit Profile</a>
+ <button id="logoutBtn" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Logout</button>
+
+      </div>
+  </div>
+  
  </div>
  </div>
  </header>
@@ -129,8 +146,8 @@
  <label class="flex items-start gap-4 cursor-pointer">
  <input id="past-purchase-checkbox" type="checkbox" class="h-5 w-5 rounded border-ink-300 text-brand-600 focus:ring-brand-500 mt-0.5 flex-shrink-0" aria-describedby="past-purchase-desc">
  <div>
- <span class="font-semibold text-ink-800">I purchased a Core Program in the past year.</span>
- <p id="past-purchase-desc" class="text-sm text-ink-500 mt-1">Enable this to unlock À La Carte purchases without adding a Core Program now.</p>
+ <span class="font-semibold text-ink-800"> I have purchased a Core Program in the last 12 months.</span>
+ <p id="past-purchase-desc" class="text-sm text-ink-500 mt-1">Checking this box allows me to buy À La Carte items. My eligibility will be verified, and if not valid, the order may be cancelled.</p>
  </div>
  </label>
  </div>
@@ -222,13 +239,14 @@
  { id: 'cc', type: 'alacarte', name: '1-to-1 Career Consultancy', price: 7999, description: 'A focused session with a senior consultant for any career challenge.' },
  ]; */
 
- const promoSlides = [
+/* const promoSlides = [
  { title: 'Flat ₹2,000 Off!', subtitle: 'Use code SEPT2000 on all Core Programs.', bg: 'bg-gradient-to-br from-brand-600 to-brand-800' },
  { title: 'Exclusive Bank Offers', subtitle: 'Get an extra ₹3,000 OFF with select bank cards.', bg: 'bg-gradient-to-br from-ink-800 to-ink-950' },
  { title: 'Slots Filling Fast for 2025!', subtitle: 'Hurry — few seats left. Next batch starts in 2026.', bg: 'bg-gradient-to-br from-rose-600 to-rose-800' }
  ];
 
  const validCoupons = { 'SEPT2000': 2000, 'CITI3000': 3000, 'HSBC3000': 3000, 'ONECARD3000': 3000 };
+*/
 
  /*********************
  * STATE
@@ -242,6 +260,8 @@
  let sliderInterval = null;
  let currentSliderIndex = 0;
  let searchTimeout = null;
+ let subtotal;
+
 
  /*********************
  * DOM REFS
@@ -271,6 +291,35 @@
  const dotsContainer = document.getElementById('slider-dots');
  const searchInput = document.getElementById('searchInput');
  const searchBtn = document.getElementById('searchBtn');
+ const profileBtn = document.querySelector(".profileBtn");
+
+const profileToggle = document.getElementById("profileToggle");
+const profileDropdown = document.getElementById("profileDropdown");
+  const loginLink = document.getElementById("loginLink");
+  const loggedInLinks = document.getElementById("loggedInLinks");
+
+  const isLoggedIn = !!localStorage.getItem("refreshToken"); // true if logged in
+
+  if (isLoggedIn) {
+    loginLink.classList.add("hidden");
+    loggedInLinks.classList.remove("hidden");
+  } else {
+    loginLink.classList.remove("hidden");
+    loggedInLinks.classList.add("hidden");
+  }
+  
+  // Toggle dropdown on profile button click
+  profileToggle.addEventListener("click", () => {
+    profileDropdown.classList.toggle("hidden");
+  });
+  
+  // Close dropdown if clicked outside
+  document.addEventListener("click", (e) => {
+    if (!profileToggle.contains(e.target) && !profileDropdown.contains(e.target)) {
+      profileDropdown.classList.add("hidden");
+    }
+  });
+ 
 
  const currencyFormatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
@@ -440,39 +489,37 @@ const renderProducts = (filter = 'all', searchTerm = '') => {
  `).join('');
  }
 
+ validateAppliedCoupon();
+
  const subtotal = cart.reduce((sum, item) => sum + Number(item.price), 0);
- console.log("cartitems",cart)
- console.log("subtotal",subtotal)
- const discount = appliedCoupon ? appliedCoupon.amount : 0;
+  const discount = appliedCoupon ? appliedCoupon.amount : 0;
 
- if(appliedCoupon) {
- couponDisplayRow.classList.remove('hidden');
- document.getElementById('applied-coupon-pill').textContent = `${appliedCoupon.code} — ${currencyFormatter.format(appliedCoupon.amount)} off`;
- cartDiscountEl.textContent = `-${currencyFormatter.format(discount)}`;
- couponMsg.textContent = '';
- } else {
- couponDisplayRow.classList.add('hidden');
- cartDiscountEl.textContent = `-₹0`;
- }
+  if (appliedCoupon) {
+    couponDisplayRow.classList.remove('hidden');
+    document.getElementById('applied-coupon-pill').textContent = `${appliedCoupon.code} — ${currencyFormatter.format(appliedCoupon.amount)} off`;
+    cartDiscountEl.textContent = `-${currencyFormatter.format(discount)}`;
+  } else {
+    couponDisplayRow.classList.add('hidden');
+    cartDiscountEl.textContent = `-₹0`;
+  }
 
- const taxableBase = Math.max(0, subtotal - discount);
- const gst = Math.round(taxableBase * 0.18);
- const platformFee = Math.round(taxableBase * 0.02);
- const total = Math.round(taxableBase + gst + platformFee);
+  const taxableBase = Math.max(0, subtotal - discount);
+  const gst = Math.round(taxableBase * 0.18);
+  const platformFee = Math.round(taxableBase * 0.02);
+  const total = Math.round(taxableBase + gst + platformFee);
 
- cartSubtotalEl.textContent = currencyFormatter.format(subtotal);
- cartGstEl.textContent = currencyFormatter.format(gst);
- cartPlatformFeeEl.textContent = currencyFormatter.format(platformFee);
- cartTotalEl.textContent = currencyFormatter.format(total);
- cartBadge.textContent = cart.length;
- cartBadge.classList.toggle('hidden', cart.length === 0);
+  cartSubtotalEl.textContent = currencyFormatter.format(subtotal);
+  cartGstEl.textContent = currencyFormatter.format(gst);
+  cartPlatformFeeEl.textContent = currencyFormatter.format(platformFee);
+  cartTotalEl.textContent = currencyFormatter.format(total);
+  cartBadge.textContent = cart.length;
+  cartBadge.classList.toggle('hidden', cart.length === 0);
 
- // disable coupon input when cart empty
- couponInput.disabled = cart.length === 0;
- applyCouponBtn.disabled = cart.length === 0;
- if (cart.length === 0) couponMsg.textContent = '';
- };
-
+  // disable coupon input when cart empty
+  couponInput.disabled = cart.length === 0;
+  applyCouponBtn.disabled = cart.length === 0;
+  if (cart.length === 0) couponMsg.textContent = '';
+}
  /*********************
  * PRODUCT BUTTONS (Add / Info)
  *********************/
@@ -571,34 +618,105 @@ const renderProducts = (filter = 'all', searchTerm = '') => {
  /*********************
  * COUPON HANDLING (unchanged codes)
  *********************/
- applyCouponBtn.addEventListener('click', () => {
- const code = couponInput.value.trim().toUpperCase();
- if (!code) {
- couponMsg.textContent = 'Please enter a coupon code.';
- couponMsg.className = 'text-xs mt-1.5 h-4 text-rose-500';
- return;
- }
- if (validCoupons[code]) {
- appliedCoupon = { code, amount: validCoupons[code] };
- couponMsg.textContent = `Success! "${code}" applied.`;
- couponMsg.className = 'text-xs mt-1.5 h-4 text-green-600';
- showToast(`Coupon ${code} applied — ${currencyFormatter.format(validCoupons[code])} off`, 'success', 2800);
- updateCartUI();
- } else {
- appliedCoupon = null;
- couponMsg.textContent = 'Invalid coupon code.';
- couponMsg.className = 'text-xs mt-1.5 h-4 text-rose-500';
- showToast('Coupon not valid', 'error', 2200);
- updateCartUI();
- }
- });
- document.getElementById('remove-coupon-btn').addEventListener('click', () => {
- appliedCoupon = null;
- couponMsg.textContent = '';
- renderProducts(document.querySelector('.filter-btn.bg-brand-600')?.dataset?.filter || 'all', searchInput.value.trim());
- updateCartUI();
- showToast('Coupon removed', 'success', 1600);
- });
+applyCouponBtn.addEventListener('click', () => {
+
+subtotal = cart.reduce((sum, item) => sum + Number(item.price), 0);
+
+  const code = couponInput.value.trim().toUpperCase();
+  if (!code) {
+    couponMsg.textContent = 'Please enter a coupon code.';
+    couponMsg.className = 'text-xs mt-1.5 h-4 text-rose-500';
+    return;
+  }
+
+  const coupon = validCoupons[code];
+  console.log("usedcoupon",coupon)
+  if (!coupon) {
+    appliedCoupon = null;
+    couponMsg.textContent = 'Invalid or expired coupon code.';
+    couponMsg.className = 'text-xs mt-1.5 h-4 text-rose-500';
+    showToast('Coupon not valid', 'error', 2200);
+    updateCartUI();
+    return;
+  }
+
+  if (coupon.minOrderValue && subtotal < parseFloat(coupon.minOrderValue)) {
+    couponMsg.textContent = `Order must be at least ${currencyFormatter.format(coupon.minOrderValue)} to use this coupon.`;
+    couponMsg.className = 'text-xs mt-1.5 h-4 text-rose-500';
+    appliedCoupon = null;
+    return; 
+}
+
+  if (coupon.usageLimit && coupon.usedCount >= coupon.usageLimit) {
+    appliedCoupon = null;
+    couponMsg.textContent = 'This coupon has reached its usage limit.';
+    couponMsg.className = 'text-xs mt-1.5 h-4 text-rose-500';
+    showToast('Coupon usage limit reached', 'error', 2200);
+    updateCartUI();
+    return;
+  }
+
+  // Calculate discount
+let discountAmount = 0;
+
+if (coupon.discountType === 'fixed') {
+    discountAmount = Math.min(Number(coupon.discountValue), subtotal);
+} else if (coupon.discountType === 'percentage') {
+    const percentage = parseFloat(coupon.discountValue); 
+    discountAmount = (subtotal * percentage) / 100;
+
+    if (coupon.maxDiscountValue) {
+        discountAmount = Math.min(discountAmount, parseFloat(coupon.maxDiscountValue));
+    }
+}
+discountAmount = Math.round(discountAmount);
+
+appliedCoupon = {
+    code: code,
+    amount: discountAmount,
+    discountType: coupon.discountType
+};
+
+couponMsg.textContent = `Success! "${coupon.couponCode}" applied.`;
+couponMsg.className = 'text-xs mt-1.5 h-4 text-green-600';
+showToast(`Coupon ${code} applied — ${currencyFormatter.format(discountAmount)} off`, 'success', 2800);
+
+  updateCartUI();
+});
+
+// Remove coupon button
+document.getElementById('remove-coupon-btn').addEventListener('click', () => {
+  appliedCoupon = null;
+  couponMsg.textContent = '';
+  renderProducts(document.querySelector('.filter-btn.bg-brand-600')?.dataset?.filter || 'all', searchInput.value.trim());
+  updateCartUI();
+  showToast('Coupon removed', 'success', 1600);
+});
+
+
+function validateAppliedCoupon() {
+    if (!appliedCoupon) return;
+
+    const coupon = validCoupons[appliedCoupon.code];
+    const subtotal = cart.reduce((sum, item) => sum + Number(item.price), 0);
+
+    if (!coupon) {
+        // Coupon no longer valid
+        appliedCoupon = null;
+        couponMsg.textContent = '';
+        return false;
+    }
+
+    if (coupon.minOrderValue && subtotal < parseFloat(coupon.minOrderValue)) {
+        appliedCoupon = null;
+        couponMsg.textContent = `Order must be at least ${currencyFormatter.format(coupon.minOrderValue)} to use this coupon.`;
+        couponMsg.className = 'text-xs mt-1.5 h-4 text-rose-500';
+        return false;
+    }
+
+    return true;
+}
+
 
  /*********************
  * CART SIDEBAR CONTROLS + FOCUS TRAP
@@ -672,7 +790,10 @@ const renderProducts = (filter = 'all', searchTerm = '') => {
                     let spinner = document.getElementById("spinner");
                     let content = document.querySelector('.content');
 
+
                     if (refreshToken) {
+
+
 
 
                                  try {
@@ -788,6 +909,11 @@ const renderProducts = (filter = 'all', searchTerm = '') => {
             const totalAmount = document.getElementById("cart-total").textContent;
                 localStorage.setItem("cart", JSON.stringify(cart));
                 localStorage.setItem('total',totalAmount)
+                if (appliedCoupon) {
+                    localStorage.setItem("appliedCoupon", JSON.stringify(appliedCoupon));
+                } else {
+                    localStorage.removeItem("appliedCoupon");
+                }
                 window.location.href = "payment.html"
 
       })
@@ -806,12 +932,103 @@ async function fetchServices() {
     }
 }
 
+let couponsFromResponse = [];
+let promoSlides = [];
+let validCoupons = {};
+
+async function fetchCoupons() {
+    try {
+        const res = await fetch('https://hiinterview-backend-1.onrender.com/api/coupons/');
+        if (!res.ok) throw new Error('Failed to fetch coupons');
+        couponsFromResponse = await res.json();
+        promoSlides = couponsFromResponse
+          .filter(c => c.displayPages.includes("slider")).sort((a, b) => Number(a.priority || 0) - Number(b.priority || 0))
+          .map((c, index) => ({
+            title: c.title,
+            subtitle: c.description,
+            bg: c.isFeatured
+              ? 'bg-gradient-to-br from-rose-600 to-rose-800'
+              : index % 2 === 0
+                ? 'bg-gradient-to-br from-brand-600 to-brand-800'
+                : 'bg-gradient-to-br from-ink-800 to-ink-950'
+          }));
+
+        validCoupons = {};
+        couponsFromResponse.forEach(c => {
+            const now = new Date();
+            const start = new Date(c.startAt);
+            const end = new Date(c.endAt);
+            if (c.isActive !== false && !c.isDeleted && now >= start && now <= end) {
+                validCoupons[c.couponCode] = c;
+            }
+        });
+
+        console.log('Promo Slides:', promoSlides);
+        console.log('Valid Coupons:', validCoupons);
+        console.log("coupon data: ",couponsFromResponse)
+
+    } catch (error) {
+        console.error(error);
+        showToast('Failed to load coupons', 'error', 3000);
+    }
+}
+
+
+
+
+document.getElementById('logoutBtn').addEventListener('click', logout)
+
+async function logout() {
+  let accessToken = localStorage.getItem('accessToken');
+  let refreshToken = localStorage.getItem('refreshToken');
+
+  if (!refreshToken) {
+      clearTokensAndRedirect();
+      return;
+  }
+
+  try {
+      let response = await fetch('https://hiinterview-backend-1.onrender.com/api/logout/', {
+          method: 'POST',
+          headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${accessToken}`
+          },
+          body: JSON.stringify({ refresh: refreshToken })
+      });
+
+      if (response.status === 401) {
+          accessToken = await refreshAccessToken();
+          if (!accessToken) return; 
+          refreshToken = localStorage.getItem('refreshToken');
+          response = await fetch('https://hiinterview-backend-1.onrender.com/api/logout/', {
+              method: 'POST',
+              headers: { 
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${accessToken}`
+              },
+              body: JSON.stringify({ refresh: refreshToken })
+          });
+      }
+
+      if (response.ok) {
+          clearTokensAndRedirect();
+      } else {
+        clearTokensAndRedirect();
+          
+      }
+  } catch (err) {
+      console.error(err);
+  }
+}
+
 
 
  /*********************
  * INIT
  *********************/
 (async () => {
+        await fetchCoupons();
     initSlider();
     await fetchServices(); 
     renderProducts();      

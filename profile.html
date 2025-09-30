@@ -120,16 +120,9 @@
  </div>
 
  <!-- promo bar -->
- <div class="promo-bar">
- <div class="mx-auto container px-5 py-2 flex items-center justify-between text-sm">
- <div class="flex items-center gap-3">
- <span class="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700"><i class="fa-solid fa-gift" aria-hidden="true"></i> Limited offer</span>
- <div>
- <strong class="mr-2">Flat ₹2,000 off</strong>
- <span class="text-ink-600">Use code <kbd class="px-2 py-0.5 rounded bg-ink-100 text-sm">SEPT2000</kbd> in store.</span>
- </div>
- </div>
- <div><a href="store.html" class="text-sm font-medium text-brand-700 hover:underline">Apply in store →</a></div>
+  <div id ="promo-bar-container">
+ <div class="promo-bar" >
+     
  </div>
  </div>
 
@@ -139,7 +132,6 @@
  <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="store.html">Store</a>
  <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="#contact">Contact</a>
  <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="#faq">FAQ</a>
- <a class="rounded-full border border-transparent bg-brand-600 px-4 py-2 font-medium text-white text-center" href="login.html">Login</a>
  </div>
  </nav>
  </header>
@@ -220,17 +212,14 @@
 
   <form id="profileForm" class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
 
-    <!-- Profile Photo (at the top) -->
 <div class="md:col-span-2">
   <label class="text-sm font-medium">Profile Photo</label>
 
-  <!-- File input (always below label in edit mode) -->
     <div class="mt-2 flex items-center gap-3">
     <input id="avatarInput" type="file" accept="image/*" class="hidden" />
     <button id="uploadAvatarBtn"  type="button" class="px-3 py-1 bg-brand-600 text-white rounded-md text-sm hidden">Choose File</button>
   </div>
 
-  <!-- Avatar Preview + Remove button (below file input) -->
   <div id="avatarPreviewWrap" class="mt-2 flex items-center gap-3">
     <img id="displayAvatar" class="w-24 h-24 rounded-full hidden" />
     <div id="displayInitial" class="w-24 h-24 rounded-full bg-brand-600 text-white flex items-center justify-center text-2xl font-bold hidden">U</div>
@@ -238,31 +227,25 @@
   </div>
 </div>
 
-
-
-    <!-- Full Name -->
     <div>
       <label class="text-sm font-medium">Full name</label>
       <input id="inputName" type="text" class="mt-1 w-full rounded border px-3 py-2 bg-ink-50" disabled />
     </div>
 
-    <!-- Phone -->
     <div>
       <label class="text-sm font-medium">Mobile Number</label>
       <input id="inputPhone" type="tel" class="mt-1 w-full rounded border px-3 py-2 bg-ink-50" disabled />
     </div>
 
-    <!-- Alt Phone -->
     <div>
       <label class="text-sm font-medium">Alternate Number(optional)</label>
       <input id="inputAltPhone" type="tel" class="mt-1 w-full rounded border px-3 py-2 bg-ink-50" disabled />
     </div>
 
-    <!-- CV Upload -->
     <div class="md:col-span-2 flex items-center gap-3">
       <input id="inputCv" type="file" accept=".pdf,.doc,.docx" class="hidden" />
       <button id="uploadCvBtn" type="button" class="px-3 py-1 bg-brand-600 text-white rounded-md text-sm" disabled>Choose File</button>
-      <div id="cvPreview" class="text-sm text-ink-600">No CV uploaded.</div>
+      <div id="cvPreview" class="text-sm text-ink-600 truncate max-w-full">No CV uploaded.</div>
       <button id="downloadCvBtn" class="ml-auto px-3 py-1 bg-ink-50 hover:bg-ink-100 rounded-md text-sm hidden">Download CV</button>
     </div>
 
@@ -308,7 +291,7 @@
  </div>
  </div>
 
- <!-- Tickets -->
+ <!-- Tickets 
  <div id="tabTickets" class="tabContent hidden bg-white rounded-2xl p-6 shadow-card border border-ink-100">
  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
  <div>
@@ -352,7 +335,7 @@
  </div>
  </div>
  </div>
- </div>
+ </div> -->
 
  <!-- Extras -->
  <div id="tabExtras" class="tabContent hidden bg-white rounded-2xl p-6 shadow-card border border-ink-100">
@@ -485,12 +468,12 @@ document.addEventListener('DOMContentLoaded',()=> {
  const statusFilter = document.getElementById('statusFilter');
  const purchaseSearch = document.getElementById('purchaseSearch');
 
- const ticketSubject = document.getElementById('ticketSubject');
- const ticketMessage = document.getElementById('ticketMessage');
- const ticketPurchaseSelect = document.getElementById('ticketPurchaseSelect');
- const newTicketForm = document.getElementById('newTicketForm');
- const ticketsTbody = document.getElementById('ticketsTbody');
- const hoverTicketDetail = document.getElementById('hoverTicketDetail');
+// const ticketSubject = document.getElementById('ticketSubject');
+// const ticketMessage = document.getElementById('ticketMessage');
+// const ticketPurchaseSelect = document.getElementById('ticketPurchaseSelect');
+// const newTicketForm = document.getElementById('newTicketForm');
+// const ticketsTbody = document.getElementById('ticketsTbody');
+// const hoverTicketDetail = document.getElementById('hoverTicketDetail');
 
  const sidebarName = document.getElementById('sidebarName');
  const sidebarEmail = document.getElementById('sidebarEmail');
@@ -641,6 +624,60 @@ function clearTokensAndRedirect() {
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('role')
     window.location.href = "login.html";
+}
+
+
+
+
+function renderPromoBar(coupons) {
+    const featuredCoupon = coupons.find(c => c.isFeatured && c.displayPages.includes("profile"));
+    if (!featuredCoupon) return; 
+    const html = `
+    <div class="promo-bar">
+        <div class="mx-auto container px-5 py-2 flex items-center justify-between text-sm">
+            <div class="flex items-center gap-3">
+                <span class="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700">
+                    <i class="fa-solid fa-gift" aria-hidden="true"></i> Limited offer
+                </span>
+                <div>
+                    <strong class="mr-2">${featuredCoupon.title}</strong>
+                    <span class="text-ink-600">
+                        Use code 
+                        <kbd class="px-2 py-0.5 rounded bg-ink-100 text-sm">
+                            ${featuredCoupon.couponCode}
+                        </kbd> 
+                        ${featuredCoupon.description.replace(featuredCoupon.title, '').trim()}
+                    </span>
+                </div>
+            </div>
+            <div>
+                <a href="store.html" class="text-sm font-medium text-brand-700 hover:underline">
+                    Apply in store →
+                </a>
+            </div>
+        </div>
+    </div>
+    `;
+
+    document.getElementById('promo-bar-container').innerHTML = html;
+}
+
+
+
+
+
+async function fetchCoupons() {
+    try {
+        const res = await fetch('https://hiinterview-backend-1.onrender.com/api/coupons/');
+        if (!res.ok) throw new Error('Failed to fetch coupons');
+        let data = await res.json();
+        renderPromoBar(data);
+
+       
+    } catch (error) {
+        console.error(error);
+        showToast('Failed to load coupons', 'error', 3000);
+    }
 }
 
 // --- Edit Mode ---
@@ -813,7 +850,7 @@ inputCv.addEventListener("change", (e) => {
  const dateStr = new Date(p.date).toLocaleString();
  const statusStyles = {
  'Pending': 'bg-amber-100 text-amber-800',
- 'Delivered': 'bg-emerald-100 text-emerald-800',
+ 'Delivered': 'bg-emerald-100 text-emerald-800',  
  'Refunded': 'bg-sky-100 text-sky-800',
  'Cancelled': 'bg-rose-100 text-rose-800'
  };
@@ -869,7 +906,7 @@ inputCv.addEventListener("change", (e) => {
  purchaseSearch.addEventListener('input', renderPurchases);
 
  // tickets rendering & hover detail
- function renderTicketPurchaseOptions(){
+ /*function renderTicketPurchaseOptions(){
  ticketPurchaseSelect.innerHTML = `<option value="">-- none --</option>` + appState.purchases.map(p => `<option value="${p.id}">${escapeHtml(p.id)} — ${escapeHtml(p.subscription_domain)}</option>`).join('');
  }
 
@@ -978,7 +1015,7 @@ ticketsTbody.innerHTML =`
         } catch (err) {
             console.error(err);
         }
-  });
+  }); */
 
 
  // UI: tab navigation
@@ -1053,12 +1090,13 @@ ticketsTbody.innerHTML =`
  // helper on initial load
  function populateAll(){
  renderPurchases();
- renderTicketPurchaseOptions();
- renderTickets();
+ //renderTicketPurchaseOptions();
+ //renderTickets();
  }
 
  // initially load profile
  loadProfile();
+ fetchCoupons();
 
  showTab('personal');
 
