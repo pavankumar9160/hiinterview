@@ -906,11 +906,11 @@ function renderPromoBar(coupons) {
                 <div>
                     <strong class="mr-2">${featuredCoupon.title}</strong>
                     <span class="text-ink-600">
-                        Use code 
+                   
                         <kbd class="px-2 py-0.5 rounded bg-ink-100 text-sm">
-                            ${featuredCoupon.couponCode}
+                            ${featuredCoupon.couponCode.trim()}
                         </kbd> 
-                        ${featuredCoupon.description.replace(featuredCoupon.title, '').trim()}
+                        ${featuredCoupon.description.trim()}
                     </span>
                 </div>
             </div>

@@ -70,6 +70,8 @@
  .promo-bar { background: linear-gradient(90deg, rgba(99,102,241,0.06), rgba(99,102,241,0.02)); border-top: 1px solid rgba(99,102,241,0.04); border-bottom: 1px solid rgba(99,102,241,0.02); }
  /* small helper for tickets hover */
  .hoverDetail { transition: opacity .12s ease, transform .12s ease; will-change: transform, opacity; }
+ 
+
  </style>
 </head>
 <!-- Spinner overlay -->
@@ -95,11 +97,7 @@
  </div>
  </a>
 
- <nav class="hidden md:flex items-center gap-4 text-sm" aria-label="Main">
- <a class="hover:text-brand-600 font-medium transition px-3 py-2 rounded-md" href="store.html">Store</a>
- <a class="hover:text-brand-600 font-medium transition px-3 py-2 rounded-md" href="#contact">Contact</a>
- <a class="hover:text-brand-600 font-medium transition px-3 py-2 rounded-md" href="#faq">FAQ</a>
- </nav>
+
 
  <div class="flex items-center gap-3">
  <button id="refreshBtnTop" class="px-3 py-1 rounded-md bg-ink-50 hover:bg-ink-100 text-sm flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-300" title="Refresh dashboard">
@@ -112,9 +110,9 @@
 
  <button id="logoutBtnTop" class="inline-flex items-center rounded-full border border-ink-200 px-4 py-2 font-medium text-ink-700 transition-all duration-300 hover:bg-ink-50 hover:shadow-card">Logout</button>
 
- <button type="button" id="menuToggle" aria-label="Open menu" aria-controls="mobileNav" aria-expanded="false" class="md:hidden rounded-lg border border-ink-200 p-2 focus-ring">
+<!-- <button type="button" id="menuToggle" aria-label="Open menu" aria-controls="mobileNav" aria-expanded="false" class="md:hidden rounded-lg border border-ink-200 p-2 focus-ring">
  <i class="fa-solid fa-bars text-[1.25rem]" aria-hidden="true"></i>
- </button>
+ </button> --> 
  </div>
  </div>
  </div>
@@ -126,14 +124,15 @@
  </div>
  </div>
 
- <!-- mobile nav -->
+ <!--
  <nav id="mobileNav" hidden aria-label="Mobile" class="md:hidden border-t border-ink-100 bg-white">
  <div class="mx-auto container px-5 py-3 grid gap-2 text-sm">
  <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="store.html">Store</a>
- <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="#contact">Contact</a>
- <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="#faq">FAQ</a>
+  <a class="rounded-lg border border-ink-200 px-3 py-2 transition hover:bg-ink-50" href="logout.html">Store</a>
+
+ 
  </div>
- </nav>
+ </nav>  -->
  </header>
 
  <!-- Main layout -->
@@ -274,19 +273,23 @@
  </div>
  </div>
 
- <div class="mt-4 overflow-x-auto">
- <table class="w-full text-sm table-auto">
- <thead class="text-left text-ink-600">
+
+
+
+
+<div class="not-prose rounded-lg border border-ink-200 overflow-x-auto">
+  <table class="w-full text-sm">
+    <thead class="text-left text-ink-600">
  <tr>
- <th class="py-2 pr-4">Order ID</th>
- <th class="py-2 pr-4">Service</th>
- <th class="py-2 pr-4">subscription_price</th>
- <th class="py-2 pr-4">Date</th>
- <th class="py-2 pr-4">Status</th>
- <th class="py-2 pr-4">Details</th>
+ <th class="p-3">Order ID</th>
+ <th class="p-3">Service</th>
+ <th class="p-3">subscription_price</th>
+ <th class="p-3">Date</th>
+ <th class="p-3">Status</th>
+ <th class="p-3">Details</th>
  </tr>
  </thead>
- <tbody id="purchasesTbody" class="divide-y"></tbody>
+ <tbody id="purchasesTbody" class="bg-white divide-y divide-ink-100"></tbody>
  </table>
  </div>
  </div>
@@ -323,10 +326,10 @@
  <table class="w-full text-sm table-auto">
  <thead class="text-left text-ink-600">
  <tr>
- <th class="py-2 pr-4">Ticket ID</th>
- <th class="py-2 pr-4">Subject</th>
- <th class="py-2 pr-4">Status</th>
- <th class="py-2 pr-4">Created</th>
+ <th class="p-3 text-left">Ticket ID</th>
+ <th class="p-3 text-left">Subject</th>
+ <th class="p-3 text-left">Status</th>
+ <th class="p-3 text-left">Created</th>
  </tr>
  </thead>
  <tbody id="ticketsTbody" class="divide-y"></tbody>
@@ -368,8 +371,6 @@
  <h4 class="font-medium text-white">Quick Links</h4>
  <ul class="mt-4 space-y-2 text-sm">
  <li><a href="store.html" class="hover:text-white transition">Our Services</a></li>
- <li><a href="#tracks" class="hover:text-white transition">Tracks</a></li>
- <li><a href="#faq" class="hover:text-white transition">FAQ</a></li>
  </ul>
  </div>
 
@@ -424,7 +425,7 @@ document.addEventListener('DOMContentLoaded',()=> {
  window.addEventListener('scroll', handleHeaderScroll, { passive:true }); handleHeaderScroll();
 
  // toggle mobile menu
- const menuToggle = document.getElementById('menuToggle');
+ /*const menuToggle = document.getElementById('menuToggle');
  const mobileNav = document.getElementById('mobileNav');
  if (menuToggle) {
  menuToggle.addEventListener('click', () => {
@@ -436,7 +437,7 @@ document.addEventListener('DOMContentLoaded',()=> {
  Array.from(mobileNav.querySelectorAll('a')).forEach(a => a.addEventListener('click', () => {
  if (menuToggle.getAttribute('aria-expanded') === 'true') { menuToggle.click(); }
  }));
- }
+ } */
 
  // DOM refs for dashboard
  const tabButtons = document.querySelectorAll('.tabBtn');
@@ -857,12 +858,12 @@ inputCv.addEventListener("change", (e) => {
  const style = statusStyles[p.status] || 'bg-ink-50 text-ink-700';
  return `
  <tr class="cursor-pointer purchaseRow" data-id="${p.id}">
- <td class="py-3 pr-4">${escapeHtml(p.id)}</td>
- <td class="py-3 pr-4">${escapeHtml(p.subscription_name)}  ${escapeHtml(p.subscription_domain || '')}</td>
- <td class="py-3 pr-4">${formatRupees(p.subscription_price)}</td>
- <td class="py-3 pr-4">${escapeHtml(dateStr)}</td>
- <td class="py-3 pr-4"><span class="px-2 py-1 rounded ${style} text-xs">${escapeHtml(p.status)}</span></td>
- <td class="py-3 pr-4"><button class="text-sm text-brand-600 viewOrderBtn" data-id="${p.id}">View</button></td>
+ <td class="p-3">${escapeHtml(p.id)}</td>
+ <td class="p-3">${escapeHtml(p.subscription_name)}  ${escapeHtml(p.subscription_domain || '')}</td>
+ <td class="p-3">${formatRupees(p.subscription_price)}</td>
+ <td class="p-3">${escapeHtml(dateStr)}</td>
+ <td class="p-3"><span class="px-2 py-1 rounded ${style} text-xs">${escapeHtml(p.status)}</span></td>
+ <td class="p-3"><button class="text-sm text-brand-600 viewOrderBtn" data-id="${p.id}">View</button></td>
  </tr>
  `;
  }).join('');
@@ -928,10 +929,10 @@ ticketsTbody.innerHTML =`
  ticketsTbody.innerHTML = appState.tickets.map(t => {
  return `
  <tr class="ticketRow" data-ticketid="${t.ticket_id}" tabindex="0">
- <td class="py-2 pr-4">${escapeHtml(t.ticket_id)}</td>
- <td class="py-2 pr-4">${escapeHtml(t.subject)}</td>
- <td class="py-2 pr-4">${escapeHtml(t.status)}</td>
- <td class="py-2 pr-4">${new Date(t.created_at).toLocaleString()}</td>
+ <td class="p-3 text-left">${escapeHtml(t.ticket_id)}</td>
+ <td class="p-3 text-left">${escapeHtml(t.subject)}</td>
+ <td class="p-3 text-left">${escapeHtml(t.status)}</td>
+ <td class="p-3 text-left">${new Date(t.created_at).toLocaleString()}</td>
  </tr>
  `;
  }).join('');
