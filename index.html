@@ -638,6 +638,7 @@ Monica R.
   const mobileProfileLinks = document.getElementById("mobileProfileLinks");
   const mobileLoginLink = document.getElementById("mobileLoginLink");
 
+ const currencyFormatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
 
   if (isLoggedIn) {
@@ -876,7 +877,7 @@ async function fetchServices() {
                     <h3 class="text-2xl font-bold text-${ui.color}-600">${ui.label}</h3>
                     <p class="mt-1 text-sm font-semibold text-${ui.color}-800">${service.name}</p>
                 </div>
-                <p class="mt-6 text-5xl font-extrabold font-heading text-center text-ink-900">₹${Number(service.price).toLocaleString()}</p>
+                <p class="mt-6 text-5xl font-extrabold font-heading text-center text-ink-900">${currencyFormatter.format(service.price)}</p>
                 <p class="mt-4 text-sm text-ink-600">${service.description}</p>
                 <ul class="mt-8 space-y-3 text-sm flex-grow">
                     ${featuresList}

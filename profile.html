@@ -89,7 +89,7 @@
  <div class="mx-auto container px-5">
  <div class="flex items-center justify-between py-4">
  <!-- Logo -->
- <a href="profile.html" class="flex items-center gap-3" aria-label="Hi Interviews home">
+ <a href="index.html" class="flex items-center gap-3" aria-label="Hi Interviews home">
  <div class="h-10 w-10 rounded-lg bg-gradient-to-br from-brand-600 to-brand-800 text-white flex items-center justify-center font-bold">HI</div>
  <div class="hidden sm:block">
  <div class="font-semibold tracking-tight text-lg font-heading text-ink-900">Hi Interviews</div>
@@ -360,7 +360,7 @@
  <div class="mx-auto container px-5 py-8">
  <div class="grid gap-8 md:grid-cols-3">
  <div>
- <a href="profile.html" class="font-heading font-semibold tracking-tight text-xl text-white flex items-center gap-3">
+ <a href="index.html" class="font-heading font-semibold tracking-tight text-xl text-white flex items-center gap-3">
  <div class="h-8 w-8 rounded-md bg-gradient-to-br from-brand-600 to-brand-800 text-white flex items-center justify-center font-bold">HI</div>
  Hi Interviews
  </a>
@@ -740,7 +740,7 @@ function setProfileEditMode(editMode) {
 editProfileBtn.addEventListener("click", () => setProfileEditMode(true));
 
 saveProfileBtn.addEventListener("click", async function () {
-     let accessToken = localStorage.getItem('accessToken');
+  let accessToken = localStorage.getItem('accessToken');
   const formData = new FormData();
   formData.append("fullname", inputName.value.trim());
   formData.append("mobile_number", inputPhone.value.trim());

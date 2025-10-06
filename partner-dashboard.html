@@ -1,0 +1,943 @@
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width,initial-scale=1" />
+ <title>Partner Dashboard — Hi Interviews</title>
+ <meta name="robots" content="noindex, nofollow" />
+ <script src="https://cdn.tailwindcss.com"></script>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+ <style>
+ /* prevent horizontal scrolling */
+ html, body { overflow-x: hidden; }
+
+ /* small visual touches */
+ :root{
+ --brand-500:#6366f1; --brand-600:#4f46e5; --brand-700:#4338ca;
+ --amber-500:#f59e0b;
+ --muted:#64748b;
+ --bg:#f8fafc;
+ }
+ body { background: var(--bg); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+ /* dock */
+ .dock {
+ position: fixed;
+ left: 50%;
+ transform: translateX(-50%);
+ bottom: 16px;
+ background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.94));
+ padding: 8px 12px;
+ border-radius: 999px;
+ display: flex;
+ gap: 8px;
+ align-items: center;
+ box-shadow: 0 18px 40px rgba(16,24,40,0.08);
+ border: 1px solid rgba(79,70,229,0.06);
+ z-index: 60;
+ backdrop-filter: blur(6px);
+ }
+ .dock-btn { width:72px; padding:8px 10px; display:flex; flex-direction:column; align-items:center; gap:6px; border-radius:10px; color: #64748b; background:transparent; border:none; }
+ .dock-btn.active { background: linear-gradient(90deg,var(--brand-500),var(--brand-600)); color: white; transform: translateY(-4px); box-shadow:0 10px 24px rgba(79,70,229,0.12); }
+
+ /* partner badge */
+ .partnerBadge { background: linear-gradient(90deg,var(--amber-500),#fb923c); color:white; padding:6px 10px; border-radius:8px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; font-weight:700; box-shadow:0 8px 26px rgba(79,70,229,0.06); }
+
+ /* count badge */
+ .countBadge { background: linear-gradient(90deg,var(--brand-500),var(--brand-600)); color:white; padding:6px 10px; border-radius:999px; font-weight:700; box-shadow: 0 10px 26px rgba(79,70,229,0.10); }
+
+ /* small skeleton shimmer */
+ .skeleton { background: linear-gradient(90deg, rgba(0,0,0,0.04) 25%, rgba(0,0,0,0.06) 50%, rgba(0,0,0,0.04) 75%); background-size:200% 100%; animation:shimmer 1.1s linear infinite; border-radius:8px; }
+ @keyframes shimmer { 0% { background-position:200% 0 } 100% { background-position:-200% 0 } }
+
+ /* keep tables within 90% width centered */
+ .content90 { width: 90vw; max-width: 1200px; margin-left: auto; margin-right: auto; }
+
+ /* subtle card hover */
+ .card { transition: transform .16s ease, box-shadow .16s ease; border-radius:12px; }
+ .card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(16,24,40,0.08); }
+
+ /* modal backdrop */
+ .modalBack { position: fixed; inset:0; background: rgba(2,6,23,0.45); display:flex; align-items:center; justify-content:center; z-index:70; }
+
+ /* ensure mobile first spacing for main */
+ main { padding-bottom: 140px; }
+ </style>
+</head>
+<body class="min-h-screen font-sans text-slate-900">
+
+ <!-- Header -->
+ <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200 h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8">
+ <div class="flex items-center gap-3">
+ <div class="rounded-lg bg-gradient-to-br from-indigo-600 to-indigo-400 text-white w-10 h-10 flex items-center justify-center font-bold">HI</div>
+ <div>
+ <div class="text-lg font-semibold">Hi Interviews</div>
+ <div class="text-xs text-slate-500">Partner Panel</div>
+ </div>
+ </div>
+
+ <div class="flex items-center gap-3">
+ <div id="headerPartnerId" class="partnerBadge text-sm">partner123</div>
+ <button id="copyPartnerBtn" class="bg-white px-2 py-2 rounded border shadow-sm hover:shadow-md"><i class="fa-regular fa-copy"></i></button>
+ <button id="openProfileBtn" class="hidden sm:inline-block bg-white px-3 py-2 rounded border hover:shadow-sm text-sm">Profile</button>
+ <button id="openAccountBtn" class="hidden sm:inline-block bg-white px-3 py-2 rounded border hover:shadow-sm text-sm">Account</button>
+ <button id="openBucketBtn" class="bg-white px-3 py-2 rounded border hover:shadow-sm text-sm flex items-center gap-2">
+ <i class="fa-solid fa-cart-shopping"></i>
+ <span id="headerBucketCount" class="countBadge text-xs">0</span>
+ </button>
+ </div>
+ </header>
+
+ <!-- Main -->
+ <main id="main" class="pt-20 px-4 sm:px-6 lg:px-8">
+ <div id="pageContainer" class="content90 mx-auto">
+ <!-- initial content will be injected -->
+ </div>
+ </main>
+
+ <!-- Dock -->
+ <nav class="dock" role="navigation" aria-label="main dock">
+ <button class="dock-btn active" data-view="dashboard" title="Dashboard"><i class="fa-solid fa-chart-pie"></i><span class="text-xs">Dashboard</span></button>
+ <button class="dock-btn" data-view="products" title="Products"><i class="fa-solid fa-box-archive"></i><span class="text-xs">Products</span></button>
+ <button class="dock-btn" data-view="bucket" title="Bucket"><i class="fa-solid fa-cart-plus"></i><span class="text-xs">Bucket</span></button>
+ <button class="dock-btn" data-view="links" title="My Links"><i class="fa-solid fa-link"></i><span class="text-xs">My Links</span></button>
+ <button class="dock-btn" data-view="payouts" title="Payouts"><i class="fa-solid fa-credit-card"></i><span class="text-xs">Payouts</span></button>
+ <button class="dock-btn" data-view="withdraw" title="Withdraw"><i class="fa-solid fa-hand-holding-dollar"></i><span class="text-xs">Withdraw</span></button>
+ <button class="dock-btn" data-view="help" title="Help"><i class="fa-solid fa-circle-question"></i><span class="text-xs">Help</span></button>
+ </nav>
+
+ <!-- Modal root -->
+ <div id="modalRoot"></div>
+
+ <!-- Toasts -->
+ <div id="toastRoot" class="fixed bottom-6 right-6 z-60 space-y-3"></div>
+
+<script>
+/* Full single-file app
+ - Bucket full page, commission recalculated correctly on qty change
+ - Products add -> redirect to bucket
+ - My Links constrained to 90% width
+ - Tailwind responsive classes used
+ - All persisted via localStorage
+ - JS variables use camelCase
+*/
+
+document.addEventListener('DOMContentLoaded',() => {
+ // --- constants & keys ---
+ const partnerId = 'partner123';
+ const LS_BUCKET = 'hi_bucket_v6';
+ const LS_LINKS = 'hi_links_v6';
+ const LS_PROFILE = 'hi_profile_v6';
+ const LS_ACCOUNT = 'hi_account_v6';
+ const LS_PAYOUT = 'hi_payout_v6';
+ const LS_WITHDRAW = 'hi_withdraw_v6';
+ const LS_BALANCE = 'hi_balance_v6';
+
+ const PRODUCTS = [
+ { id:'ks01', name:'Knowledge Series (Python)', price:59999, desc:'No pre-req. 45-90 days' },
+ { id:'js01', name:'Job Series (Java)', price:59999, desc:'Brush-up + mocks' },
+ { id:'ps01', name:'Premium Series', price:129998, desc:'Knowledge + Job + 5 Interview Days' },
+ { id:'ibd01', name:'Interview Buddy Day', price:12000, desc:'Single-day support' },
+ { id:'sd01', name:'Support Day', price:999, desc:'Expert session' },
+ { id:'bundle01', name:'Placement Bundle', price:225000, desc:'All inclusive bundle' }
+ ];
+
+ // --- helpers ---
+ const $ = s => document.querySelector(s);
+ const $$ = s => Array.from(document.querySelectorAll(s));
+ const currency = new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0});
+ const fmt = v => currency.format(Number(v||0));
+ const save = (k,v) => localStorage.setItem(k, JSON.stringify(v));
+ const load = (k, fallback) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fallback; } catch(e) { return fallback; } };
+ const toast = (msg, ms=1600) => { const el = document.createElement('div'); el.className='bg-slate-800 text-white px-4 py-2 rounded shadow-lg'; el.textContent = msg; $('#toastRoot').appendChild(el); setTimeout(()=>el.remove(), ms); };
+
+ function computeCommission(total){
+ // matches requested tiers:
+ // 5% @50k+, 10% @100k+, 12% @150k+, 15% @200k+
+ if(total >= 200000) return { amount: Math.round(total * 0.15), pct:15 };
+ if(total >= 150000) return { amount: Math.round(total * 0.12), pct:12 };
+ if(total >= 100000) return { amount: Math.round(total * 0.10), pct:10 };
+ if(total >= 50000) return { amount: Math.round(total * 0.05), pct:5 };
+ return { amount: 0, pct:0 };
+ }
+
+ // --- app state (persisted) ---
+ let bucket = load(LS_BUCKET, []); // [{id,name,price,qty}]
+ let generatedLinks = load(LS_LINKS, []); // [{id,link,payload,createdAt,expiresAt}]
+ let account = load(LS_ACCOUNT, { accHolder:'Mrs. Natasha Rao', accNumber:'123456789012', bankName:'HDFC Bank', ifsc:'HDFC0001234' });
+ let payoutPref = load(LS_PAYOUT, { method:'weekly', lastChanged: null });
+ let withdrawHistory = load(LS_WITHDRAW, []);
+ let availableBalance = load(LS_BALANCE, 25000);
+
+   let accessToken = localStorage.getItem("accessToken");
+   let refreshToken = localStorage.getItem("refreshToken");
+
+if(!refreshToken){
+    clearTokensAndRedirect();
+}
+
+
+ async function loadProfile() {
+          
+    const response = await fetch('http://127.0.0.1:8000/api/partnerprofile/', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+            if (response.status === 401) {
+                accessToken = await refreshAccessToken();
+                if (!accessToken) return;
+                refreshToken = localStorage.getItem('refreshToken');
+                response = await fetch('http://127.0.0.1:8000/api/partnerprofile/', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+
+                });
+            }
+
+            if (response.status === 403) {
+                window.location.href = "404.html";
+            } 
+            if (response.ok) {
+                const data = await response.json();
+                console.log("data",data)
+
+                 $('#headerPartnerId').textContent = partnerId;
+                 $('#pfFullName').value = data.first_name + " "+ data.last_name ;
+                 $('#pfEmail').value =  data.email;
+                 $('#pfContact').value =  data.mobile_number;
+                 $('#pfDob').value = data.dob;
+
+
+                 if(data.aadhar){
+                    $('#pfAadhaar').value = data.aadhar_number;
+                 }
+
+                if (data.pan) {
+                        const fileName = data.pan.split("/").pop();  
+                        const url = "http://127.0.0.1:8000";
+                        const pan_url = `${url}${data.pan_url}`;
+
+                        let panFile = $('#pfPanFile');
+                        const panPreview = document.getElementById('pfPanPreview');
+                        const removePanBtn = document.getElementById('removePanBtn');
+                        const panLink = document.getElementById('pfPanLink');
+
+                        if (pan_url) {
+                            panPreview.src = pan_url;
+                            panPreview.classList.remove('hidden');
+                            removePanBtn.classList.remove('hidden');
+                        }
+
+                        panLink.href = pan_url;
+                        panLink.textContent = fileName;
+                        panLink.classList.remove('hidden');
+                    }
+               
+            }
+            else {
+                  console.error('failed to fetch user data');
+                  clearTokensAndRedirect();
+              }
+    
+}
+
+
+async function refreshAccessToken() {
+        const refreshToken = localStorage.getItem("refreshToken");
+
+        if (!refreshToken) return null;
+
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/token/refresh/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ refresh: refreshToken })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem("accessToken", data.access);
+                localStorage.setItem("refreshToken", data.refresh);
+
+                return data.access;
+            } else {
+                clearTokensAndRedirect();
+                return null;
+            }
+        } catch (err) {
+            console.error(err);
+            return null;
+        }
+    }
+ loadProfile();
+
+
+function clearTokensAndRedirect() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('role')
+    window.location.href = "partner-login.html";
+}
+
+
+
+ // set partner id and header bucket
+ $('#copyPartnerBtn').addEventListener('click', () => navigator.clipboard.writeText(partnerId).then(()=>toast('Partner ID copied')));
+ $('#openProfileBtn').addEventListener('click', openProfileModal);
+ $('#openAccountBtn').addEventListener('click', openAccountModal);
+ $('#openBucketBtn').addEventListener('click', () => navigateTo('bucket'));
+
+ function updateHeaderBucketCount(){
+ const count = bucket.reduce((s,i)=> s + (i.qty || 1), 0);
+ $('#headerBucketCount').textContent = count;
+ }
+ updateHeaderBucketCount();
+
+ // dock nav wiring
+ $$('.dock-btn').forEach(btn => btn.addEventListener('click', () => {
+ const view = btn.dataset.view;
+ $$('.dock-btn').forEach(x => x.classList.toggle('active', x === btn));
+ navigateTo(view);
+ }));
+
+ // navigation render
+ function navigateTo(view){
+ if(view === 'dashboard') renderDashboard();
+ else if(view === 'products') renderProducts();
+ else if(view === 'bucket') renderBucketPage();
+ else if(view === 'links') renderLinksPage();
+ else if(view === 'payouts') renderPayoutsPage();
+ else if(view === 'withdraw') renderWithdrawPage();
+ else if(view === 'help') renderHelpPage();
+ else renderDashboard();
+ // set hash for bookmarkability
+ history.replaceState(null, '', `#${view}`);
+ }
+
+ // ---- VIEWS ----
+
+ // Dashboard
+ function renderDashboard(){
+ const container = $('#pageContainer');
+ container.innerHTML = `
+ <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+ <div class="card bg-white p-4 border">
+ <div class="text-sm text-slate-500">Total Earnings</div>
+ <div class="text-2xl font-bold text-emerald-600 mt-2">${fmt(12500)}</div>
+ </div>
+ <div class="card bg-white p-4 border">
+ <div class="text-sm text-slate-500">Pending Payout</div>
+ <div class="text-2xl font-bold text-amber-600 mt-2">${fmt(4500)}</div>
+ </div>
+ <div class="card bg-white p-4 border">
+ <div class="text-sm text-slate-500">Total Referrals</div>
+ <div class="text-2xl font-bold text-indigo-600 mt-2">8</div>
+ </div>
+ <div class="card bg-white p-4 border">
+ <div class="text-sm text-slate-500">Conversion Rate</div>
+ <div class="text-2xl font-bold mt-2">15%</div>
+ </div>
+ </div>
+
+ <div class="mt-4 card bg-white p-4 border">
+ <h3 class="font-semibold text-lg text-indigo-700">Promotional</h3>
+ <p class="text-sm text-slate-600 mt-2">Refer 10 Premium Series in a year to be eligible for the special prize. Use partner code or generated link — customer gets ₹1,000 off for using your partner code.</p>
+ </div>
+ `;
+ }
+
+ // Products table
+ function renderProducts(){
+ const container = $('#pageContainer');
+ container.innerHTML = `
+ <div class="card bg-white p-4 border">
+ <div class="flex items-center justify-between">
+ <div>
+ <h3 class="font-semibold">Products</h3>
+ <div class="text-sm text-slate-500 mt-1">Add an item and you'll be taken to Bucket page to finalize quantities.</div>
+ </div>
+ <div class="flex items-center gap-2">
+ <input id="productSearch" placeholder="Search..." class="border rounded px-3 py-2 text-sm w-44" />
+ <select id="productSort" class="border rounded px-3 py-2 text-sm">
+ <option value="default">Sort</option>
+ <option value="price-asc">Price ↑</option>
+ <option value="price-desc">Price ↓</option>
+ </select>
+ </div>
+ </div>
+
+ <div id="productsTable" class="mt-4 skeleton h-56 rounded"></div>
+ </div>
+ `;
+
+ // small delay to show skeleton
+ setTimeout(()=> populateProductsTable(PRODUCTS), 220);
+ }
+
+ function populateProductsTable(list){
+ const tableWrap = $('#productsTable');
+ const rows = list.map(p => `
+ <tr class="border-t">
+ <td class="p-3 font-medium">${escapeHtml(p.name)}</td>
+ <td class="p-3 text-slate-600">${escapeHtml(p.desc)}</td>
+ <td class="p-3 text-right font-semibold">${fmt(p.price)}</td>
+ <td class="p-3 text-center"><input type="number" min="1" value="1" data-id="${p.id}" class="prodQty border rounded px-2 py-1 w-20" /></td>
+ <td class="p-3 text-center"><button class="addBtn bg-gradient-to-r from-indigo-500 to-indigo-600 text-white px-3 py-1 rounded" data-id="${p.id}">Add</button></td>
+ </tr>
+ `).join('');
+
+ tableWrap.innerHTML = `
+ <div class="tableWrap overflow-auto">
+ <table class="w-full text-sm">
+ <thead class="text-xs text-slate-500">
+ <tr><th class="p-3 text-left">Service</th><th class="p-3 text-left">Description</th><th class="p-3 text-right">Price</th><th class="p-3 text-center">Qty</th><th class="p-3 text-center">Action</th></tr>
+ </thead>
+ <tbody>${rows}</tbody>
+ </table>
+ </div>
+ `;
+
+ $$('.addBtn').forEach(btn => btn.addEventListener('click', () => {
+ const id = btn.dataset.id;
+ const qtyInput = document.querySelector(`.prodQty[data-id="${id}"]`);
+ const qty = Math.max(1, Number(qtyInput?.value || 1));
+ addToBucket(id, qty);
+ // go to bucket page
+ $$('.dock-btn').forEach(d => d.classList.toggle('active', d.dataset.view === 'bucket'));
+ navigateTo('bucket');
+ }));
+
+ $('#productSearch').addEventListener('input', e => {
+ const q = e.target.value.trim().toLowerCase();
+ const filtered = PRODUCTS.filter(p => p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
+ populateProductsTable(filtered);
+ });
+
+ $('#productSort').addEventListener('change', e => {
+ let copy = [...PRODUCTS];
+ if(e.target.value === 'price-asc') copy.sort((a,b)=>a.price-b.price);
+ if(e.target.value === 'price-desc') copy.sort((a,b)=>b.price-a.price);
+ populateProductsTable(copy);
+ });
+ }
+
+ // Bucket page (full page)
+ function renderBucketPage(){
+ const container = $('#pageContainer');
+ const totals = computeBucketTotals();
+ const comm = computeCommission(totals.total);
+
+ container.innerHTML = `
+ <div class="card bg-white p-4 border">
+ <div class="flex items-center justify-between">
+ <div>
+ <h3 class="font-semibold">Bucket</h3>
+ <div class="text-sm text-slate-500 mt-1">Adjust quantities and generate a shareable link (valid 24 hours).</div>
+ </div>
+ <div>
+ <button id="clearBucketBtn" class="bg-white border px-3 py-2 rounded text-sm">Clear bucket</button>
+ </div>
+ </div>
+
+ <div class="mt-4 tableWrap overflow-auto">
+ <table class="w-full text-sm">
+ <thead class="text-xs text-slate-500"><tr><th class="p-3 text-left">Service</th><th class="p-3 text-left">Price</th><th class="p-3 text-center">Qty</th><th class="p-3 text-right">Subtotal</th><th class="p-3 text-center">Action</th></tr></thead>
+ <tbody id="bucketBody" class="divide-y divide-slate-100"></tbody>
+ </table>
+ </div>
+
+ <div class="mt-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+ <div class="flex-1">
+ <div class="text-sm text-slate-500">Estimated commission</div>
+ <div class="text-xl font-bold text-green-600">${fmt(comm.amount)} <span class="text-sm text-slate-500">(${comm.pct}% )</span></div>
+ <div class="text-sm text-slate-500 mt-1">Subtotal: <span class="font-semibold">${fmt(totals.total)}</span></div>
+ </div>
+ <div class="md:text-right">
+ <button id="generateLinkBtn" class="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white px-4 py-2 rounded shadow-lg">Generate Link & Share</button>
+ </div>
+ </div>
+ </div>
+ `;
+
+ populateBucketBody();
+
+ $('#clearBucketBtn').addEventListener('click', () => {
+ if(confirm('Clear the bucket?')) { bucket = []; save(LS_BUCKET, bucket); populateBucketBody(); updateHeaderBucketCount(); toast('Bucket cleared'); }
+ });
+
+ $('#generateLinkBtn').addEventListener('click', () => {
+ if(bucket.length === 0) { toast('Bucket is empty'); return; }
+ generateLink();
+ // navigate to links after generation
+ $$('.dock-btn').forEach(d => d.classList.toggle('active', d.dataset.view === 'links'));
+ navigateTo('links');
+ });
+ }
+
+ function populateBucketBody(){
+ const body = $('#bucketBody');
+ if(!body) return;
+ body.innerHTML = '';
+ if(bucket.length === 0){ body.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-500">No items in bucket</td></tr>`; return; }
+
+ bucket.forEach(item => {
+ const tr = document.createElement('tr');
+ tr.innerHTML = `
+ <td class="p-3 font-medium">${escapeHtml(item.name)}</td>
+ <td class="p-3">${fmt(item.price)}</td>
+ <td class="p-3 text-center"><input type="number" min="1" value="${item.qty}" data-id="${item.id}" class="qtyInput border rounded px-2 py-1 w-20" /></td>
+ <td class="p-3 text-right font-semibold">${fmt(item.price * item.qty)}</td>
+ <td class="p-3 text-center"><button class="removeBtn bg-white border px-2 py-1 rounded text-sm" data-id="${item.id}">Remove</button></td>
+ `;
+ body.appendChild(tr);
+ });
+
+ // event wiring
+ $$('.removeBtn').forEach(btn => btn.addEventListener('click', () => {
+ const id = btn.dataset.id; bucket = bucket.filter(b => b.id !== id); save(LS_BUCKET, bucket); populateBucketBody(); updateHeaderBucketCount(); recalcInlineCommission(); toast('Removed from bucket');
+ }));
+
+ $$('.qtyInput').forEach(inp => inp.addEventListener('change', () => {
+ const id = inp.dataset.id; const qty = Math.max(1, Number(inp.value || 1));
+ const it = bucket.find(b => b.id === id);
+ if(it){ it.qty = qty; save(LS_BUCKET, bucket); populateBucketBody(); updateHeaderBucketCount(); recalcInlineCommission(); }
+ }));
+ }
+
+ function computeBucketTotals(){
+ const total = bucket.reduce((s, i) => s + (i.price * (i.qty || 1)), 0);
+ return { total };
+ }
+
+ function recalcInlineCommission(){
+ // called after qty changes to update commission displayed on page without re-rendering whole page
+ const totals = computeBucketTotals();
+ const comm = computeCommission(totals.total);
+ // update values if elements present
+ const commEl = document.querySelector('#pageContainer .text-xl.font-bold');
+ const subtotalEl = document.querySelector('#pageContainer .text-sm.text-slate-500 .font-semibold');
+ // safer to query by IDs? Instead re-render the bucket header totals
+ // easiest approach: re-render the bucket page (keeps logic simple)
+ renderBucketPage();
+ }
+
+ // addToBucket
+ function addToBucket(productId, qty=1){
+ const prod = PRODUCTS.find(p => p.id === productId);
+ if(!prod) return;
+ const existing = bucket.find(b => b.id === productId);
+ if(existing) existing.qty = (existing.qty || 0) + qty;
+ else bucket.push({ id: prod.id, name: prod.name, price: prod.price, qty });
+ save(LS_BUCKET, bucket);
+ updateHeaderBucketCount();
+ toast('Added to bucket');
+ }
+
+ // generate link & persist
+ function generateLink(){
+ const total = bucket.reduce((s,i) => s + (i.price * (i.qty || 1)), 0);
+ const commission = computeCommission(total);
+ const payload = { partner: partnerId, items: bucket.map(b => ({ id: b.id, name: b.name, price: b.price, qty: b.qty })), total, commissionAmount: commission.amount, commissionPct: commission.pct };
+ const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+ const link = `${location.origin}${location.pathname}?ref=${encodeURIComponent(partnerId)}&b=${encodeURIComponent(encoded)}`;
+ const entry = { id: 'ln_' + Date.now(), link, payload, createdAt: Date.now(), expiresAt: Date.now() + 24*60*60*1000 };
+ generatedLinks.push(entry);
+ save(LS_LINKS, generatedLinks);
+ // clear bucket
+ bucket = []; save(LS_BUCKET, bucket); updateHeaderBucketCount();
+ }
+
+ // Links page (90% width)
+ let linksInterval = null;
+ function renderLinksPage(){
+ const container = $('#pageContainer');
+ container.innerHTML = `
+ <div class="card bg-white p-4 border content90 mx-auto">
+ <h3 class="font-semibold">My Links</h3>
+ <p class="text-sm text-slate-500 mt-1">Links live for 24 hours. Customer using partner code gets ₹1,000 discount; partner gets commission based on total bucket value.</p>
+
+ <div class="mt-4 overflow-auto">
+ <table class="w-full text-sm">
+ <thead class="text-xs text-slate-500"><tr>
+ <th class="p-3 text-left">Link</th>
+ <th class="p-3">Products</th>
+ <th class="p-3 text-right">Total</th>
+ <th class="p-3 text-right">Commission</th>
+ <th class="p-3 text-center">Expires In</th>
+ <th class="p-3 text-center">Action</th>
+ </tr></thead>
+ <tbody id="linksBody" class="divide-y divide-slate-100"></tbody>
+ </table>
+ </div>
+ </div>
+ `;
+ populateLinksBody();
+ if(linksInterval) clearInterval(linksInterval);
+ linksInterval = setInterval(populateLinksBody, 1000);
+ }
+
+ function populateLinksBody(){
+ const tbody = $('#linksBody'); if(!tbody) return;
+ tbody.innerHTML = '';
+ if(generatedLinks.length === 0){ tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-500">No links yet</td></tr>`; return; }
+
+ generatedLinks.forEach(l => {
+ const isExpired = Date.now() > l.expiresAt;
+ const products = (l.payload.items || []).map(it => `${escapeHtml(it.name)} x${it.qty}`).join('<br>');
+ const tr = document.createElement('tr'); if(isExpired) tr.classList.add('opacity-50');
+ tr.innerHTML = `
+ <td class="p-3 font-mono text-xs"><a ${isExpired ? '' : 'target="_blank"'} href="${isExpired ? 'javascript:void(0)' : l.link}" class="${isExpired ? 'text-slate-400' : 'text-indigo-600 hover:underline'}">${l.link}</a></td>
+ <td class="p-3">${products}</td>
+ <td class="p-3 text-right font-semibold">${fmt(l.payload.total)}</td>
+ <td class="p-3 text-right font-semibold text-green-600">${fmt(l.payload.commissionAmount)}</td>
+ <td class="p-3 text-center"><span data-expires="${l.expiresAt}" class="linkCountdown">...</span></td>
+ <td class="p-3 text-center">
+ <button class="copyLinkBtn bg-white border px-2 py-1 rounded text-sm" data-id="${l.id}" ${isExpired ? 'disabled' : ''}>Copy</button>
+ <button class="destroyLinkBtn bg-white border px-2 py-1 rounded text-sm" data-id="${l.id}">Destroy</button>
+ </td>
+ `;
+ tbody.appendChild(tr);
+ });
+
+ // wire up buttons
+ $$('.copyLinkBtn').forEach(b => b.onclick = () => {
+ const id = b.dataset.id; const entry = generatedLinks.find(x => x.id === id); if(!entry) return;
+ if(Date.now() > entry.expiresAt){ toast('Link expired'); return; }
+ navigator.clipboard.writeText(entry.link).then(()=>toast('Link copied'));
+ });
+ $$('.destroyLinkBtn').forEach(b => b.onclick = () => {
+ const id = b.dataset.id; if(confirm('Destroy link?')){ generatedLinks = generatedLinks.filter(x => x.id !== id); save(LS_LINKS, generatedLinks); populateLinksBody(); toast('Link destroyed'); }
+ });
+
+ // countdowns
+ $$('.linkCountdown').forEach(span => {
+ const expires = Number(span.dataset.expires || 0);
+ const diff = expires - Date.now();
+ if(diff <= 0){ span.textContent = 'Expired'; span.closest('tr')?.classList.add('opacity-50'); }
+ else {
+ const hours = Math.floor(diff / (1000*60*60));
+ const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+ const secs = Math.floor((diff % (1000*60)) / 1000);
+ span.textContent = `${hours}h ${mins}m ${secs}s`;
+ }
+ });
+ }
+
+ // Payouts
+ function renderPayoutsPage(){
+ const container = $('#pageContainer');
+ container.innerHTML = `
+ <div class="card bg-white p-4 border">
+ <h3 class="font-semibold">Payout Settings</h3>
+ <p class="text-sm text-slate-500 mt-1">You can change this setting once every 30 days.</p>
+ <div class="mt-4 flex gap-3">
+ <div class="p-3 rounded-lg ${payoutPref.method==='weekly' ? 'bg-indigo-50' : ''} payoutItem" data-method="weekly">
+ <i class="fa-solid fa-calendar-week text-2xl text-indigo-600"></i>
+ <div class="font-semibold">Weekly</div>
+ <div class="text-sm text-slate-500">Fri 11pm → Sun 11pm • 0%</div>
+ </div>
+ <div class="p-3 rounded-lg ${payoutPref.method==='daily' ? 'bg-indigo-50' : ''} payoutItem" data-method="daily">
+ <i class="fa-solid fa-calendar-day text-2xl text-indigo-600"></i>
+ <div class="font-semibold">Daily</div>
+ <div class="text-sm text-slate-500">24 hours • 5%</div>
+ </div>
+ <div class="p-3 rounded-lg ${payoutPref.method==='instant' ? 'bg-indigo-50' : ''} payoutItem" data-method="instant">
+ <i class="fa-solid fa-bolt text-2xl text-indigo-600"></i>
+ <div class="font-semibold">Instant</div>
+ <div class="text-sm text-slate-500">~2 hours • 10%</div>
+ </div>
+ </div>
+ <div class="mt-3 text-sm text-slate-500">Current: <strong id="currentPayout">${escapeHtml(payoutPref.method)}</strong> • Last changed: <span id="lastPayout">${payoutPref.lastChanged ? new Date(payoutPref.lastChanged).toLocaleString() : '--'}</span></div>
+ </div>
+ `;
+
+ $$('.payoutItem').forEach(item => item.addEventListener('click', () => {
+ const method = item.dataset.method;
+ if(!canChangePayout()){ toast('You can change payout only once every 30 days'); return; }
+ payoutPref.method = method; payoutPref.lastChanged = new Date().toISOString(); save(LS_PAYOUT, payoutPref); toast('Payout set'); renderPayoutsPage();
+ }));
+ }
+ function canChangePayout(){ if(!payoutPref.lastChanged) return true; const last = new Date(payoutPref.lastChanged); const diffDays = Math.floor((Date.now() - last.getTime())/(1000*60*60*24)); return diffDays >= 30; }
+
+ // Withdraw
+ function renderWithdrawPage(){
+ const container = $('#pageContainer');
+ container.innerHTML = `
+ <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+ <div class="card bg-white p-4 border"><div class="text-sm text-slate-500">Available Balance</div><div class="text-2xl font-bold text-green-600 mt-2">${fmt(availableBalance)}</div></div>
+ <div class="card bg-white p-4 border"><div class="text-sm text-slate-500">Daily Fee</div><div class="text-xl font-semibold mt-2">5% • 24 hours</div></div>
+ <div class="card bg-white p-4 border"><div class="text-sm text-slate-500">Instant Fee</div><div class="text-xl font-semibold mt-2">10% • ~2 hours</div></div>
+ </div>
+
+ <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+ <div class="card bg-white p-4 border">
+ <label class="text-sm">Enter amount</label>
+ <input id="withdrawAmount" type="number" min="100" value="1000" class="border rounded px-3 py-2 w-full mt-2" />
+ <div class="mt-3 flex gap-2">
+ <button id="previewWithdraw" class="bg-white border px-3 py-2 rounded">Preview</button>
+ <button id="requestWithdraw" class="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white px-3 py-2 rounded">Request Instant</button>
+ </div>
+ <div id="withdrawPreview" class="text-sm text-slate-500 mt-2"></div>
+ </div>
+
+ <div class="card bg-white p-4 border">
+ <h4 class="font-semibold">Withdraw History</h4>
+ <div id="withdrawHistory" class="text-sm text-slate-600 mt-2"></div>
+ </div>
+ </div>
+ `;
+
+ $('#previewWithdraw').addEventListener('click', ()=> {
+ const amt = Number($('#withdrawAmount').value || 0);
+ if(!amt || amt <= 0){ toast('Enter valid amount'); return; }
+ $('#withdrawPreview').textContent = `Weekly: ${fmt(amt)} • Daily net ${fmt(Math.floor(amt*0.95))} • Instant net ${fmt(Math.floor(amt*0.9))}`;
+ });
+
+ $('#requestWithdraw').addEventListener('click', ()=> {
+ const amt = Number($('#withdrawAmount').value || 0);
+ if(!amt || amt <= 0){ toast('Enter valid amount'); return; }
+ if(amt > availableBalance){ toast('Not enough balance'); return; }
+ const net = Math.floor(amt * 0.9);
+ withdrawHistory.push({ id: 'w_' + Date.now(), amount: amt, net, status:'Pending', when: new Date().toISOString() });
+ save(LS_WITHDRAW, withdrawHistory);
+ availableBalance -= amt; save(LS_BALANCE, availableBalance);
+ toast('Instant withdraw requested');
+ renderWithdrawPage();
+ });
+
+ populateWithdrawHistory();
+ }
+
+ function populateWithdrawHistory(){
+ const el = $('#withdrawHistory');
+ if(!withdrawHistory.length){ el.textContent = 'No requests yet.'; return; }
+ el.innerHTML = withdrawHistory.slice().reverse().map(h => `<div class="mb-2"><strong>${fmt(h.amount)}</strong> • net ${fmt(h.net)} • ${escapeHtml(h.status)} • ${new Date(h.when).toLocaleString()}</div>`).join('');
+ }
+
+ // Help
+ function renderHelpPage(){
+ const container = $('#pageContainer');
+ container.innerHTML = `
+ <div class="card bg-white p-4 border">
+ <h3 class="font-semibold">Help & Support</h3>
+ <div class="text-sm text-slate-600 mt-2">Email <a class="text-indigo-600" href="mailto:support@hiinterviews.com">support@hiinterviews.com</a> or call <a class="text-indigo-600" href="tel:+911234567890">+91 12345 67890</a></div>
+ </div>
+ `;
+ }
+
+ // --- Profile & Account modals ---
+ function openProfileModal(){
+ const root = $('#modalRoot');
+ root.innerHTML = `
+ <div class="modalBack">
+ <div class="bg-white rounded-lg w-[95vw] sm:w-[640px] max-h-[90vh] overflow-auto p-4">
+ <div class="flex items-center justify-between"><h3 class="font-semibold">My Profile</h3><button id="closeProfile" class="text-slate-500">✕</button></div>
+ <form id="profileForm" class="space-y-3 mt-3">
+ <div><label class="text-sm">Full name</label><input id="pfFullName" class="w-full border rounded px-3 py-2" required /></div>
+ <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+ <div><label class="text-sm">Email</label><input id="pfEmail" type="email" class="w-full border rounded px-3 py-2"  /></div>
+ <div><label class="text-sm">Contact</label><input id="pfContact" type="tel" class="w-full border rounded px-3 py-2" /></div>
+ </div>
+ <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+ <div><label class="text-sm">Date of birth</label><input id="pfDob" type="date" class="w-full border rounded px-3 py-2" /></div>
+ <div><label class="text-sm">Aadhaar (number)</label><input id="pfAadhaar" inputmode="numeric" maxlength="12" class="w-full border rounded px-3 py-2" /></div>
+ </div>
+ <div>
+ <label class="text-sm">PAN (image)</label>
+ <div class="mt-2 flex gap-2 items-center">
+ <input id="pfPanFile" type="file" accept="image/*" />
+ <button type="button" id="removePanBtn" class="hidden bg-white border px-2 py-1 rounded">Remove</button>
+ </div>
+ <img id="pfPanPreview" class="mt-3 max-w-[200px] hidden rounded" alt="PAN preview" />
+ <a id="pfPanLink" href="#" target="_blank" class="hidden text-blue-600 underline mt-2 block"></a>
+
+ </div>
+
+ <div class="flex justify-end gap-2">
+ <button type="button" id="cancelProfile" class="bg-white border px-3 py-2 rounded">Cancel</button>
+ <button type="submit" class="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white px-3 py-2 rounded">Save</button>
+ </div>
+ </form>
+ </div>
+ </div>
+ `;
+ root.classList.remove('hidden');
+
+ $('#closeProfile').addEventListener('click', closeModal);
+ $('#cancelProfile').addEventListener('click', closeModal);
+
+}
+
+ let panFile = $('#pfPanFile');
+ const panPreview = $('#pfPanPreview');
+ const removePanBtn = $('#removePanBtn');
+
+ $('#pfPanFile').addEventListener('change', function(){
+ const f = this.files && this.files[0];
+ if(!f) return;
+ if(!f.type.startsWith('image/')){ alert('Select an image'); return; }
+ const reader = new FileReader();
+ reader.onload = (ev) => {
+ panPreview.src = ev.target.result;
+ panPreview.classList.remove('hidden');
+ removePanBtn.classList.remove('hidden');
+ };
+ reader.readAsDataURL(f);
+ });
+
+ removePanBtn.addEventListener('click', () => {
+ panFile.value = '';
+ panPreview.src = '';
+ panPreview.classList.add('hidden');
+ removePanBtn.classList.add('hidden');
+ toast('PAN removed');
+ });
+
+ $('#profileForm').addEventListener('submit', async function(e){
+ e.preventDefault();
+  let panFile = $('#pfPanFile');
+  let accessToken = localStorage.getItem('accessToken');
+  const formData = new FormData();
+        const fullName = document.getElementById('pfFullName').value.trim();
+
+        const parts = fullName.split(" ");
+        const firstName = parts[0] || "";
+        const lastName = parts.slice(1).join(" ") || "";
+
+    formData.append("first_name", firstName);
+    formData.append("last_name", lastName);
+    formData.append("aadhar_number", $('#pfAadhaar').value.trim());
+    formData.append("email", $('#pfEmail').value.trim());
+    formData.append("mobile_number", $('#pfContact').value.trim());
+    formData.append("dob", $('#pfDob').value);
+
+  if (panFile.files[0]) formData.append("pan", panFile.files[0]);
+
+  try {
+    const response = await fetch("http://127.0.0.1:8000/api/update/partner-profile/", {
+      method: "PUT",
+      headers: { Authorization: `Bearer ${accessToken}` },
+      body: formData,
+    });
+
+     if (response.status === 401) {
+        accessToken = await refreshAccessToken();
+        if (!accessToken) return;
+        refreshToken = localStorage.getItem('refreshToken');
+        response = await fetch('http://127.0.0.1:8000/api/update/partner-profile/', {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            },
+            method: "PUT",
+            body: formData
+        });
+    }
+    if (response.status === 403) {
+        window.location.href = "404.html";
+    }
+
+    if (!response.ok) throw new Error("Failed to save profile");
+        const data = await response.json();
+    alert("Profile updated successfully!");
+    closeModal();
+     toast('Profile saved');
+    await loadProfile();
+
+  } catch (err) {
+    console.error("Save error:", err);
+    alert("Error saving profile.");
+  }
+
+ });
+ 
+
+ // Account modal
+ function openAccountModal(){
+ const root = $('#modalRoot');
+ root.innerHTML = `
+ <div class="modalBack">
+ <div class="bg-white rounded-lg w-[95vw] sm:w-[540px] p-4">
+ <div class="flex items-center justify-between"><h3 class="font-semibold">My Account</h3><button id="closeAcc" class="text-slate-500">✕</button></div>
+ <form id="accForm" class="space-y-3 mt-3">
+ <div><label class="text-sm">Account holder</label><input id="accHolder" class="w-full border rounded px-3 py-2" value="${escapeHtml(account.accHolder||'')}" required /></div>
+ <div><label class="text-sm">Account number</label><input id="accNumber" inputmode="numeric" class="w-full border rounded px-3 py-2" value="${escapeHtml(account.accNumber||'')}" required /></div>
+ <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+ <div><label class="text-sm">Bank name</label><input id="bankName" class="w-full border rounded px-3 py-2" value="${escapeHtml(account.bankName||'')}" required /></div>
+ <div><label class="text-sm">IFSC</label><input id="accIfsc" class="w-full border rounded px-3 py-2" value="${escapeHtml(account.ifsc||'')}" required /></div>
+ </div>
+ <div class="flex justify-end gap-2">
+ <button type="button" id="cancelAcc" class="bg-white border px-3 py-2 rounded">Cancel</button>
+ <button type="submit" class="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white px-3 py-2 rounded">Save</button>
+ </div>
+ </form>
+ </div>
+ </div>
+ `;
+ root.classList.remove('hidden');
+ $('#closeAcc').addEventListener('click', closeModal);
+ $('#cancelAcc').addEventListener('click', closeModal);
+
+ $('#accForm').addEventListener('submit', (e) => {
+ e.preventDefault();
+ account.accHolder = $('#accHolder').value.trim();
+ account.accNumber = $('#accNumber').value.trim();
+ account.bankName = $('#bankName').value.trim();
+ account.ifsc = $('#accIfsc').value.trim().toUpperCase();
+ if(!/^[A-Za-z]{4}0[0-9A-Za-z]{6}$/.test(account.ifsc)){ toast('Enter valid IFSC'); return; }
+ save(LS_ACCOUNT, account);
+ closeModal(); toast('Account saved');
+ });
+ }
+
+ function closeModal(){ $('#modalRoot').innerHTML = ''; $('#modalRoot').classList.add('hidden'); }
+
+ // helpers
+ function escapeHtml(t){ return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+ // generate link helper exposed for future
+ function generateLinkFromBucketAndRedirect(){
+ generateLink();
+ $$('.dock-btn').forEach(d => d.classList.toggle('active', d.dataset.view === 'links'));
+ navigateTo('links');
+ }
+
+ // small accessory: addToBucket exposed
+ function addToBucket(productId, qty=1){
+ const p = PRODUCTS.find(x => x.id === productId);
+ if(!p) return;
+ const existing = bucket.find(b => b.id === productId);
+ if(existing) existing.qty = (existing.qty || 0) + qty;
+ else bucket.push({ id: p.id, name: p.name, price: p.price, qty });
+ save(LS_BUCKET, bucket);
+ updateHeaderBucketCount();
+ toast('Added to bucket');
+ }
+
+ // store initial view from hash
+ const initialView = location.hash.replace('#','') || 'dashboard';
+ // set active dock accordingly
+ $$('.dock-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.view === initialView));
+ navigateTo(initialView);
+
+ // save on unload
+ window.addEventListener('beforeunload', () => {
+ save(LS_BUCKET, bucket);
+ save(LS_LINKS, generatedLinks);
+ save(LS_PROFILE, profile);
+ save(LS_ACCOUNT, account);
+ save(LS_PAYOUT, payoutPref);
+ save(LS_WITHDRAW, withdrawHistory);
+ save(LS_BALANCE, availableBalance);
+ });
+
+ // expose debug
+ window._hiState = { bucket, generatedLinks, profile, account, payoutPref, withdrawHistory, availableBalance };
+ window.addToBucket = addToBucket;
+ window.generateLinkFromBucketAndRedirect = generateLinkFromBucketAndRedirect;
+});
+</script>
+</body>
+</html>
