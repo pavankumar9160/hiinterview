@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Candidate Chat — Hi Interviews</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: {50:'#f8fafc',100:'#eef2f7',200:'#e5eaf1',300:'#cfd8e3',400:'#94a3b8',500:'#64748b',600:'#475569',700:'#334155',800:'#1e293b',900:'#0f172a',950:'#0c1324'},
+            brand: {50:'#eef2ff',100:'#e0e7ff',200:'#c7d2fe',300:'#a5b4fc',400:'#818cf8',500:'#6366f1',600:'#4f46e5',700:'#4338ca',800:'#3730a3',900:'#312e81'}
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .bubble-left::after {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 12px;
+      width: 0;
+      height: 0;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-right: 8px solid white;
+      filter: drop-shadow(-1px 0 0 rgba(0,0,0,0.02));
+    }
+    .bubble-right::after {
+      content: '';
+      position: absolute;
+      right: -6px;
+      top: 12px;
+      width: 0;
+      height: 0;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-left: 8px solid #eef2ff;
+      filter: drop-shadow(1px 0 0 rgba(0,0,0,0.02));
+    }
+    .thin-scroll::-webkit-scrollbar { height: 8px; width: 8px; }
+    .thin-scroll::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.18); border-radius: 8px; }
+    .thin-scroll::-webkit-scrollbar-track { background: transparent; }
+  </style>
+</head>
+<body class="bg-ink-50 text-ink-900 antialiased font-sans flex flex-col h-screen">
+
+  <div class="flex h-full">
+    <!-- Left Panel: Trainer -->
+    <aside id="leftPanel" class="w-full md:w-1/3 lg:w-1/4 bg-white border-r border-ink-200 flex flex-col h-full">
+      <div class="p-4 border-b border-ink-100 flex items-center justify-between">
+        <h1 class="text-lg font-bold text-ink-800">Your Trainer</h1>
+      </div>
+      <div id="convoList" class="flex-grow overflow-y-auto thin-scroll">
+        <!-- assigned trainer injected here -->
+      </div>
+    </aside>
+
+    <!-- Right Panel: Chat -->
+    <main id="chatPanel" class="w-2/3 flex flex-col h-full">
+      <div id="headerBar" class="p-4 border-b border-ink-100 bg-white flex items-center gap-3">
+        <img id="activeAvatar" src="https://placehold.co/40x40/1e293b/e2e8f0?text=T" class="h-10 w-10 rounded-full flex-shrink-0">
+        <div class="flex-grow">
+          <h2 id="activeChatName" class="font-semibold text-ink-800">Select a conversation</h2>
+          <p id="activeChatMeta" class="text-xs text-ink-500 mt-0.5">Status: idle</p>
+        </div>
+      </div>
+
+      <div id="chatWindow" class="flex-grow p-6 overflow-y-auto thin-scroll bg-gradient-to-b from-white to-ink-50">
+        <div id="welcomeMessage" class="text-center text-ink-500 mt-20">
+          <i class="fa-solid fa-inbox text-5xl"></i>
+          <p class="mt-2">Your trainer will appear here.</p>
+        </div>
+      </div>
+
+      <div class="p-4 border-t border-ink-100 bg-white">
+        <form id="chatForm" class="flex items-center gap-3" onsubmit="return false;">
+          <input type="text" id="messageInput" placeholder="Type your reply..." class="w-full h-10 px-3 text-sm rounded-lg border border-ink-100 bg-ink-50 flex-grow disabled:opacity-60" required disabled>
+          <button type="submit" id="sendBtn" class="h-10 px-4 bg-brand-600 text-white rounded-lg flex items-center justify-center gap-2 hover:bg-brand-700 transition disabled:opacity-60" disabled>
+            <i class="fa-solid fa-paper-plane"></i>
+            <span class="hidden sm:inline">Send</span>
+          </button>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Simulated data
+    const conversations = {
+      'kevin-mathew': {
+        id: 'kevin-mathew',
+        name: 'Kevin Mathew',
+        avatarUrl: 'https://placehold.co/100x100/312e81/e0e7ff?text=KM',
+        messages: [
+          { from: 'them', text: 'Hi! Welcome to your mentorship program.', time: '2025-10-12 09:00' }
+        ]
+      }
+    };
+
+    const loggedInCandidate = {                                                           
+      assignedTrainerId: 'kevin-mathew'
+    };
+
+    const convoListEl = document.getElementById('convoList');
+    const chatWindowEl = document.getElementById('chatWindow');
+    const activeChatNameEl = document.getElementById('activeChatName');
+    const activeChatMetaEl = document.getElementById('activeChatMeta');
+    const activeAvatarEl = document.getElementById('activeAvatar');
+    const welcomeMessageEl = document.getElementById('welcomeMessage');
+    const messageInputEl = document.getElementById('messageInput');
+    const sendBtnEl = document.getElementById('sendBtn');
+    const chatFormEl = document.getElementById('chatForm');
+
+    let activeConvoId = loggedInCandidate.assignedTrainerId;
+
+    function escapeHtml(unsafe) {
+      return String(unsafe).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'", '&#039;');
+    }
+
+    function formatTime(ts) {
+      return ts.split(' ')[1] || ts;
+    }
+
+    function scrollChatToBottom() {
+      setTimeout(() => {
+        chatWindowEl.scrollTop = chatWindowEl.scrollHeight;
+      }, 50);
+    }
+
+  
+// Render conversation list (handle no trainer)
+function renderConvoList() {
+  const convo = conversations[loggedInCandidate.assignedTrainerId];
+
+  if (!convo) {
+    convoListEl.innerHTML = `
+      <div class="px-4 pt-4 pb-2 text-xs font-semibold text-ink-500 uppercase tracking-wider">Trainer Chat</div>
+      <div class="p-4 text-center text-ink-500">
+        <i class="fa-solid fa-user-slash text-3xl"></i>
+        <p class="mt-2">No trainer assigned yet. Please wait until a trainer is assigned.</p>
+      </div>
+    `;
+    chatWindowEl.innerHTML = `
+      <div class="text-center text-ink-500 mt-20">
+        <i class="fa-solid fa-inbox text-5xl"></i>
+        <p class="mt-2">No trainer assigned yet. Messages will appear here once a trainer is assigned.</p>
+      </div>
+    `;
+    messageInputEl.disabled = true;
+    sendBtnEl.disabled = true;
+    activeChatNameEl.textContent = 'No Trainer';
+    activeChatMetaEl.textContent = '';
+    return;
+  }
+
+  // If trainer exists, render normally
+  convoListEl.innerHTML = `
+    <div class="px-4 pt-4 pb-2 text-xs font-semibold text-ink-500 uppercase tracking-wider">Trainer Chat</div>
+    <button dataConvoId="${convo.id}" class="w-full text-left p-3 border-b border-ink-100 hover:bg-ink-50 transition flex items-center gap-3">
+      <div class="relative">
+        <img src="${convo.avatarUrl}" class="h-10 w-10 rounded-full flex-shrink-0">
+      </div>
+      <div class="flex-grow overflow-hidden">
+        <p class="font-semibold text-sm truncate">${convo.name}</p>
+        <p class="text-sm text-ink-600 truncate mt-1">${convo.messages[convo.messages.length-1].text}</p>
+      </div>
+    </button>
+  `;
+
+  // auto-render chat
+  renderMessages(activeConvoId);
+}
+
+
+    function renderMessages(convoId) {
+      const convo = conversations[convoId];
+      if (!convo) return;
+
+      activeChatNameEl.textContent = convo.name;
+      activeChatMetaEl.textContent = `${convo.messages.length} messages`;
+      activeAvatarEl.src = convo.avatarUrl;
+      welcomeMessageEl.classList.add('hidden');
+
+      chatWindowEl.innerHTML = `<div class="max-w-2xl mx-auto space-y-4" id="messagesWrap">
+        ${convo.messages.map(msg => {
+          if (msg.from === 'me') {
+            return `<div class="flex justify-end">
+                      <div class="relative max-w-[75%]">
+                        <div class="bubble-right relative px-4 py-2 rounded-2xl rounded-br-md bg-brand-50 shadow-sm">
+                          <div class="text-sm text-ink-900">${escapeHtml(msg.text)}</div>
+                          <div class="text-xs text-ink-400 mt-1 text-right">${formatTime(msg.time)}</div>
+                        </div>
+                      </div>
+                    </div>`;
+          } else {
+            return `<div class="flex items-start gap-3">
+                      <img src="${convo.avatarUrl}" class="h-9 w-9 rounded-full flex-shrink-0">
+                      <div class="relative max-w-[75%]">
+                        <div class="bubble-left relative px-4 py-2 rounded-2xl rounded-bl-md bg-white shadow-sm border border-ink-50">
+                          <div class="text-sm text-ink-900">${escapeHtml(msg.text)}</div>
+                          <div class="text-xs text-ink-400 mt-1">${formatTime(msg.time)}</div>
+                        </div>
+                      </div>
+                    </div>`;
+          }
+        }).join('')}
+      </div>`;
+
+      // enable input
+      messageInputEl.disabled = false;
+      sendBtnEl.disabled = false;
+      messageInputEl.focus();
+      scrollChatToBottom();
+    }
+
+    // Send message
+    function sendMessageFromInput() {
+      const text = messageInputEl.value.trim();
+      if (!text) return;
+
+      const now = new Date();
+      const pad = (n) => String(n).padStart(2,'0');
+      const timeStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+
+      const newMsg = { from: 'me', text, time: timeStr };
+      conversations[activeConvoId].messages.push(newMsg);
+      renderMessages(activeConvoId);
+      messageInputEl.value = '';
+
+      // simulate trainer reply
+      setTimeout(() => {
+        const replies = [
+          'Got it!',
+          'Thanks for the update.',
+          'I will check and revert.',
+          'Okay!'
+        ];
+        const replyText = replies[Math.floor(Math.random() * replies.length)];
+        const now2 = new Date();
+        const timeStr2 = `${now2.getFullYear()}-${pad(now2.getMonth()+1)}-${pad(now2.getDate())} ${pad(now2.getHours())}:${pad(now2.getMinutes())}`;
+        conversations[activeConvoId].messages.push({ from: 'them', text: replyText, time: timeStr2 });
+        renderMessages(activeConvoId);
+      }, 1000);
+    }
+
+    chatFormEl.addEventListener('submit', (e) => { e.preventDefault(); sendMessageFromInput(); });
+    sendBtnEl.addEventListener('click', sendMessageFromInput);
+    messageInputEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); sendMessageFromInput(); } });
+
+    renderConvoList();
+  </script>
+
+</body>
+</html>

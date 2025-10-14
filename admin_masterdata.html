@@ -48,19 +48,69 @@
   <div class="w-12 h-12 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin"></div>
 </div>
 <body class="bg-ink-50 text-ink-950 antialiased font-sans content" style="display:none">
-    <header class="bg-white/80 backdrop-blur-sm border-b border-ink-100 sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-            <div>
-                <h1 class="font-semibold tracking-tight text-xl font-heading text-ink-900">Hi Interviews <span class="text-brand-600 font-normal">| Admin Panel</span></h1>
-            </div>
-             <div>
-                <a href="admin_ticket.html" class="text-sm font-medium text-brand-700 hover:underline">Ticket Management →</a>
-            </div>
-             </div>
+<header class="bg-white/80 backdrop-blur-sm border-b border-ink-100 sticky top-0 z-40">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      
+      <!-- Left: Brand / Title -->
+      <div class="flex items-center">
+        <h1 class="font-semibold tracking-tight text-xl font-heading text-ink-900">
+          Hi Interviews <span class="text-brand-600 font-normal">| Admin Panel</span>
+        </h1>
+      </div>
 
-        </div>
-    </header>
+      <!-- Right: Desktop Menu -->
+      <div class="hidden md:flex items-center space-x-4">
+        <a href="admin_ticket.html" class="text-sm font-medium text-brand-700 hover:underline">
+          Ticket Management →
+        </a>
+         <a href="admin_assignments.html" class="text-sm font-medium text-brand-700 hover:underline">
+          Trainer Assignment →
+        </a>
+        <button id="logoutBtn" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-rose-500 text-white hover:bg-rose-600 focus-ring">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span class="text-sm">Logout</span>
+        </button>
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <div class="md:hidden">
+        <button id="mobileMenuBtn" class="inline-flex items-center justify-center p-2 rounded-md text-ink-700 hover:bg-gray-100 focus:ring">
+          <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="md:hidden hidden px-4 pt-2 pb-4 space-y-1 border-t border-ink-100">
+    <a href="admin_ticket.html" class="block text-sm font-medium text-brand-700 hover:underline">
+      Ticket Management →
+    </a>
+     <a href="admin_assignments.html" class="block text-sm font-medium text-brand-700 hover:underline">
+      Trainer Assignment →
+    </a>
+    <button id="mobileLogoutBtn" class="w-full text-left inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-rose-500 text-white hover:bg-rose-600 focus-ring">
+      <i class="fa-solid fa-right-from-bracket"></i>
+      <span class="text-sm">Logout</span>
+    </button>
+  </div>
+</header>
+
+<script>
+  // Toggle mobile menu
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  mobileMenuBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+  });
+</script>
+
 
     <main class="flex-grow bg-pattern">
         <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
@@ -161,7 +211,7 @@
 
         let mentors = []
         let candidates = []
-        let url = "https://hiinterview-backend-1.onrender.com"
+        let url = "https://sandbox.hiinterviews.com/hiinterview_backend"
 
       /*  let mentors = [
             { id: 'kevin', name: 'Mr. Kevin Mathew', email: 'kevin.m@example.com', avatar: 'https://placehold.co/100x100/312e81/e0e7ff?text=KM', domain: 'Python Developer', isActive: true },
@@ -187,7 +237,7 @@
 
             
             try {
-                let response = await fetch('https://hiinterview-backend-1.onrender.com/api/users/', {
+                let response = await fetch('https://sandbox.hiinterviews.com/hiinterview_backend/api/users/', {
                     method: 'GET',  
                     headers: { 
                 'Content-Type': 'application/json',
@@ -200,7 +250,7 @@
                     accessToken = await refreshAccessToken();
                     if (!accessToken) return; 
                     refreshToken = localStorage.getItem('refreshToken');
-                    response = await fetch('https://hiinterview-backend-1.onrender.com/api/users/', {
+                    response = await fetch('https://sandbox.hiinterviews.com/hiinterview_backend/api/users/', {
                         method: 'GET',
                         headers: { 
                             'Content-Type': 'application/json',
@@ -244,13 +294,61 @@
             }
 
 
+    const logoutBtn = qs("#logoutBtn");
+            logoutBtn.addEventListener("click", async function () {
+                if (!confirm("Confirm logout?")) return;
+
+               
+
+                if (!refreshToken) {
+                    clearTokensAndRedirect();
+                    return;
+                }
+
+                try {
+                    let response = await fetch("https://sandbox.hiinterviews.com/hiinterview_backend/api/admin/logout/", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${accessToken}`
+                        },
+                        body: JSON.stringify({ refresh: refreshToken })
+                    });
+
+                    if (response.status === 401) {
+                        accessToken = await refreshAccessToken();
+                        if (!accessToken) return;
+
+                        response = await fetch("https://sandbox.hiinterviews.com/hiinterview_backend/api/admin/logout/", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer ${accessToken}`
+                            },
+                            body: JSON.stringify({ refresh: refreshToken })
+                        });
+                    }
+
+                    if (response.ok) {
+                        clearTokensAndRedirect();
+                    } else {
+                         clearTokensAndRedirect();
+                        console.error("Logout failed");
+                    }
+                } catch (err) {
+                    console.error(err);
+                }
+            });
+        
+
+
 
     async function refreshAccessToken() {
     const refreshToken = localStorage.getItem("refreshToken");
     if (!refreshToken) return null;
 
     try {
-        const response = await fetch("https://hiinterview-backend-1.onrender.com/api/token/refresh/", {
+        const response = await fetch("https://sandbox.hiinterviews.com/hiinterview_backend/api/token/refresh/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ refresh: refreshToken })
@@ -394,7 +492,7 @@ function clearTokensAndRedirect() {
                     user.is_active = e.target.checked;
                     if (user) {
                          try {
-                        let response = await fetch(`https://hiinterview-backend-1.onrender.com/api/update-user-status/${user.id}/`, {
+                        let response = await fetch(`https://sandbox.hiinterviews.com/hiinterview_backend/api/update-user-status/${user.id}/`, {
                             method: 'PUT',
                             headers: { 
                                 'Content-Type': 'application/json',
@@ -409,7 +507,7 @@ function clearTokensAndRedirect() {
                             accessToken = await refreshAccessToken();
                             if (!accessToken) return; 
                             refreshToken = localStorage.getItem('refreshToken');
-                            response = await fetch(`https://hiinterview-backend-1.onrender.com/api/update-user-status/${user.id}/`, {
+                            response = await fetch(`https://sandbox.hiinterviews.com/hiinterview_backend/api/update-user-status/${user.id}/`, {
                                 method: 'PUT',
                             headers: { 
                                 'Content-Type': 'application/json',

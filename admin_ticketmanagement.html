@@ -180,7 +180,7 @@ if (!refreshToken) {
 // --- Load Tickets ---
 async function loadTickets() {
   try {
-    const response = await fetch('https://hiinterview-backend-1.onrender.com/api/tickets/', {
+    const response = await fetch('https://sandbox.hiinterviews.com/hiinterview_backend/api/tickets/', {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
 
@@ -188,7 +188,7 @@ async function loadTickets() {
                 accessToken = await refreshAccessToken();
                 if (!accessToken) return;
                 refreshToken = localStorage.getItem('refreshToken');
-                response = await fetch('https://hiinterview-backend-1.onrender.com/api/tickets/', {
+                response = await fetch('https://sandbox.hiinterviews.com/hiinterview_backend/api/tickets/', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -229,7 +229,7 @@ async function refreshAccessToken() {
         if (!refreshToken) return null;
 
         try {
-            const response = await fetch("https://hiinterview-backend-1.onrender.com/api/token/refresh/", {
+            const response = await fetch("https://sandbox.hiinterviews.com/hiinterview_backend/api/token/refresh/", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ refresh: refreshToken })
@@ -429,7 +429,7 @@ ticketsTbody.addEventListener('change', async (e) => {
   const newStatus = e.target.value;
 
   try {
-    let response = await fetch(`https://hiinterview-backend-1.onrender.com/api/update-ticket-status/`, {
+    let response = await fetch(`https://sandbox.hiinterviews.com/hiinterview_backend/api/update-ticket-status/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -441,7 +441,7 @@ ticketsTbody.addEventListener('change', async (e) => {
     if (response.status === 401) {
       accessToken = await refreshAccessToken();
       if (!accessToken) return;
-      response = await fetch(`https://hiinterview-backend-1.onrender.com/api/update-ticket-status/`, {
+      response = await fetch(`https://sandbox.hiinterviews.com/hiinterview_backend/api/update-ticket-status/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
