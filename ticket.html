@@ -31,7 +31,7 @@
  .ticketTitle{display:flex;justify-content:space-between;align-items:center;gap:8px}
  .ticketSubject{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
  .ticketPreview{font-size:13px;color:var(--muted);margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
- .statusBadge{font-size:12px;padding:5px 8px;border-radius:999px;background:#f1f5f9;color:#0f172a;font-weight:700}
+ .statusBadge{font-size:12px;padding:5px 5px;border-radius:999px;background:#f1f5f9;color:#0f172a;font-weight:700}
 .unreadDot {
     width: 18px;                
     height: 18px;
@@ -389,7 +389,18 @@ console.log("tick",tickets);
  const subj = document.createElement('div'); subj.className = 'ticketSubject'; subj.textContent = t.subject;
  const right = document.createElement('div'); right.style.textAlign='right';
  const time = document.createElement('div'); time.className='smallNote'; time.textContent = formatDateShort(t.createdAt);
- const statusBadge = document.createElement('div'); statusBadge.className='statusBadge'; statusBadge.textContent = (t.status || '').charAt(0).toUpperCase() + (t.status || '').slice(1);
+ const statusBadge = document.createElement('div');
+  statusBadge.className='statusBadge';
+   statusBadge.textContent = (t.status || '').charAt(0).toUpperCase() + (t.status || '').slice(1);
+   if (t.status?.toLowerCase() === 'resolved'){
+        statusBadge.style.background = 'linear-gradient(90deg,#54cf81ff)';
+        statusBadge.style.color = 'white';
+    }  
+   else{
+    statusBadge.style.background = '#f1f5f9'; // green gradient
+    statusBadge.style.color = '#0f172a';
+    }
+    
  right.appendChild(time); right.appendChild(statusBadge);
 
  title.appendChild(subj); title.appendChild(right);
@@ -554,6 +565,15 @@ row.appendChild(bubble);
  chatSubtitleEl.innerHTML = `<span class="smallNote">${escapeHtml(t.userName)}</span> • <span class="smallNote">${escapeHtml(t.email)}</span> • <span class="smallNote">${escapeHtml(t.contact)}</span>`;
  chatAvatarEl.style.background = genAvatarColor(t.userType); chatAvatarEl.textContent = (t.userName||'').split(' ').map(x=>x[0]).slice(0,2).join('');
  ticketStatusEl.textContent = (t.status || '').charAt(0).toUpperCase() + (t.status || '').slice(1);
+ if (t.status?.toLowerCase() == 'resolved') {
+ticketStatusEl.style.background = 'linear-gradient(90deg, #10b981)'; // green gradient
+    ticketStatusEl.style.color = 'white';
+ }
+ else{
+    ticketStatusEl.style.background = '#f1f5f9'; // green gradient
+    ticketStatusEl.style.color = '#0f172a';
+   
+ }
 
  // messages
 

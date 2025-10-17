@@ -800,6 +800,13 @@ const coreUIMap = [
  }
  });
  }
+ else {
+      if (!entry.isIntersecting) {
+         const id = '#' + entry.target.id;
+        const link = spyLinks.find(l => l.getAttribute('href') === id);
+        if (link) link.classList.remove('text-brand-600', 'font-semibold');
+      }
+    }
  });
  }, { rootMargin: '-40% 0px -60% 0px' });
  sections.forEach(s => observer.observe(s));

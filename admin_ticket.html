@@ -496,6 +496,10 @@ const files = fileInputEl.files[0] || '';
  const right = document.createElement('div'); right.style.textAlign = 'right';
  const date = document.createElement('div'); date.className='smallText'; date.textContent = formatDate(t.createdAt);
  const badge = document.createElement('div'); badge.className='ticketBadge'; badge.textContent = statusText(t.status);
+  if (t.status?.toLowerCase() === 'resolved') {
+    badge.style.background = 'linear-gradient(90deg, #10b981)'; // green gradient
+    badge.style.color = 'white';
+}
  right.appendChild(date); right.appendChild(badge);
  title.appendChild(left); title.appendChild(right);
  const preview = document.createElement('div'); preview.className='ticketPreview'; preview.textContent = shorten(t.messages[t.messages.length-1].body, 90);

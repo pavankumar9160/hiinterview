@@ -52,9 +52,10 @@
 
   <div class="flex h-full">
     <!-- Left Panel: Trainer -->
-    <aside id="leftPanel" class="w-full md:w-1/3 lg:w-1/4 bg-white border-r border-ink-200 flex flex-col h-full">
+    <aside id="leftPanel" class="w-full md:w-1/3 lg:w-2/4 bg-white border-r border-ink-200 flex flex-col h-full">
       <div class="p-4 border-b border-ink-100 flex items-center justify-between">
         <h1 class="text-lg font-bold text-ink-800">Your Trainer</h1>
+          <div><a href="profile.html" class="text-sm font-medium text-brand-700 hover:underline">← Go Back to Profile</a></div>
       </div>
       <div id="convoList" class="flex-grow overflow-y-auto thin-scroll">
         <!-- assigned trainer injected here -->
@@ -62,19 +63,19 @@
     </aside>
 
     <!-- Right Panel: Chat -->
-    <main id="chatPanel" class="w-2/3 flex flex-col h-full">
+    <main id="chatPanel" class="w-full flex flex-col h-full">
       <div id="headerBar" class="p-4 border-b border-ink-100 bg-white flex items-center gap-3">
         <img id="activeAvatar" src="https://placehold.co/40x40/1e293b/e2e8f0?text=T" class="h-10 w-10 rounded-full flex-shrink-0">
         <div class="flex-grow">
           <h2 id="activeChatName" class="font-semibold text-ink-800">Select a conversation</h2>
-          <p id="activeChatMeta" class="text-xs text-ink-500 mt-0.5">Status: idle</p>
+        <!--  <p id="activeChatMeta" class="text-xs text-ink-500 mt-0.5">Status: idle</p>  -->
         </div>
       </div>
 
       <div id="chatWindow" class="flex-grow p-6 overflow-y-auto thin-scroll bg-gradient-to-b from-white to-ink-50">
         <div id="welcomeMessage" class="text-center text-ink-500 mt-20">
           <i class="fa-solid fa-inbox text-5xl"></i>
-          <p class="mt-2">Your trainer will appear here.</p>
+          <p class="mt-2">Click on a chat to view messages</p>
         </div>
       </div>
 
@@ -91,41 +92,137 @@
   </div>
 
   <script>
-    // Simulated data
-    const conversations = {
-      'kevin-mathew': {
-        id: 'kevin-mathew',
-        name: 'Kevin Mathew',
-        avatarUrl: 'https://placehold.co/100x100/312e81/e0e7ff?text=KM',
-        messages: [
-          { from: 'them', text: 'Hi! Welcome to your mentorship program.', time: '2025-10-12 09:00' }
-        ]
-      }
-    };
+    
+  let accessToken = localStorage.getItem('accessToken');
+let refreshToken = localStorage.getItem('refreshToken');
 
-    const loggedInCandidate = {                                                           
-      assignedTrainerId: 'kevin-mathew'
-    };
+let loggedInCandidate;
+ let activeConvoId;
+ let conversations={};
+
+if (!refreshToken) {
+    clearTokensAndRedirect();
+}
+
+async function loadUserAndAssignedTrainer() {
+  try {
+    const response = await fetch('https://sandbox.hiinterviews.com/hiinterview_backend/api/GetAssignedTrainer/', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+            if (response.status === 401) {
+                accessToken = await refreshAccessToken();
+                if (!accessToken) return;
+                refreshToken = localStorage.getItem('refreshToken');
+                response = await fetch('https://sandbox.hiinterviews.com/hiinterview_backend/api/GetAssignedTrainer/', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+
+                });
+            }
+
+             if (response.status === 403) {
+                //spinner.style.display = "none";
+                window.location.href = "404.html";
+            } else {
+               // content.style.display = "block";
+              //  spinner.style.display = "none";
+
+            } 
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data.candidate)
+                console.log(data.trainer)
+                loggedInCandidate = {
+                    id: data.candidate.id,           
+                    assignedTrainerId: data.trainer?.id ||"",
+                    name: data.trainer?.fullname
+                };
+                
+
+               if(loggedInCandidate.assignedTrainerId)await getOrCreateChatWithTrainer(loggedInCandidate.assignedTrainerId);
+
+                renderConvoList();
+            }
+
+            else {
+                  console.error('failed to fetch user data');
+              }
+    } catch (err) {
+        console.error("Profile load error:", err);
+    }
+}
+
+
+async function refreshAccessToken() {
+        const refreshToken = localStorage.getItem("refreshToken");
+        if (!refreshToken) return null;
+
+        try {
+            const response = await fetch("https://sandbox.hiinterviews.com/hiinterview_backend/api/token/refresh/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ refresh: refreshToken })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem("accessToken", data.access);
+                localStorage.setItem("refreshToken", data.refresh);
+
+                return data.access;
+            } else {
+                clearTokensAndRedirect();
+                return null;
+            }
+        } catch (err) {
+            console.error(err);
+            return null;
+        }
+    }
+
+function clearTokensAndRedirect() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('role')
+    window.location.href = "login.html";
+}
+    // Simulated data
+   
+
+   
 
     const convoListEl = document.getElementById('convoList');
     const chatWindowEl = document.getElementById('chatWindow');
     const activeChatNameEl = document.getElementById('activeChatName');
-    const activeChatMetaEl = document.getElementById('activeChatMeta');
+    //const activeChatMetaEl = document.getElementById('activeChatMeta');
     const activeAvatarEl = document.getElementById('activeAvatar');
     const welcomeMessageEl = document.getElementById('welcomeMessage');
     const messageInputEl = document.getElementById('messageInput');
     const sendBtnEl = document.getElementById('sendBtn');
     const chatFormEl = document.getElementById('chatForm');
 
-    let activeConvoId = loggedInCandidate.assignedTrainerId;
+   
 
     function escapeHtml(unsafe) {
       return String(unsafe).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'", '&#039;');
     }
 
-    function formatTime(ts) {
-      return ts.split(' ')[1] || ts;
-    }
+    function formatTime(isoTs) {
+    const d = new Date(isoTs); 
+    const pad = (n) => String(n).padStart(2, '0');
+
+    const year = d.getFullYear();
+    const month = pad(d.getMonth() + 1); 
+    const day = pad(d.getDate());
+    const hours = pad(d.getHours());
+    const minutes = pad(d.getMinutes());
+
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+}
 
     function scrollChatToBottom() {
       setTimeout(() => {
@@ -155,26 +252,83 @@ function renderConvoList() {
     messageInputEl.disabled = true;
     sendBtnEl.disabled = true;
     activeChatNameEl.textContent = 'No Trainer';
-    activeChatMetaEl.textContent = '';
+    //activeChatMetaEl.textContent = '';
     return;
   }
 
   // If trainer exists, render normally
   convoListEl.innerHTML = `
-    <div class="px-4 pt-4 pb-2 text-xs font-semibold text-ink-500 uppercase tracking-wider">Trainer Chat</div>
-    <button dataConvoId="${convo.id}" class="w-full text-left p-3 border-b border-ink-100 hover:bg-ink-50 transition flex items-center gap-3">
-      <div class="relative">
-        <img src="${convo.avatarUrl}" class="h-10 w-10 rounded-full flex-shrink-0">
-      </div>
-      <div class="flex-grow overflow-hidden">
-        <p class="font-semibold text-sm truncate">${convo.name}</p>
-        <p class="text-sm text-ink-600 truncate mt-1">${convo.messages[convo.messages.length-1].text}</p>
-      </div>
-    </button>
-  `;
+      <div class="px-4 pt-4 pb-2 text-xs font-semibold text-ink-500 uppercase tracking-wider">Trainer Chat</div>
+      <button dataConvoId="${loggedInCandidate.assignedTrainerId}" class="w-full text-left p-3 border-b border-ink-100 hover:bg-ink-50 transition flex items-center gap-3 relative">
+        <div class="relative">
+          <img src="${convo.avatarUrl}" class="h-10 w-10 rounded-full flex-shrink-0">
+          ${convo.unreadCount ? `<span class="absolute -top-1 -right-1 bg-brand-600 text-white text-xs px-1.5 py-0.5 rounded-full">${convo.unreadCount}</span>` : ''}
+        </div>
+        <div class="flex-grow overflow-hidden">
+          <p class="font-semibold text-sm truncate">${convo.name}</p>
+          <p class="text-sm text-ink-600 truncate mt-1">${convo.messages.length ? convo.messages[convo.messages.length-1].text : 'No messages yet'}</p>
+        </div>
+      </button>
+      `;
 
-  // auto-render chat
-  renderMessages(activeConvoId);
+
+  // Attach click event
+  const btn = convoListEl.querySelector('button[dataConvoId]');
+btn.addEventListener('click', async () => {
+    const convo = conversations[activeConvoId];
+
+    // Only make API call if there are unread messages
+    if (convo.unreadCount > 0) {
+        try {
+            const response = await fetch('https://sandbox.hiinterviews.com/hiinterview_backend/api/mark-messages-read/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify({
+                    chatRequestId: convo.chatRequestId
+                })
+            });
+            if (response.status === 401) {
+                accessToken = await refreshAccessToken();
+                if (!accessToken) return;
+                refreshToken = localStorage.getItem('refreshToken');
+                response = await fetch('https://sandbox.hiinterviews.com/hiinterview_backend/api/mark-messages-read/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                     body: JSON.stringify({
+                    chatRequestId: convo.chatRequestId
+                      })
+
+                });
+            }
+
+              if (response.status === 403) {
+                  //spinner.style.display = "none";
+                  window.location.href = "404.html";
+              } else {
+                // content.style.display = "block";
+                //  spinner.style.display = "none";
+
+              } 
+
+              if (response.ok) {
+                    convo.unreadCount = 0;
+                    renderConvoList();
+                } else {
+                    console.error('Failed to mark messages as read');
+                }
+            } catch (err) {
+                console.error('Error marking messages read:', err);
+            }
+    }
+
+    renderMessages(activeConvoId); // display chat
+});
 }
 
 
@@ -183,7 +337,7 @@ function renderConvoList() {
       if (!convo) return;
 
       activeChatNameEl.textContent = convo.name;
-      activeChatMetaEl.textContent = `${convo.messages.length} messages`;
+     // activeChatMetaEl.textContent = `${convo.messages.length} messages`;
       activeAvatarEl.src = convo.avatarUrl;
       welcomeMessageEl.classList.add('hidden');
 
@@ -219,41 +373,175 @@ function renderConvoList() {
       scrollChatToBottom();
     }
 
-    // Send message
-    function sendMessageFromInput() {
-      const text = messageInputEl.value.trim();
-      if (!text) return;
 
-      const now = new Date();
-      const pad = (n) => String(n).padStart(2,'0');
-      const timeStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
 
-      const newMsg = { from: 'me', text, time: timeStr };
-      conversations[activeConvoId].messages.push(newMsg);
-      renderMessages(activeConvoId);
-      messageInputEl.value = '';
 
-      // simulate trainer reply
-      setTimeout(() => {
-        const replies = [
-          'Got it!',
-          'Thanks for the update.',
-          'I will check and revert.',
-          'Okay!'
-        ];
-        const replyText = replies[Math.floor(Math.random() * replies.length)];
-        const now2 = new Date();
-        const timeStr2 = `${now2.getFullYear()}-${pad(now2.getMonth()+1)}-${pad(now2.getDate())} ${pad(now2.getHours())}:${pad(now2.getMinutes())}`;
-        conversations[activeConvoId].messages.push({ from: 'them', text: replyText, time: timeStr2 });
-        renderMessages(activeConvoId);
-      }, 1000);
+    async function getOrCreateChatWithTrainer(trainerId) {
+    try {
+        const response = await fetch("https://sandbox.hiinterviews.com/hiinterview_backend/api/chat/get-or-create/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${accessToken}`
+            },
+            body: JSON.stringify({
+                user1_id: loggedInCandidate.id,  
+                user2_id: trainerId
+            })
+        });
+
+        if (response.status === 401) {
+                accessToken = await refreshAccessToken();
+                if (!accessToken) return;
+                refreshToken = localStorage.getItem('refreshToken');
+                response = await fetch('https://sandbox.hiinterviews.com/hiinterview_backend/api/chat/get-or-create/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                     body: JSON.stringify({
+                      user1_id: loggedInCandidate.id,  
+                      user2_id: trainerId
+            })
+
+                });
+            }
+
+             if (response.status === 403) {
+                //spinner.style.display = "none";
+                window.location.href = "404.html";
+            } else {
+               // content.style.display = "block";
+              //  spinner.style.display = "none";
+
+            } 
+        
+
+        if (!response.ok) {
+            console.error("Failed to get or create chat");
+            return null;
+        }
+
+        const chatData = await response.json();
+        console.log("chstData",chatData)
+
+        const name = chatData.user2?.role =='Mentor'? chatData.user2.first_name: chatData.user1.first_name;
+        console.log(name)
+          // Get the first letter for avatar
+          const firstLetter = name ? name.charAt(0).toUpperCase() : 'U';
+          const unreadCount = chatData.chat_messages.filter(msg => !msg.is_read_candidate && msg.sender.id !== loggedInCandidate.id).length;
+
+          const convo = {
+            chatRequestId: chatData.id,
+            name: name,
+            avatarUrl: `https://placehold.co/100x100/312e81/e0e7ff?text=${firstLetter}`,
+            messages: chatData.chat_messages.map(msg => ({
+                from: msg.sender.id === loggedInCandidate.id ? 'me' : 'them',
+                text: msg.text,
+                time: msg.created_at
+            })),
+           unreadCount: unreadCount 
+        };
+
+        // Add to conversations object
+        conversations[trainerId] = convo;
+        activeConvoId = trainerId;
+        renderConvoList();
+        
+
+    } catch (err) {
+        console.error("Chat fetch/create error:", err);
     }
+}
+
+
+   async function sendMessageFromInput() {
+    const convo = conversations[activeConvoId];
+    const text = messageInputEl.value.trim();
+    if (!text) return;
+
+    messageInputEl.disabled = true;
+    sendBtnEl.disabled = true;
+
+    try {
+        const response = await fetch('https://sandbox.hiinterviews.com/hiinterview_backend/api/SendMessage/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify({
+                chatRequestId: convo.chatRequestId,  
+                senderId: loggedInCandidate.id,
+                text: text
+            })
+        });
+
+        if (response.status === 401) {
+                accessToken = await refreshAccessToken();
+                if (!accessToken) return;
+                refreshToken = localStorage.getItem('refreshToken');
+                response = await fetch('https://sandbox.hiinterviews.com/hiinterview_backend/api/SendMessage/', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                      body: JSON.stringify({
+                      chatRequestId: convo.chatRequestId,  
+                      senderId: loggedInCandidate.id,
+                      text: text
+                  })
+
+                });
+            }
+
+         if (response.status === 403) {
+              showToast("unable to send message at this time. Please contact support for assistance")
+                        return
+                     }
+
+
+        const data = await response.json();
+
+        const now = new Date();
+        const pad = (n) => String(n).padStart(2,'0');
+        const timeStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+
+        const newMsg = { from: 'me', text: text, time: timeStr };
+        if (!conversations[activeConvoId].messages) conversations[activeConvoId].messages = [];
+        conversations[activeConvoId].messages.push(newMsg);
+        renderConvoList();
+
+        renderMessages(activeConvoId);
+        messageInputEl.value = '';
+    } catch (err) {
+        console.error('Error sending message:', err);
+        alert('Message could not be sent. Try again.');
+    } finally {
+        messageInputEl.disabled = false;
+        sendBtnEl.disabled = false;
+        messageInputEl.focus();
+    }
+}
+
+    //Show Toast
+    const toastEl = document.createElement('div');
+    toastEl.style.position='fixed'; toastEl.style.right='16px'; toastEl.style.bottom='16px';
+    toastEl.style.padding='8px 12px'; toastEl.style.background='rgba(17,24,39,0.9)'; toastEl.style.color='white';
+    toastEl.style.borderRadius='8px'; toastEl.style.display='none'; toastEl.style.zIndex='9999';
+    document.body.appendChild(toastEl);
+    function showToast(txt,d=1800){ toastEl.textContent = txt; toastEl.style.display='block'; setTimeout(()=> toastEl.style.display='none', d); }
+
+
 
     chatFormEl.addEventListener('submit', (e) => { e.preventDefault(); sendMessageFromInput(); });
     sendBtnEl.addEventListener('click', sendMessageFromInput);
     messageInputEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); sendMessageFromInput(); } });
 
-    renderConvoList();
+    loadUserAndAssignedTrainer()
+    
   </script>
 
 </body>
